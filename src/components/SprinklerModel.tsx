@@ -1,46 +1,48 @@
 'use client';
 
 /**
- * SprinklerModel — Interactive 3D sprinkler pump with scroll-driven dissolve
+ * SprinklerModel — Scroll-jacked 3D sprinkler pump with camera zoom-through
  *
- * SCROLL EFFECT (scroll progress 0 → 1 as hero scrolls out):
- *   0 → 0.55  solid opacity 1→0  |  wire opacity 0→1   (solid dissolves INTO wireframe)
- *   0.55 → 1  wire opacity 1→0                          (wireframe fades out)
+ * PIN:  GSAP ScrollTrigger pins #hero for 220vh of scroll
+ * ZOOM: Camera moves from z=5.8 → z=-2.2 (through the model)
+ *
+ * DISSOLVE TIMELINE (scroll progress 0 → 1):
+ *   0.00 – 0.18  camera approaches  solid=1.0  wire=0.0
+ *   0.18 – 0.55  entering model     solid 1→0  wire 0→1
+ *   0.55 – 0.82  inside model       solid=0.0  wire=1.0
+ *   0.82 – 1.00  exiting            solid=0.0  wire 1→0
+ *
+ * COPY: hero-copy div fades out + slides left over first 28% of scroll
  *
  * Materials:
- *   - Gold MeshStandardMaterial (#D4A017, metalness 0.85) with RoomEnvironment
- *   - EdgesGeometry LineSegments added as children of each mesh (auto-inherit transforms)
+ *   Solid  — MeshStandardMaterial gold #D4A017, metalness 0.88, roughness 0.22
+ *   Wire   — EdgesGeometry LineSegments children, additive blend, gold
  *
- * Lighting:
- *   - Gold PointLight above-right (#D4A017)
- *   - Warm fill left (#FF8C00)
- *   - Rim DirectionalLight from behind
- *   - Low AmbientLight to keep shadows readable
- *
- * Base removal: hides meshes whose bounding-box top is in the bottom 7% of model
- * Mouse: smooth lerped parallax tilt ±12°
- * Rotation: slow Y auto-rotation
- * Performance: 30fps cap, alpha canvas
+ * Base removal: hides meshes whose bounding-box max-Y < bottom 7% of model
+ * Silent load — no loading UI
  */
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-interface WirePair { mat: THREE.LineBasicMaterial }
-interface SolidMesh { mesh: THREE.Mesh; mat: THREE.MeshStandardMaterial }
+gsap.registerPlugin(ScrollTrigger);
+
+/* ── helpers ────────────────────────────────────────── */
+const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+const clamp01 = (x: number) => Math.max(0, Math.min(1, x));
+const invLerp = (a: number, b: number, v: number) => clamp01((v - a) / (b - a));
 
 export default function SprinklerModel() {
-  const mountRef       = useRef<HTMLDivElement>(null);
-  const [loading, setLoading] = useState(true);
-  const [loadErr, setLoadErr] = useState(false);
 
   useEffect(() => {
-    const mount = mountRef.current;
+    const mount = document.getElementById('sprinkler-mount') as HTMLDivElement | null;
     if (!mount) return;
 
-    /* ── Renderer ────────────────────────────────── */
+    /* ── Renderer ────────────────────────────────────── */
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
       alpha: true,
@@ -48,76 +50,78 @@ export default function SprinklerModel() {
     });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setClearColor(0x000000, 0);
-    renderer.toneMapping        = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.35;
-    renderer.shadowMap.enabled  = true;
-    renderer.shadowMap.type     = THREE.PCFSoftShadowMap;
+    renderer.toneMapping         = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.4;
+    renderer.shadowMap.enabled   = true;
+    renderer.shadowMap.type      = THREE.PCFSoftShadowMap;
     renderer.setSize(mount.clientWidth, mount.clientHeight);
     mount.appendChild(renderer.domElement);
 
-    /* ── Scene ───────────────────────────────────── */
+    /* ── Scene ───────────────────────────────────────── */
     const scene = new THREE.Scene();
 
-    /* ── Environment map (RoomEnvironment for gold reflections) ── */
+    /* ── Environment (RoomEnvironment for gold reflections) ── */
     const pmrem  = new THREE.PMREMGenerator(renderer);
     pmrem.compileEquirectangularShader();
-    const envTex = pmrem.fromScene(new RoomEnvironment(), 0.06).texture;
-    scene.environment    = envTex;
-    scene.environmentIntensity = 0.7;
+    const envTex = pmrem.fromScene(new RoomEnvironment(), 0.08).texture;
+    scene.environment          = envTex;
+    scene.environmentIntensity = 0.75;
     pmrem.dispose();
 
-    /* ── Camera ──────────────────────────────────── */
+    /* ── Camera ──────────────────────────────────────── */
     const camera = new THREE.PerspectiveCamera(
-      36,
+      38,
       mount.clientWidth / mount.clientHeight,
       0.01, 200,
     );
-    camera.position.set(0, 0.4, 5.5);
+    // Start position (outside model)
+    camera.position.set(0, 0.5, 5.8);
+    camera.lookAt(0, 0.2, 0);
 
-    /* ── Lights ──────────────────────────────────── */
-    // Low ambient — keeps shadows from going pure black
-    scene.add(new THREE.AmbientLight(0x120a00, 2.2));
+    /* ── Lights ──────────────────────────────────────── */
+    scene.add(new THREE.AmbientLight(0x150b00, 2.5));
 
-    // Gold key light — above-right
-    const keyLight = new THREE.PointLight(0xD4A017, 180, 22);
-    keyLight.position.set(4, 7, 4);
+    const keyLight = new THREE.PointLight(0xD4A017, 200, 25);
+    keyLight.position.set(4, 8, 4);
     keyLight.castShadow = true;
     keyLight.shadow.mapSize.set(1024, 1024);
     scene.add(keyLight);
 
-    // Warm orange fill — left side, matches ember palette
-    const fillLight = new THREE.PointLight(0xFF8C00, 35, 20);
+    const fillLight = new THREE.PointLight(0xFF8C00, 40, 22);
     fillLight.position.set(-5, 1, 3);
     scene.add(fillLight);
 
-    // Gold rim from behind-right — edge separation
-    const rimLight = new THREE.DirectionalLight(0xD4A017, 0.55);
-    rimLight.position.set(2, -1, -5);
-    scene.add(rimLight);
+    // Inside-model light — becomes dominant when camera is inside
+    const innerLight = new THREE.PointLight(0xD4A017, 0, 8);
+    innerLight.position.set(0, 0, 0);
+    scene.add(innerLight);
 
-    /* ── Gold material (shared, cloned per mesh) ─── */
+    scene.add(Object.assign(new THREE.DirectionalLight(0xD4A017, 0.6), {
+      position: new THREE.Vector3(2, -1, -5),
+    }));
+
+    /* ── Material bases ──────────────────────────────── */
     const goldBase = new THREE.MeshStandardMaterial({
-      color:          new THREE.Color('#D4A017'),
-      metalness:      0.88,
-      roughness:      0.22,
-      envMapIntensity: 1.3,
-      transparent:    true,
-      opacity:        1,
-      polygonOffset:  true,
+      color:               new THREE.Color('#D4A017'),
+      metalness:           0.88,
+      roughness:           0.22,
+      envMapIntensity:     1.4,
+      transparent:         true,
+      opacity:             1,
+      polygonOffset:       true,
       polygonOffsetFactor: 1,
       polygonOffsetUnits:  1,
     });
 
-    /* ── Wire material (shared, cloned per edge set) */
     const wireBase = new THREE.LineBasicMaterial({
-      color:       0xD4A017,
+      color:      0xD4A017,
       transparent: true,
       opacity:     0,
       blending:    THREE.AdditiveBlending,
       depthWrite:  false,
     });
 
-    /* ── Mouse state ─────────────────────────────── */
+    /* ── Mouse ───────────────────────────────────────── */
     const mouse = { x: 0, y: 0 };
     const onMouse = (e: MouseEvent) => {
       mouse.x = e.clientX / window.innerWidth  - 0.5;
@@ -125,7 +129,7 @@ export default function SprinklerModel() {
     };
     window.addEventListener('mousemove', onMouse, { passive: true });
 
-    /* ── Resize ──────────────────────────────────── */
+    /* ── Resize ──────────────────────────────────────── */
     const onResize = () => {
       const w = mount.clientWidth;
       const h = mount.clientHeight;
@@ -135,140 +139,170 @@ export default function SprinklerModel() {
     };
     window.addEventListener('resize', onResize, { passive: true });
 
-    /* ── State arrays filled after load ─────────── */
-    let solidMeshes: SolidMesh[] = [];
-    let wirePairs:   WirePair[]  = [];
-    let modelGroup:  THREE.Group | null = null;
+    /* ── Scroll progress (GSAP ScrollTrigger) ───────── */
+    const progress = { value: 0 };
 
-    /* ── RAF state ───────────────────────────────── */
+    const st = ScrollTrigger.create({
+      trigger:      '#hero',
+      start:        'top top',
+      end:          '+=220%',     // pin for 2.2 × viewport of scroll
+      pin:          true,
+      scrub:        1.0,
+      anticipatePin: 1,
+      onUpdate: (self) => {
+        progress.value = self.progress;
+
+        // Fade + slide hero copy out over first 28% of scroll
+        const copyEl = document.getElementById('hero-copy');
+        if (copyEl) {
+          const t = invLerp(0, 0.28, self.progress);
+          copyEl.style.opacity   = String(lerp(1, 0, t));
+          copyEl.style.transform = `translateX(${lerp(0, -50, t)}px)`;
+        }
+      },
+    });
+
+    /* ── Model state ─────────────────────────────────── */
+    interface SolidEntry { mat: THREE.MeshStandardMaterial }
+    interface WireEntry  { mat: THREE.LineBasicMaterial    }
+
+    let solidEntries: SolidEntry[] = [];
+    let wireEntries:  WireEntry[]  = [];
+    let modelGroup: THREE.Group | null = null;
+    let baseRotY = 0;
+
+    /* ── Load GLB ────────────────────────────────────── */
+    new GLTFLoader().load('/red_sprinkler_pump.glb', (gltf) => {
+      const root = gltf.scene;
+
+      /* Centre + scale */
+      const box    = new THREE.Box3().setFromObject(root);
+      const centre = box.getCenter(new THREE.Vector3());
+      const size   = box.getSize(new THREE.Vector3());
+      const scale  = 3.0 / Math.max(size.x, size.y, size.z);
+
+      root.scale.setScalar(scale);
+      root.position.sub(centre.multiplyScalar(scale));
+
+      /* Re-measure after scale */
+      const sBox          = new THREE.Box3().setFromObject(root);
+      const baseThreshold = sBox.min.y + (sBox.max.y - sBox.min.y) * 0.07;
+
+      /* Apply materials */
+      root.traverse((child) => {
+        if (!(child as THREE.Mesh).isMesh) return;
+        const mesh = child as THREE.Mesh;
+        mesh.castShadow    = true;
+        mesh.receiveShadow = true;
+
+        // Hide base platform
+        const mb = new THREE.Box3().setFromObject(mesh);
+        if (mb.max.y < baseThreshold) { mesh.visible = false; return; }
+
+        // Gold solid
+        const solidMat = goldBase.clone() as THREE.MeshStandardMaterial;
+        mesh.material = solidMat;
+        solidEntries.push({ mat: solidMat });
+
+        // Wire edges as child (inherits mesh transforms)
+        const edges   = new THREE.EdgesGeometry(mesh.geometry, 12);
+        const wireMat = wireBase.clone() as THREE.LineBasicMaterial;
+        const lines   = new THREE.LineSegments(edges, wireMat);
+        lines.renderOrder = 1;
+        mesh.add(lines);
+        wireEntries.push({ mat: wireMat });
+      });
+
+      modelGroup = new THREE.Group();
+      modelGroup.add(root);
+      scene.add(modelGroup);
+    });
+
+    /* ── RAF loop (30fps cap) ────────────────────────── */
     const FRAME_MS = 1000 / 30;
     let lastFrame  = 0;
     let rafId      = 0;
-    let rotY       = 0;
     let lerpRX     = 0;
     let lerpRY     = 0;
 
-    /* ── Load GLB ────────────────────────────────── */
-    new GLTFLoader().load(
-      '/red_sprinkler_pump.glb',
+    const LOOK_AT = new THREE.Vector3(0, 0.2, 0);
 
-      (gltf) => {
-        const root = gltf.scene;
+    // Camera path
+    const CAM_START = new THREE.Vector3(0, 0.5,  5.8);
+    const CAM_END   = new THREE.Vector3(0, 0.0, -2.2);
 
-        /* Centre + uniform scale */
-        const box    = new THREE.Box3().setFromObject(root);
-        const centre = box.getCenter(new THREE.Vector3());
-        const size   = box.getSize(new THREE.Vector3());
-        const maxDim = Math.max(size.x, size.y, size.z);
-        const scale  = 2.8 / maxDim;
+    const loop = (ts: number) => {
+      rafId = requestAnimationFrame(loop);
+      if (ts - lastFrame < FRAME_MS) return;
+      lastFrame = ts;
 
-        root.scale.setScalar(scale);
-        root.position.sub(centre.multiplyScalar(scale));
+      const p = progress.value;
 
-        /* Re-compute bounds after scale for base detection */
-        const scaledBox = new THREE.Box3().setFromObject(root);
-        const baseThreshold = scaledBox.min.y + (scaledBox.max.y - scaledBox.min.y) * 0.07;
+      /* ── Camera zoom path ──────────────────────────── */
+      camera.position.lerpVectors(CAM_START, CAM_END, p);
+      camera.lookAt(LOOK_AT);
 
-        /* Apply gold material + build wire children */
-        root.traverse((child) => {
-          if (!(child as THREE.Mesh).isMesh) return;
-          const mesh = child as THREE.Mesh;
-          mesh.castShadow    = true;
-          mesh.receiveShadow = true;
+      /* ── Dissolve material logic ────────────────────
+         0.00–0.18  approaching  solid=1   wire=0
+         0.18–0.55  entering     solid 1→0 wire 0→1
+         0.55–0.82  inside       solid=0   wire=1
+         0.82–1.00  exiting      solid=0   wire 1→0
+      */
+      const solidOpacity =
+        p < 0.18 ? 1 :
+        p < 0.55 ? lerp(1, 0, invLerp(0.18, 0.55, p)) :
+        0;
 
-          /* Hide base platform meshes */
-          const meshBox = new THREE.Box3().setFromObject(mesh);
-          if (meshBox.max.y < baseThreshold) {
-            mesh.visible = false;
-            return;
-          }
+      const wireOpacity =
+        p < 0.18 ? 0 :
+        p < 0.55 ? lerp(0, 1, invLerp(0.18, 0.55, p)) :
+        p < 0.82 ? 1 :
+                   lerp(1, 0, invLerp(0.82, 1.00, p));
 
-          /* Gold solid material */
-          const solidMat = goldBase.clone() as THREE.MeshStandardMaterial;
-          mesh.material = solidMat;
-          solidMeshes.push({ mesh, mat: solidMat });
+      solidEntries.forEach(({ mat }) => {
+        mat.opacity = Math.max(0, solidOpacity);
+        mat.visible = solidOpacity > 0.005;
+      });
+      wireEntries.forEach(({ mat }) => {
+        mat.opacity = Math.max(0, wireOpacity * 0.90);
+      });
 
-          /* Gold wire — EdgesGeometry child (inherits mesh transforms) */
-          const edges   = new THREE.EdgesGeometry(mesh.geometry, 12);
-          const wireMat = wireBase.clone() as THREE.LineBasicMaterial;
-          const lines   = new THREE.LineSegments(edges, wireMat);
-          lines.renderOrder = 1;
-          mesh.add(lines);
-          wirePairs.push({ mat: wireMat });
-        });
+      // Inner glow brightens as camera moves inside
+      const inside = clamp01(invLerp(0.40, 0.65, p)) * (1 - clamp01(invLerp(0.80, 1.0, p)));
+      innerLight.intensity = inside * 80;
 
-        modelGroup = new THREE.Group();
-        modelGroup.add(root);
-        scene.add(modelGroup);
+      /* ── Model rotation ─────────────────────────────
+         Slow rotation at rest, stops as zoom begins
+      */
+      if (modelGroup) {
+        baseRotY += 0.004 * (1 - clamp01(p * 4)); // decelerates in first 25%
 
-        setLoading(false);
+        // Mouse parallax fades out as zoom takes over
+        const mouseFactor = 1 - clamp01(p * 5);
+        lerpRX += (mouse.y * -0.20 * mouseFactor - lerpRX) * 0.05;
+        lerpRY += (mouse.x *  0.18 * mouseFactor - lerpRY) * 0.05;
 
-        /* ── RAF loop ──────────────────────────── */
-        const loop = (ts: number) => {
-          rafId = requestAnimationFrame(loop);
-          if (ts - lastFrame < FRAME_MS) return;
-          lastFrame = ts;
+        modelGroup.rotation.y = baseRotY + lerpRY;
+        modelGroup.rotation.x = lerpRX;
+      }
 
-          /* ── Scroll progress ─────────────────── */
-          // Hero is min-h-screen; progress 0→1 as hero scrolls out
-          const rawProgress = Math.min(1, Math.max(0, window.scrollY / (window.innerHeight * 0.9)));
+      /* ── Key light follows mouse ─────────────────── */
+      keyLight.position.x = 4 + mouse.x * 2;
+      keyLight.position.y = 8 + mouse.y * -1.5;
 
-          /* Dissolve curve:
-             0    → 0.55 : solid 1→0, wire 0→1
-             0.55 → 1    : wire  1→0
-          */
-          const solidOpacity = rawProgress < 0.55
-            ? 1 - rawProgress / 0.55
-            : 0;
-          const wireOpacity  = rawProgress < 0.55
-            ? rawProgress / 0.55
-            : 1 - (rawProgress - 0.55) / 0.45;
+      renderer.render(scene, camera);
+    };
+    rafId = requestAnimationFrame(loop);
 
-          solidMeshes.forEach(({ mat }) => {
-            mat.opacity  = Math.max(0, solidOpacity);
-            mat.visible  = solidOpacity > 0.01;
-          });
-          wirePairs.forEach(({ mat }) => {
-            mat.opacity = Math.max(0, wireOpacity * 0.92);
-          });
-
-          /* ── Rotation + tilt ─────────────────── */
-          rotY += 0.005;
-
-          lerpRX += (mouse.y * -0.28 - lerpRX) * 0.055;
-          lerpRY += (mouse.x *  0.22 - lerpRY) * 0.055;
-
-          if (modelGroup) {
-            modelGroup.rotation.y = rotY + lerpRY;
-            modelGroup.rotation.x = lerpRX;
-
-            // Subtle upward drift as model dissolves
-            modelGroup.position.y = rawProgress * 0.35;
-          }
-
-          /* ── Key light follows mouse gently ──── */
-          keyLight.position.x = 4 + mouse.x * 2;
-          keyLight.position.y = 7 + mouse.y * -1.5;
-
-          renderer.render(scene, camera);
-        };
-        rafId = requestAnimationFrame(loop);
-      },
-
-      undefined,
-
-      (err) => {
-        console.error('GLTFLoader:', err);
-        setLoadErr(true);
-        setLoading(false);
-      },
-    );
-
-    /* ── Cleanup ─────────────────────────────────── */
+    /* ── Cleanup ─────────────────────────────────────── */
     return () => {
       cancelAnimationFrame(rafId);
       window.removeEventListener('mousemove', onMouse);
       window.removeEventListener('resize',    onResize);
+      st.kill();
+      // Restore copy opacity on cleanup
+      const copyEl = document.getElementById('hero-copy');
+      if (copyEl) { copyEl.style.opacity = '1'; copyEl.style.transform = ''; }
       goldBase.dispose();
       wireBase.dispose();
       envTex.dispose();
@@ -278,33 +312,10 @@ export default function SprinklerModel() {
   }, []);
 
   return (
-    <div className="relative w-full h-full">
-      <div ref={mountRef} className="w-full h-full" aria-hidden="true" />
-
-      {loading && !loadErr && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 pointer-events-none select-none">
-          <div
-            style={{
-              width: 44, height: 44,
-              borderRadius: '50%',
-              border: '1px solid rgba(212,160,23,0.15)',
-              borderTopColor: '#D4A017',
-              animation: 'modelSpin 1.1s linear infinite',
-            }}
-          />
-          <p className="eyebrow text-[#6B6B6B]">Loading</p>
-        </div>
-      )}
-
-      {loadErr && (
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <p className="eyebrow text-[#444]">Model unavailable</p>
-        </div>
-      )}
-
-      <style>{`
-        @keyframes modelSpin { to { transform: rotate(360deg); } }
-      `}</style>
-    </div>
+    <div
+      id="sprinkler-mount"
+      aria-hidden="true"
+      style={{ width: '100%', height: '100%' }}
+    />
   );
 }
