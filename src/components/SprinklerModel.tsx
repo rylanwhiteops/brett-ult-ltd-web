@@ -43,8 +43,9 @@ export default function SprinklerModel() {
     const mount = mountRef.current;
     if (!mount) return;
 
-    // Skip scroll-jack setup on mobile — desktop-only experience
+    // Desktop-only — bail out entirely on mobile to save GPU
     const isDesktop = window.innerWidth >= 768;
+    if (!isDesktop) return;
 
     // Dimension fallbacks: mount may have height:0 if parent uses min-height (not height)
     const getW = () => mount.clientWidth  || Math.round(window.innerWidth * 0.6);
@@ -56,7 +57,7 @@ export default function SprinklerModel() {
       alpha: true,
       powerPreference: 'high-performance',
     });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5)); // 1.5 vs 2 — big GPU saving
     renderer.setClearColor(0x000000, 0);
     renderer.toneMapping         = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.4;
@@ -92,7 +93,7 @@ export default function SprinklerModel() {
     const keyLight = new THREE.PointLight(0xD4A017, 200, 25);
     keyLight.position.set(4, 8, 4);
     keyLight.castShadow = true;
-    keyLight.shadow.mapSize.set(1024, 1024);
+    keyLight.shadow.mapSize.set(512, 512); // 512 sufficient — halves shadow texture cost
     scene.add(keyLight);
 
     const fillLight = new THREE.PointLight(0xFF8C00, 40, 22);
@@ -212,7 +213,7 @@ export default function SprinklerModel() {
         solidEntries.push({ mat: solidMat });
 
         // Wire edges as child (inherits mesh transforms)
-        const edges   = new THREE.EdgesGeometry(mesh.geometry, 12);
+        const edges   = new THREE.EdgesGeometry(mesh.geometry, 20); // higher threshold = fewer segments
         const wireMat = wireBase.clone() as THREE.LineBasicMaterial;
         const lines   = new THREE.LineSegments(edges, wireMat);
         lines.renderOrder = 1;
@@ -231,6 +232,7 @@ export default function SprinklerModel() {
     let rafId      = 0;
     let lerpRX     = 0;
     let lerpRY     = 0;
+    let lastP      = -1; // track previous progress to skip redundant material updates
 
     const LOOK_AT = new THREE.Vector3(0, 0.2, 0);
 
@@ -255,28 +257,33 @@ export default function SprinklerModel() {
          0.55–0.82  inside       solid=0   wire=1
          0.82–1.00  exiting      solid=0   wire 1→0
       */
-      const solidOpacity =
-        p < 0.18 ? 1 :
-        p < 0.55 ? lerp(1, 0, invLerp(0.18, 0.55, p)) :
-        0;
+      // Only update materials when progress moves enough to matter
+      if (Math.abs(p - lastP) > 0.003) {
+        lastP = p;
 
-      const wireOpacity =
-        p < 0.18 ? 0 :
-        p < 0.55 ? lerp(0, 1, invLerp(0.18, 0.55, p)) :
-        p < 0.82 ? 1 :
-                   lerp(1, 0, invLerp(0.82, 1.00, p));
+        const solidOpacity =
+          p < 0.18 ? 1 :
+          p < 0.55 ? lerp(1, 0, invLerp(0.18, 0.55, p)) :
+          0;
 
-      solidEntries.forEach(({ mat }) => {
-        mat.opacity = Math.max(0, solidOpacity);
-        mat.visible = solidOpacity > 0.005;
-      });
-      wireEntries.forEach(({ mat }) => {
-        mat.opacity = Math.max(0, wireOpacity * 0.90);
-      });
+        const wireOpacity =
+          p < 0.18 ? 0 :
+          p < 0.55 ? lerp(0, 1, invLerp(0.18, 0.55, p)) :
+          p < 0.82 ? 1 :
+                     lerp(1, 0, invLerp(0.82, 1.00, p));
 
-      // Inner glow brightens as camera moves inside
-      const inside = clamp01(invLerp(0.40, 0.65, p)) * (1 - clamp01(invLerp(0.80, 1.0, p)));
-      innerLight.intensity = inside * 80;
+        solidEntries.forEach(({ mat }) => {
+          mat.opacity = Math.max(0, solidOpacity);
+          mat.visible = solidOpacity > 0.005;
+        });
+        wireEntries.forEach(({ mat }) => {
+          mat.opacity = Math.max(0, wireOpacity * 0.90);
+        });
+
+        // Inner glow brightens as camera moves inside
+        const inside = clamp01(invLerp(0.40, 0.65, p)) * (1 - clamp01(invLerp(0.80, 1.0, p)));
+        innerLight.intensity = inside * 80;
+      }
 
       /* ── Model rotation ─────────────────────────────
          Slow rotation at rest, stops as zoom begins
