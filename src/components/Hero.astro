@@ -45,8 +45,8 @@ import SprinklerModel from './SprinklerModel.tsx';
     aria-hidden="true"
   ></div>
 
-  <!-- ── Desktop: copy overlay ─────────────────────────── -->
-  <div class="hidden md:flex absolute inset-0 z-[3] items-center pointer-events-none">
+  <!-- ── Desktop: copy (in-flow so section has definite height) ── -->
+  <div class="hidden md:flex relative z-[3] items-center min-h-screen w-full pointer-events-none">
 
     <!-- Left copy — id="hero-copy" so GSAP can fade it -->
     <div
