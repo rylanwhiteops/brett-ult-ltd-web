@@ -1,12 +1,14 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 
 const WORDS = ['Uncompromised', 'Protection.'];
 
 export default function HeroHeadline() {
+  const reducedMotion = useReducedMotion();
+
   return (
-    <h1 className="font-black uppercase leading-[0.92] tracking-[-0.04em] text-5xl md:text-7xl lg:text-8xl mb-8 text-center">
+    <h1 className="font-black uppercase leading-[0.9] tracking-[-0.04em] text-[3.6rem] md:text-[5.4rem] lg:text-[7.2rem] mb-8">
       {WORDS.map((word, wi) => (
         <span key={wi} className="block overflow-hidden">
           <motion.span
@@ -17,15 +19,19 @@ export default function HeroHeadline() {
               WebkitBackgroundClip: 'text',
               backgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
-              animation: 'shimmer 5s linear infinite',
+              animation: reducedMotion ? 'none' : 'shimmer 5s linear infinite',
             }}
-            initial={{ y: '110%', opacity: 0 }}
+            initial={reducedMotion ? false : { y: '115%', opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{
-              duration: 1.2,
-              delay: 0.7 + wi * 0.35,
-              ease: [0.16, 1, 0.3, 1],
-            }}
+            transition={
+              reducedMotion
+                ? { duration: 0 }
+                : {
+                    duration: 1.4,
+                    delay: 0.5 + wi * 0.55,
+                    ease: [0.16, 1, 0.3, 1],
+                  }
+            }
           >
             {word}
           </motion.span>

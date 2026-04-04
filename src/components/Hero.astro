@@ -1,54 +1,76 @@
 ---
 import EmberAnimation from './EmberAnimation.tsx';
 import HeroHeadline from './HeroHeadline.tsx';
+import HeroShield from './HeroShield.tsx';
 ---
 
 <section id="hero" class="relative min-h-screen overflow-hidden">
 
-  <!-- Full-viewport ember animation (z-index 0, behind everything) -->
+  <!-- Full-viewport ember animation (fixed, z:0) -->
   <EmberAnimation client:load />
 
-  <!-- Vignette overlay so text stays readable -->
+  <!-- Bottom vignette — keeps embers dramatic but text clear -->
   <div class="absolute inset-0 z-[1] pointer-events-none"
-    style="background: radial-gradient(ellipse 80% 60% at 50% 100%, transparent 0%, rgba(8,8,8,0.55) 60%, rgba(8,8,8,0.85) 100%);">
+    style="background: linear-gradient(to top, rgba(8,8,8,0.75) 0%, transparent 40%);">
   </div>
 
-  <!-- Hero copy — centered, layered on top -->
-  <div class="relative z-[2] flex flex-col items-center justify-center min-h-screen text-center px-8 md:px-16 pt-20 pb-12">
+  <!-- Hero layout: copy left + shield right on desktop -->
+  <div class="relative z-[2] flex items-center min-h-screen max-w-[1500px] mx-auto w-full px-8 md:px-16 lg:px-24 pt-20 pb-12">
 
-    <!-- Eyebrow -->
-    <div class="flex items-center gap-4 mb-8">
-      <span class="block w-8 h-px bg-[#D4AF37]/50"></span>
-      <p class="eyebrow text-[#A08928]">Hamilton, Ontario · Est. 2003</p>
-      <span class="block w-8 h-px bg-[#D4AF37]/50"></span>
+    <!-- ── Left: Copy ── -->
+    <div class="flex flex-col justify-center flex-1 min-w-0 py-8">
+
+      <!-- Eyebrow -->
+      <div class="flex items-center gap-4 mb-8">
+        <span class="block w-8 h-px bg-[#D4AF37]/50"></span>
+        <p class="eyebrow text-[#A08928]">Hamilton, Ontario · Est. 2003</p>
+      </div>
+
+      <!-- Radial glow behind headline -->
+      <div class="relative">
+        <div
+          class="absolute pointer-events-none"
+          style="
+            inset: -30% -20%;
+            background: radial-gradient(ellipse 65% 55% at 40% 50%, rgba(212,175,55,0.07) 0%, rgba(212,160,23,0.03) 40%, transparent 70%);
+            z-index: 0;
+          "
+          aria-hidden="true"
+        ></div>
+        <div class="relative z-[1]">
+          <HeroHeadline client:load />
+        </div>
+      </div>
+
+      <!-- Sub-headline -->
+      <p class="text-[#F5F0E8]/60 text-base md:text-lg max-w-md leading-relaxed mb-10 font-sans">
+        Hamilton's elite fire suppression for industrial &amp;<br />
+        commercial infrastructure.
+      </p>
+
+      <!-- CTA -->
+      <div class="flex flex-wrap gap-4 mb-14">
+        <a href="/contact"
+          class="inline-flex items-center gap-3 px-10 py-4 text-sm font-bold tracking-[0.2em] uppercase text-[#080808] bg-[#D4AF37] hover:bg-[#f7e98e] transition-colors duration-300">
+          Request Consultation
+        </a>
+        <a href="/projects"
+          class="inline-flex items-center gap-3 px-10 py-4 text-sm font-bold tracking-[0.2em] uppercase text-[#D4AF37] border border-[#D4AF37]/30 hover:border-[#D4AF37] transition-colors duration-300">
+          View Our Work
+        </a>
+      </div>
+
+      <!-- Credential strip -->
+      <div class="flex flex-wrap gap-x-8 gap-y-3">
+        {['NFPA 13', 'TSSA Licensed', 'ULC Listed', '500+ Installations', '24/7 Response'].map(tag => (
+          <span class="eyebrow text-[#6B6B6B]">{tag}</span>
+        ))}
+      </div>
     </div>
 
-    <!-- Headline -->
-    <HeroHeadline client:load />
-
-    <!-- Sub-headline -->
-    <p class="text-[#F5F0E8]/60 text-base md:text-lg max-w-lg leading-relaxed mb-10 font-sans">
-      Hamilton's elite fire suppression for industrial &amp;<br />
-      commercial infrastructure.
-    </p>
-
-    <!-- CTA -->
-    <div class="flex flex-wrap justify-center gap-4 mb-14">
-      <a href="/contact"
-        class="inline-flex items-center gap-3 px-10 py-4 text-sm font-bold tracking-[0.2em] uppercase text-[#080808] bg-[#D4AF37] hover:bg-[#f7e98e] transition-colors duration-300">
-        Request Consultation
-      </a>
-      <a href="/projects"
-        class="inline-flex items-center gap-3 px-10 py-4 text-sm font-bold tracking-[0.2em] uppercase text-[#D4AF37] border border-[#D4AF37]/30 hover:border-[#D4AF37] transition-colors duration-300">
-        View Our Work
-      </a>
-    </div>
-
-    <!-- Credential strip -->
-    <div class="flex flex-wrap justify-center gap-x-8 gap-y-3">
-      {['NFPA 13', 'TSSA Licensed', 'ULC Listed', '500+ Installations', '24/7 Response'].map(tag => (
-        <span class="eyebrow text-[#6B6B6B]">{tag}</span>
-      ))}
+    <!-- ── Right: 3D Wireframe Shield (desktop only) ── -->
+    <div class="hidden md:block flex-shrink-0 w-[420px] lg:w-[520px] xl:w-[580px]" style="height: 600px;">
+      <HeroShield client:load />
     </div>
 
   </div>
