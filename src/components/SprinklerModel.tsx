@@ -3,24 +3,13 @@
 /**
  * SprinklerModel — Scroll-jacked 3D sprinkler pump
  *
- * PIN:  GSAP ScrollTrigger pins #hero for 220vh of scroll
- * ZOOM: Camera moves from z=5.8 → z=3.8 (stays outside model, ~70% screen max)
- *
- * POSITION TIMELINE:
- *   At rest  — camera looks left (-1.9x) → model sits in far-right ~40% of screen
- *   On scroll — lookAt lerps to (0,0.2,0) → model sweeps center, zooms to 70%
- *
- * DISSOLVE TIMELINE (scroll progress 0 → 1):
- *   0.00 – 0.25  approaching    solid=1.0  wire=0.0
- *   0.25 – 0.62  X-ray reveal   solid 1→0  wire 0→1
- *   0.62 – 0.88  wireframe      solid=0.0  wire=1.0
- *   0.88 – 1.00  fade out       solid=0.0  wire 1→0
- *
- * Materials:
- *   Solid — dark gunmetal #2a2a2a, metalness 0.8, roughness 0.6
- *   Wire  — gold #D4A017 edge highlights, additive blend
- *
- * Desktop-only — bails immediately on mobile (saves GPU + 31MB GLB)
+ * - Full GLB loaded, all meshes under one parent group (never separate)
+ * - Steel gray (#8a8a8a) material, gold lighting, clearly visible
+ * - Camera starts far-right (offset lookAt), zooms to center on scroll
+ * - Zoom limit: ends at z=4.8 (20% closer from z=6.2 start)
+ * - Base platform removed via Y-threshold on visible bounding box
+ * - autoClear + clear() each frame — no ghost artifacts
+ * - Desktop only — hard bail on mobile
  */
 
 import { useEffect, useRef } from 'react';
@@ -32,10 +21,9 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-/* ── helpers ────────────────────────────────────────── */
-const lerp     = (a: number, b: number, t: number) => a + (b - a) * t;
-const clamp01  = (x: number) => Math.max(0, Math.min(1, x));
-const invLerp  = (a: number, b: number, v: number) => clamp01((v - a) / (b - a));
+const lerp    = (a: number, b: number, t: number) => a + (b - a) * t;
+const clamp01 = (x: number) => Math.max(0, Math.min(1, x));
+const invLerp = (a: number, b: number, v: number) => clamp01((v - a) / (b - a));
 
 export default function SprinklerModel() {
   const mountRef = useRef<HTMLDivElement>(null);
@@ -44,27 +32,29 @@ export default function SprinklerModel() {
     const mount = mountRef.current;
     if (!mount) return;
 
-    // Desktop-only — bail out entirely on mobile to save GPU + skip 31MB GLB
-    const isDesktop = window.innerWidth >= 768;
-    if (!isDesktop) return;
+    // Desktop only
+    if (window.innerWidth < 768) return;
 
-    // Dimension fallbacks: mount may have height:0 if parent uses min-height (not height)
     const getW = () => mount.clientWidth  || Math.round(window.innerWidth * 0.6);
     const getH = () => mount.clientHeight || window.innerHeight;
 
     /* ── Renderer ────────────────────────────────────── */
     const renderer = new THREE.WebGLRenderer({
-      antialias: true,
-      alpha:     true,
+      antialias:       true,
+      alpha:           true,
       powerPreference: 'high-performance',
     });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    renderer.autoClear           = true;
     renderer.setClearColor(0x000000, 0);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     renderer.toneMapping         = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.1;
+    renderer.toneMappingExposure = 1.3;
     renderer.shadowMap.enabled   = true;
     renderer.shadowMap.type      = THREE.PCFSoftShadowMap;
     renderer.setSize(getW(), getH());
+
+    // No inline background on the canvas — transparent
+    renderer.domElement.style.background = 'transparent';
     mount.appendChild(renderer.domElement);
 
     /* ── Scene ───────────────────────────────────────── */
@@ -75,46 +65,41 @@ export default function SprinklerModel() {
     pmrem.compileEquirectangularShader();
     const envTex = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
     scene.environment          = envTex;
-    scene.environmentIntensity = 0.45; // subtle — steel reads from direct lights
+    scene.environmentIntensity = 0.3;
     pmrem.dispose();
 
     /* ── Camera ──────────────────────────────────────── */
     const camera = new THREE.PerspectiveCamera(38, getW() / getH(), 0.01, 200);
-    camera.position.set(0, 0.4, 5.8);
-    camera.lookAt(-1.4, 0.0, 0); // looking left → model appears in right ~40% of screen
+    // z=6.2 start → z=4.8 end (20% closer max)
+    camera.position.set(0, 0.4, 6.2);
+    camera.lookAt(-1.4, 0.0, 0);
 
-    /* ── Lights — industrial steel palette ───────────── */
-    // Cool ambient — fills shadows without warmth
-    scene.add(new THREE.AmbientLight(0x0d0e12, 2.0));
+    /* ── Lights — gold glow on steel ─────────────────── */
+    scene.add(new THREE.AmbientLight(0x111111, 2.0));
 
-    // Key light — warm white from top-right, casts hard shadows on metal surfaces
-    const keyLight = new THREE.PointLight(0xf0ead8, 160, 28);
-    keyLight.position.set(5, 9, 4);
+    // Primary gold key light — top right
+    const keyLight = new THREE.PointLight(0xD4A017, 3.0, 30);
+    keyLight.position.set(5, 8, 5);
     keyLight.castShadow = true;
     keyLight.shadow.mapSize.set(512, 512);
     scene.add(keyLight);
 
-    // Cool rim light — blue-grey from back-left, defines edges on dark metal
-    const rimLight = new THREE.PointLight(0x3a5a8a, 60, 20);
-    rimLight.position.set(-6, 2, -3);
-    scene.add(rimLight);
-
-    // Gold accent — subtle warm fill from low front angle (gold edge catch)
-    const goldAccent = new THREE.DirectionalLight(0xD4A017, 0.35);
-    goldAccent.position.set(1, -2, 6);
-    scene.add(goldAccent);
-
-    // Fill from below — prevents total shadow on underside
-    const fillLight = new THREE.DirectionalLight(0x1a1c22, 0.8);
-    fillLight.position.set(0, -5, 2);
+    // Gold fill — front left
+    const fillLight = new THREE.PointLight(0xD4A017, 1.5, 25);
+    fillLight.position.set(-4, 2, 5);
     scene.add(fillLight);
 
-    /* ── Materials — gunmetal + gold wire ────────────── */
+    // White rim — from behind
+    const rimLight = new THREE.DirectionalLight(0xffffff, 1.0);
+    rimLight.position.set(0, 3, -6);
+    scene.add(rimLight);
+
+    /* ── Materials ───────────────────────────────────── */
     const steelBase = new THREE.MeshStandardMaterial({
-      color:               new THREE.Color('#2a2a2a'),
-      metalness:           0.80,
-      roughness:           0.60,
-      envMapIntensity:     0.55,
+      color:               new THREE.Color('#8a8a8a'),
+      metalness:           0.9,
+      roughness:           0.4,
+      envMapIntensity:     0.6,
       transparent:         true,
       opacity:             1,
       polygonOffset:       true,
@@ -140,15 +125,13 @@ export default function SprinklerModel() {
 
     /* ── Resize ──────────────────────────────────────── */
     const onResize = () => {
-      const w = getW();
-      const h = getH();
-      renderer.setSize(w, h);
-      camera.aspect = w / h;
+      renderer.setSize(getW(), getH());
+      camera.aspect = getW() / getH();
       camera.updateProjectionMatrix();
     };
     window.addEventListener('resize', onResize, { passive: true });
 
-    /* ── Scroll progress ─────────────────────────────── */
+    /* ── Scroll ──────────────────────────────────────── */
     const progress = { value: 0 };
 
     const st = ScrollTrigger.create({
@@ -159,67 +142,71 @@ export default function SprinklerModel() {
       scrub:   1.0,
       onUpdate: (self) => {
         progress.value = self.progress;
-
         const t = invLerp(0, 0.28, self.progress);
 
-        // Fade + slide hero copy out over first 28% of scroll
         const copyEl = document.getElementById('hero-copy');
         if (copyEl) {
           copyEl.style.opacity   = String(lerp(1, 0, t));
           copyEl.style.transform = `translateX(${lerp(0, -50, t)}px)`;
         }
-
-        // Fade gradient mask — reveals full-screen model as copy exits
         const maskEl = document.getElementById('model-mask');
-        if (maskEl) {
-          maskEl.style.opacity = String(lerp(1, 0, t));
-        }
+        if (maskEl) maskEl.style.opacity = String(lerp(1, 0, t));
       },
     });
 
-    /* ── Model state ─────────────────────────────────── */
+    /* ── Model ───────────────────────────────────────── */
     interface SolidEntry { mat: THREE.MeshStandardMaterial }
     interface WireEntry  { mat: THREE.LineBasicMaterial    }
 
     let solidEntries: SolidEntry[] = [];
     let wireEntries:  WireEntry[]  = [];
-    let modelGroup: THREE.Group | null = null;
+    // Single parent group — all meshes stay under this, nothing ever separates
+    const modelGroup = new THREE.Group();
+    scene.add(modelGroup);
+
     let baseRotY = 0;
 
-    /* ── Load GLB ────────────────────────────────────── */
     new GLTFLoader().load('/red_sprinkler_pump.glb', (gltf) => {
       const root = gltf.scene;
 
-      /* Centre + scale */
-      const box    = new THREE.Box3().setFromObject(root);
-      const centre = box.getCenter(new THREE.Vector3());
-      const size   = box.getSize(new THREE.Vector3());
-      const scale  = 3.0 / Math.max(size.x, size.y, size.z);
+      // Step 1: scale the full GLB to a normalized size
+      const fullBox  = new THREE.Box3().setFromObject(root);
+      const fullSize = fullBox.getSize(new THREE.Vector3());
+      const normScale = 3.0 / Math.max(fullSize.x, fullSize.y, fullSize.z);
+      root.scale.setScalar(normScale);
 
-      root.scale.setScalar(scale);
-      root.position.sub(centre.multiplyScalar(scale));
+      // Center the full model at origin first
+      const fullCentre = fullBox.getCenter(new THREE.Vector3());
+      root.position.sub(fullCentre.multiplyScalar(normScale));
 
-      /* Re-measure after scale */
-      const sBox = new THREE.Box3().setFromObject(root);
-      // Remove base platform — any mesh whose top is in the bottom 60%
-      const baseThreshold = sBox.min.y + (sBox.max.y - sBox.min.y) * 0.60;
+      // Step 2: determine base threshold on scaled geometry
+      // The base platform is a large flat disc — its centroid sits very low.
+      // Hide any mesh whose CENTER Y is in the bottom 35% of the model height.
+      const scaledBox  = new THREE.Box3().setFromObject(root);
+      const modelMinY  = scaledBox.min.y;
+      const modelMaxY  = scaledBox.max.y;
+      const modelH     = modelMaxY - modelMinY;
+      // Threshold: hide mesh if its centroid is below this Y value
+      const centroidThreshold = modelMinY + modelH * 0.35;
 
-      /* Apply materials + base removal */
+      // Step 3: apply materials to ALL meshes, hide base platform pieces
       root.traverse((child) => {
         if (!(child as THREE.Mesh).isMesh) return;
         const mesh = child as THREE.Mesh;
         mesh.castShadow    = true;
         mesh.receiveShadow = true;
 
-        const mb = new THREE.Box3().setFromObject(mesh);
-        if (mb.max.y < baseThreshold) { mesh.visible = false; return; }
+        const mb        = new THREE.Box3().setFromObject(mesh);
+        const centroidY = (mb.min.y + mb.max.y) / 2;
+        if (centroidY < centroidThreshold) {
+          mesh.visible = false;
+          return;
+        }
 
-        // Dark gunmetal solid
         const solidMat = steelBase.clone() as THREE.MeshStandardMaterial;
-        mesh.material = solidMat;
+        mesh.material  = solidMat;
         solidEntries.push({ mat: solidMat });
 
-        // Gold wire edges
         const edges   = new THREE.EdgesGeometry(mesh.geometry, 20);
         const wireMat = wireBase.clone() as THREE.LineBasicMaterial;
         const lines   = new THREE.LineSegments(edges, wireMat);
@@ -228,27 +215,25 @@ export default function SprinklerModel() {
         wireEntries.push({ mat: wireMat });
       });
 
-      // Re-center + rescale based on VISIBLE geometry only
-      // (base removal shifts the centroid and shrinks the visible portion)
+      // Step 4: re-center on VISIBLE geometry so there's no float / empty space
       const visBox = new THREE.Box3();
       root.traverse(child => {
         if ((child as THREE.Mesh).isMesh && child.visible) {
           visBox.expandByObject(child);
         }
       });
-      const visCenter = visBox.getCenter(new THREE.Vector3());
-      root.position.y -= visCenter.y; // pull visible center to y=0
+      if (!visBox.isEmpty()) {
+        const visCenter = visBox.getCenter(new THREE.Vector3());
+        root.position.y -= visCenter.y;
+      }
 
-      // Rescale so the visible portion fills the target world size
-      const visSize   = visBox.getSize(new THREE.Vector3());
-      const visMaxDim = Math.max(visSize.x, visSize.y, visSize.z);
-      const TARGET    = 3.2; // world-unit size for the visible part
-      const groupScale = visMaxDim > 0.001 ? TARGET / visMaxDim : 1;
-
-      modelGroup = new THREE.Group();
+      // Step 5: add root to single parent group — 30% larger than previous target
+      // Previous effective world size was ~3.0; 30% bigger = 3.9
+      const visSize   = (() => { const b = new THREE.Box3(); root.traverse(c => { if ((c as THREE.Mesh).isMesh && c.visible) b.expandByObject(c); }); return b.getSize(new THREE.Vector3()); })();
+      const visDim    = Math.max(visSize.x, visSize.y, visSize.z);
+      const TARGET    = 3.9;
+      modelGroup.scale.setScalar(visDim > 0.001 ? TARGET / visDim : 1);
       modelGroup.add(root);
-      modelGroup.scale.setScalar(groupScale);
-      scene.add(modelGroup);
     });
 
     /* ── RAF loop (30fps cap) ────────────────────────── */
@@ -259,13 +244,8 @@ export default function SprinklerModel() {
     let lerpRY     = 0;
     let lastP      = -1;
 
-    // Camera path: z stays outside model (max 70% screen fill)
-    // Scroll zoom limit: camera never gets closer than 40% of starting z (5.8 * 0.4 = 2.32)
-    // CAM_END at z=3.8 satisfies both constraints
-    const CAM_START  = new THREE.Vector3(0, 0.5,  5.8);
-    const CAM_END    = new THREE.Vector3(0, 0.3,  3.8);
-
-    // LookAt lerps from left (model appears right ~40% of screen) to center
+    const CAM_START  = new THREE.Vector3(0, 0.4, 6.2);
+    const CAM_END    = new THREE.Vector3(0, 0.3, 4.8); // 20% closer max
     const LOOK_START = new THREE.Vector3(-1.4, 0.0, 0);
     const LOOK_END   = new THREE.Vector3( 0,   0.0, 0);
     const LOOK_NOW   = new THREE.Vector3();
@@ -275,31 +255,33 @@ export default function SprinklerModel() {
       if (ts - lastFrame < FRAME_MS) return;
       lastFrame = ts;
 
+      // Explicit clear each frame — prevents ghost/artifact lines
+      renderer.clear();
+
       const p = progress.value;
 
-      /* ── Camera: zoom path + lookAt sweep ─────────── */
+      /* Camera */
       camera.position.lerpVectors(CAM_START, CAM_END, p);
-      // lookAt completes by 60% of scroll — model is centered before full wireframe
-      LOOK_NOW.lerpVectors(LOOK_START, LOOK_END, clamp01(p / 0.60));
+      LOOK_NOW.lerpVectors(LOOK_START, LOOK_END, clamp01(p / 0.55));
       camera.lookAt(LOOK_NOW);
 
-      /* ── Dissolve logic ─────────────────────────────
-         0.00–0.25  approaching   solid=1  wire=0
-         0.25–0.62  X-ray reveal  solid→0  wire→1
-         0.62–0.88  wireframe     solid=0  wire=1
-         0.88–1.00  fade out      solid=0  wire→0
+      /* Dissolve
+         0.00–0.28  solid=1  wire=0
+         0.28–0.65  solid→0  wire→1
+         0.65–0.88  solid=0  wire=1
+         0.88–1.00  solid=0  wire→0
       */
-      if (Math.abs(p - lastP) > 0.003) {
+      if (Math.abs(p - lastP) > 0.002) {
         lastP = p;
 
         const solidOpacity =
-          p < 0.25 ? 1 :
-          p < 0.62 ? lerp(1, 0, invLerp(0.25, 0.62, p)) :
+          p < 0.28 ? 1 :
+          p < 0.65 ? lerp(1, 0, invLerp(0.28, 0.65, p)) :
           0;
 
         const wireOpacity =
-          p < 0.25 ? 0 :
-          p < 0.62 ? lerp(0, 1, invLerp(0.25, 0.62, p)) :
+          p < 0.28 ? 0 :
+          p < 0.65 ? lerp(0, 1, invLerp(0.28, 0.65, p)) :
           p < 0.88 ? 1 :
                      lerp(1, 0, invLerp(0.88, 1.00, p));
 
@@ -312,23 +294,17 @@ export default function SprinklerModel() {
         });
       }
 
-      /* ── Model rotation ─────────────────────────────
-         Slow spin at rest, stops as zoom begins
-      */
-      if (modelGroup) {
-        baseRotY += 0.004 * (1 - clamp01(p * 4));
+      /* Rotation — single group only */
+      baseRotY += 0.004 * (1 - clamp01(p * 4));
+      const mf = 1 - clamp01(p * 5);
+      lerpRX += (mouse.y * -0.18 * mf - lerpRX) * 0.05;
+      lerpRY += (mouse.x *  0.16 * mf - lerpRY) * 0.05;
+      modelGroup.rotation.y = baseRotY + lerpRY;
+      modelGroup.rotation.x = lerpRX;
 
-        const mouseFactor = 1 - clamp01(p * 5);
-        lerpRX += (mouse.y * -0.18 * mouseFactor - lerpRX) * 0.05;
-        lerpRY += (mouse.x *  0.16 * mouseFactor - lerpRY) * 0.05;
-
-        modelGroup.rotation.y = baseRotY + lerpRY;
-        modelGroup.rotation.x = lerpRX;
-      }
-
-      /* ── Key light follows mouse ─────────────────── */
+      /* Key light tracks mouse */
       keyLight.position.x = 5 + mouse.x * 2;
-      keyLight.position.y = 9 + mouse.y * -1.5;
+      keyLight.position.y = 8 + mouse.y * -1.5;
 
       renderer.render(scene, camera);
     };
@@ -343,7 +319,7 @@ export default function SprinklerModel() {
       const copyEl = document.getElementById('hero-copy');
       if (copyEl) { copyEl.style.opacity = '1'; copyEl.style.transform = ''; }
       const maskEl = document.getElementById('model-mask');
-      if (maskEl) { maskEl.style.opacity = '1'; }
+      if (maskEl) maskEl.style.opacity = '1';
       steelBase.dispose();
       wireBase.dispose();
       envTex.dispose();
