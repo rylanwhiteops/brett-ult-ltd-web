@@ -83,8 +83,9 @@ export default function SprinklerModel() {
       getW() / getH(),
       0.01, 200,
     );
-    // Start position (outside model)
-    camera.position.set(0, 0.5, 5.8);
+    // Start offset-right so model reads as right-column at rest,
+    // then sweeps to center as scroll progresses
+    camera.position.set(1.8, 0.5, 5.8);
     camera.lookAt(0, 0.2, 0);
 
     /* ── Lights ──────────────────────────────────────── */
@@ -148,10 +149,6 @@ export default function SprinklerModel() {
     };
     window.addEventListener('resize', onResize, { passive: true });
 
-    // ResizeObserver keeps renderer in sync as container expands during scroll
-    const ro = new ResizeObserver(onResize);
-    ro.observe(mount);
-
     /* ── Scroll progress (GSAP ScrollTrigger — desktop only) ── */
     const progress = { value: 0 };
 
@@ -173,14 +170,10 @@ export default function SprinklerModel() {
           copyEl.style.transform = `translateX(${lerp(0, -50, t)}px)`;
         }
 
-        // Expand model container from right-60% → full screen as copy exits
-        const modelEl = document.getElementById('model-container');
-        if (modelEl) {
-          const pct = lerp(60, 100, t);
-          const left = lerp(40, 0, t);
-          modelEl.style.width = `${pct}%`;
-          modelEl.style.left  = `${left}%`;
-          modelEl.style.right = 'auto';
+        // Fade gradient mask — reveals full-screen model as copy exits
+        const maskEl = document.getElementById('model-mask');
+        if (maskEl) {
+          maskEl.style.opacity = String(lerp(1, 0, t));
         }
       },
     }) : null;
@@ -251,9 +244,10 @@ export default function SprinklerModel() {
 
     const LOOK_AT = new THREE.Vector3(0, 0.2, 0);
 
-    // Camera path
-    const CAM_START = new THREE.Vector3(0, 0.5,  5.8);
-    const CAM_END   = new THREE.Vector3(0, 0.0, -2.2);
+    // Camera path: starts right-offset so model sits in right column,
+    // sweeps to center as scroll progresses (no container resize needed)
+    const CAM_START = new THREE.Vector3(1.8, 0.5,  5.8);
+    const CAM_END   = new THREE.Vector3(0,   0.0, -2.2);
 
     const loop = (ts: number) => {
       rafId = requestAnimationFrame(loop);
@@ -328,13 +322,12 @@ export default function SprinklerModel() {
       cancelAnimationFrame(rafId);
       window.removeEventListener('mousemove', onMouse);
       window.removeEventListener('resize',    onResize);
-      ro.disconnect();
       st?.kill();
-      // Restore state on cleanup
+      // Restore overlay state on cleanup
       const copyEl = document.getElementById('hero-copy');
       if (copyEl) { copyEl.style.opacity = '1'; copyEl.style.transform = ''; }
-      const modelEl = document.getElementById('model-container');
-      if (modelEl) { modelEl.style.width = '60%'; modelEl.style.left = ''; modelEl.style.right = '0'; }
+      const maskEl = document.getElementById('model-mask');
+      if (maskEl) { maskEl.style.opacity = '1'; }
       goldBase.dispose();
       wireBase.dispose();
       envTex.dispose();
