@@ -1,6 +1,5 @@
 ---
 import '../styles/global.css';
-import PressurizedSystem from '../components/PressurizedSystem.tsx';
 import Navbar from '../components/Navbar.tsx';
 import LenisProvider from '../components/LenisProvider.tsx';
 
@@ -45,9 +44,6 @@ const {
 
     <!-- Layer 1 — Noise / grain overlay -->
     <div class="noise-overlay" aria-hidden="true"></div>
-
-    <!-- Layer 2 — Pressurized System (canvas) -->
-    <PressurizedSystem client:load />
 
     <!-- Content -->
     <slot />

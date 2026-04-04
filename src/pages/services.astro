@@ -38,16 +38,17 @@ const services = [
   {
     id: 's3',
     number: '03',
-    title: 'Fire Alarm Systems',
-    description: 'ULC-listed detection, notification and monitoring solutions — from single-panel buildings to multi-building networked campuses.',
+    title: 'NICO Fire Protection',
+    description: 'Acquired full-service fire protection company. NICO\'s operations have been integrated into Ultimate Fire Protection, expanding our crew capacity, equipment fleet, and service coverage across the Hamilton region.',
     bullets: [
-      'Addressable and conventional fire alarm panel installation',
-      'Smoke, heat and multi-sensor detector placement and commissioning',
-      'Voice evacuation and mass notification integration',
-      'Central station monitoring connections (ULC-S561)',
-      'Third-party verification and fire department interconnect',
+      'Expanded crew capacity for large-scale commercial and industrial projects',
+      'Additional equipment fleet — pumps, pipe equipment, specialty tools',
+      'Broader service coverage across the Golden Horseshoe',
+      'Continuity of service for all existing NICO clients',
+      'Same NFPA / ULC standards and direct-owner accountability',
     ],
-    standard: 'CAN/ULC-S524',
+    standard: 'Acquired',
+    acquired: true,
   },
   {
     id: 's4',
@@ -66,20 +67,6 @@ const services = [
   {
     id: 's5',
     number: '05',
-    title: 'Industrial & High-Hazard Systems',
-    description: 'Foam, clean agent and CO₂ systems for environments where water suppression is not viable. Paint booths, chemical storage, server rooms — engineered for the hazard.',
-    bullets: [
-      'AFFF and alcohol-resistant foam systems for flammable liquid hazards',
-      'FM-200, Novec 1230 and inert gas clean agent systems',
-      'CO₂ total flood and local application for machinery and enclosures',
-      'Dry chemical systems for paint booths and open processes',
-      'Risk assessment, suppression agent selection and regulatory filing',
-    ],
-    standard: 'NFPA 11 / 12 / 2001',
-  },
-  {
-    id: 's6',
-    number: '06',
     title: 'Emergency Service & Repair',
     description: '24/7 emergency response for system impairments, freeze damage, mechanical failures and post-incident restoration.',
     bullets: [
@@ -99,12 +86,12 @@ const services = [
 >
 
   <PageHeader
-    eyebrow="What We Do · 6 Service Lines"
+    eyebrow="What We Do · 5 Service Lines"
     heading="Built for"
     headingGold="Hard Jobs."
     sub="All engineered to NFPA and ULC standards. All installed by the same crew that designed them. No handoffs."
     watermark="SERVICE"
-    stat="06"
+    stat="05"
     statLabel="Core Services"
   />
 
@@ -117,10 +104,15 @@ const services = [
         <ScrollReveal client:visible delay={i * 0.05}>
           <div class="service-card group flex items-start md:items-center gap-6 py-7 pl-6 pr-8 border-t border-[#D4AF37]/08">
             <span class="font-mono text-[#D4AF37]/30 text-sm font-bold flex-shrink-0 w-8">{s.number}</span>
-            <h3 class="font-display font-black text-xl md:text-2xl uppercase text-[#F5F0E8] group-hover:text-[#D4AF37] transition-colors duration-300 flex-1 leading-tight">
-              {s.title}
-            </h3>
-            {s.standard && (
+            <div class="flex items-center gap-3 flex-1 flex-wrap">
+              <h3 class="font-display font-black text-xl md:text-2xl uppercase text-[#F5F0E8] group-hover:text-[#D4AF37] transition-colors duration-300 leading-tight">
+                {s.title}
+              </h3>
+              {s.acquired && (
+                <span class="text-[9px] font-bold tracking-[0.28em] text-[#D4AF37] border border-[#D4AF37]/40 px-2 py-0.5 uppercase">Acquired Co.</span>
+              )}
+            </div>
+            {s.standard && !s.acquired && (
               <span class="hidden md:block eyebrow text-[#6B6B6B] flex-shrink-0">{s.standard}</span>
             )}
             <span class="text-[#D4AF37]/30 group-hover:text-[#D4AF37] transition-colors duration-300 text-lg flex-shrink-0">→</span>
@@ -190,9 +182,9 @@ const services = [
             class="inline-flex items-center justify-center px-12 py-5 text-sm font-bold tracking-[0.2em] uppercase bg-[#D4AF37] text-[#080808] hover:bg-[#f7e98e] transition-colors duration-300">
             Request Consultation
           </a>
-          <a href="tel:+19055550000"
+          <a href="tel:+19056640061"
             class="inline-flex items-center justify-center px-12 py-5 text-sm font-bold tracking-[0.2em] uppercase border border-[#D4AF37]/30 text-[#D4AF37] hover:border-[#D4AF37] transition-colors duration-300">
-            (905) 555-0000
+            (905) 664-0061
           </a>
         </div>
       </ScrollReveal>

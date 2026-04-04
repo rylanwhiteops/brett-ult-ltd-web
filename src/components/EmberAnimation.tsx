@@ -40,14 +40,16 @@ export default function EmberAnimation() {
     });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     renderer.setClearColor(0x080808, 1);
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    const W0 = mount.clientWidth  || window.innerWidth;
+    const H0 = mount.clientHeight || window.innerHeight;
+    renderer.setSize(W0, H0);
     mount.appendChild(renderer.domElement);
 
     /* ── Scene / Camera ───────────────────────────────── */
     const scene  = new THREE.Scene();
     const camera = new THREE.OrthographicCamera(
-      -window.innerWidth  / 2, window.innerWidth  / 2,
-       window.innerHeight / 2, -window.innerHeight / 2,
+      -W0 / 2,  W0 / 2,
+       H0 / 2, -H0 / 2,
       0.1, 100,
     );
     camera.position.z = 10;
@@ -76,8 +78,8 @@ export default function EmberAnimation() {
     scene.add(points);
 
     /* ── Ember state ─────────────────────────────────── */
-    const W = window.innerWidth;
-    const H = window.innerHeight;
+    const W = W0;
+    const H = H0;
 
     const embers: Ember[] = Array.from({ length: PARTICLE_COUNT }, () => ({
       vx: 0, vy: 0, life: 0, maxLife: 1, hue: 0, size: 2,
@@ -117,8 +119,8 @@ export default function EmberAnimation() {
 
     /* ── Resize ──────────────────────────────────────── */
     const onResize = () => {
-      const w = window.innerWidth;
-      const h = window.innerHeight;
+      const w = mount.clientWidth  || window.innerWidth;
+      const h = mount.clientHeight || window.innerHeight;
       renderer.setSize(w, h);
       camera.left   = -w / 2;
       camera.right  =  w / 2;
@@ -214,7 +216,7 @@ export default function EmberAnimation() {
       ref={mountRef}
       aria-hidden="true"
       style={{
-        position: 'fixed',
+        position: 'absolute',
         inset: 0,
         zIndex: 0,
         pointerEvents: 'none',
