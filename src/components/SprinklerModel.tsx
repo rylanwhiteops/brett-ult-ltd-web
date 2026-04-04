@@ -22,7 +22,7 @@
  * Silent load — no loading UI
  */
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
@@ -37,10 +37,14 @@ const clamp01 = (x: number) => Math.max(0, Math.min(1, x));
 const invLerp = (a: number, b: number, v: number) => clamp01((v - a) / (b - a));
 
 export default function SprinklerModel() {
+  const mountRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const mount = document.getElementById('sprinkler-mount') as HTMLDivElement | null;
+    const mount = mountRef.current;
     if (!mount) return;
+
+    // Skip scroll-jack setup on mobile — desktop-only experience
+    const isDesktop = window.innerWidth >= 768;
 
     /* ── Renderer ────────────────────────────────────── */
     const renderer = new THREE.WebGLRenderer({
@@ -139,16 +143,15 @@ export default function SprinklerModel() {
     };
     window.addEventListener('resize', onResize, { passive: true });
 
-    /* ── Scroll progress (GSAP ScrollTrigger) ───────── */
+    /* ── Scroll progress (GSAP ScrollTrigger — desktop only) ── */
     const progress = { value: 0 };
 
-    const st = ScrollTrigger.create({
+    const st = isDesktop ? ScrollTrigger.create({
       trigger:      '#hero',
       start:        'top top',
-      end:          '+=220%',     // pin for 2.2 × viewport of scroll
+      end:          '+=220%',
       pin:          true,
       scrub:        1.0,
-      anticipatePin: 1,
       onUpdate: (self) => {
         progress.value = self.progress;
 
@@ -160,7 +163,7 @@ export default function SprinklerModel() {
           copyEl.style.transform = `translateX(${lerp(0, -50, t)}px)`;
         }
       },
-    });
+    }) : null;
 
     /* ── Model state ─────────────────────────────────── */
     interface SolidEntry { mat: THREE.MeshStandardMaterial }
@@ -299,7 +302,7 @@ export default function SprinklerModel() {
       cancelAnimationFrame(rafId);
       window.removeEventListener('mousemove', onMouse);
       window.removeEventListener('resize',    onResize);
-      st.kill();
+      st?.kill();
       // Restore copy opacity on cleanup
       const copyEl = document.getElementById('hero-copy');
       if (copyEl) { copyEl.style.opacity = '1'; copyEl.style.transform = ''; }
@@ -313,7 +316,7 @@ export default function SprinklerModel() {
 
   return (
     <div
-      id="sprinkler-mount"
+      ref={mountRef}
       aria-hidden="true"
       style={{ width: '100%', height: '100%' }}
     />
