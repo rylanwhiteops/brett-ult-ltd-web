@@ -6,7 +6,7 @@ const WORDS = ['Uncompromised', 'Protection.'];
 
 export default function HeroHeadline() {
   return (
-    <h1 className="font-black uppercase leading-[0.92] tracking-[-0.04em] text-4xl md:text-6xl lg:text-7xl mb-8">
+    <h1 className="font-black uppercase leading-[0.92] tracking-[-0.04em] text-5xl md:text-7xl lg:text-8xl mb-8 text-center">
       {WORDS.map((word, wi) => (
         <span key={wi} className="block overflow-hidden">
           <motion.span

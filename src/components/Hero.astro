@@ -1,54 +1,54 @@
 ---
-import GaugePipes from './GaugePipes.tsx';
+import EmberAnimation from './EmberAnimation.tsx';
 import HeroHeadline from './HeroHeadline.tsx';
 ---
 
 <section id="hero" class="relative min-h-screen overflow-hidden">
 
-  <div class="flex h-screen max-w-[1500px] mx-auto w-full">
+  <!-- Full-viewport ember animation (z-index 0, behind everything) -->
+  <EmberAnimation client:load />
 
-    <!-- ── Left: Copy ── -->
-    <div class="flex flex-col justify-center pl-16 md:pl-28 pr-8 lg:pr-20 flex-1 min-w-0 py-24">
+  <!-- Vignette overlay so text stays readable -->
+  <div class="absolute inset-0 z-[1] pointer-events-none"
+    style="background: radial-gradient(ellipse 80% 60% at 50% 100%, transparent 0%, rgba(8,8,8,0.55) 60%, rgba(8,8,8,0.85) 100%);">
+  </div>
 
-      <!-- Eyebrow -->
-      <div class="flex items-center gap-4 mb-8">
-        <span class="block w-8 h-px bg-[#D4AF37]/50"></span>
-        <p class="eyebrow text-[#A08928]">Hamilton, Ontario · Est. 2003</p>
-      </div>
+  <!-- Hero copy — centered, layered on top -->
+  <div class="relative z-[2] flex flex-col items-center justify-center min-h-screen text-center px-8 md:px-16 pt-20 pb-12">
 
-      <!-- Headline -->
-      <HeroHeadline client:load />
-
-      <!-- Sub-headline -->
-      <p class="text-[#F5F0E8]/60 text-base md:text-lg max-w-md leading-relaxed mb-10 font-sans">
-        Hamilton's elite fire suppression for industrial &amp;<br />
-        commercial infrastructure.
-      </p>
-
-      <!-- CTA -->
-      <div class="flex flex-wrap gap-4 mb-16">
-        <a href="/contact"
-          class="inline-flex items-center gap-3 px-10 py-4 text-sm font-bold tracking-[0.2em] uppercase text-[#080808] bg-[#D4AF37] hover:bg-[#f7e98e] transition-colors duration-300">
-          Request Consultation
-        </a>
-        <a href="/projects"
-          class="inline-flex items-center gap-3 px-10 py-4 text-sm font-bold tracking-[0.2em] uppercase text-[#D4AF37] border border-[#D4AF37]/30 hover:border-[#D4AF37] transition-colors duration-300">
-          View Our Work
-        </a>
-      </div>
-
-      <!-- Bottom credentials strip -->
-      <div class="flex flex-wrap gap-x-8 gap-y-3">
-        {['NFPA 13', 'TSSA Licensed', 'ULC Listed', '500+ Installations', '24/7 Response'].map(tag => (
-          <span class="eyebrow text-[#6B6B6B]">{tag}</span>
-        ))}
-      </div>
+    <!-- Eyebrow -->
+    <div class="flex items-center gap-4 mb-8">
+      <span class="block w-8 h-px bg-[#D4AF37]/50"></span>
+      <p class="eyebrow text-[#A08928]">Hamilton, Ontario · Est. 2003</p>
+      <span class="block w-8 h-px bg-[#D4AF37]/50"></span>
     </div>
 
-    <!-- ── Right: Gauge Assembly — full height column ── -->
-    <div class="hidden md:flex flex-col items-center justify-center flex-shrink-0 pr-12 lg:pr-20 gap-4">
-      <p class="eyebrow text-[#A08928] tracking-[0.4em]">System Status</p>
-      <GaugePipes client:load />
+    <!-- Headline -->
+    <HeroHeadline client:load />
+
+    <!-- Sub-headline -->
+    <p class="text-[#F5F0E8]/60 text-base md:text-lg max-w-lg leading-relaxed mb-10 font-sans">
+      Hamilton's elite fire suppression for industrial &amp;<br />
+      commercial infrastructure.
+    </p>
+
+    <!-- CTA -->
+    <div class="flex flex-wrap justify-center gap-4 mb-14">
+      <a href="/contact"
+        class="inline-flex items-center gap-3 px-10 py-4 text-sm font-bold tracking-[0.2em] uppercase text-[#080808] bg-[#D4AF37] hover:bg-[#f7e98e] transition-colors duration-300">
+        Request Consultation
+      </a>
+      <a href="/projects"
+        class="inline-flex items-center gap-3 px-10 py-4 text-sm font-bold tracking-[0.2em] uppercase text-[#D4AF37] border border-[#D4AF37]/30 hover:border-[#D4AF37] transition-colors duration-300">
+        View Our Work
+      </a>
+    </div>
+
+    <!-- Credential strip -->
+    <div class="flex flex-wrap justify-center gap-x-8 gap-y-3">
+      {['NFPA 13', 'TSSA Licensed', 'ULC Listed', '500+ Installations', '24/7 Response'].map(tag => (
+        <span class="eyebrow text-[#6B6B6B]">{tag}</span>
+      ))}
     </div>
 
   </div>
@@ -56,7 +56,6 @@ import HeroHeadline from './HeroHeadline.tsx';
 </section>
 
 <style>
-  /* Shimmer kept here for the HeroHeadline component */
   @keyframes shimmer {
     0%   { background-position: 250% center; }
     100% { background-position: -250% center; }
