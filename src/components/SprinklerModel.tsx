@@ -104,9 +104,9 @@ export default function SprinklerModel() {
     innerLight.position.set(0, 0, 0);
     scene.add(innerLight);
 
-    scene.add(Object.assign(new THREE.DirectionalLight(0xD4A017, 0.6), {
-      position: new THREE.Vector3(2, -1, -5),
-    }));
+    const dirLight = new THREE.DirectionalLight(0xD4A017, 0.6);
+    dirLight.position.set(2, -1, -5);
+    scene.add(dirLight);
 
     /* ── Material bases ──────────────────────────────── */
     const goldBase = new THREE.MeshStandardMaterial({
