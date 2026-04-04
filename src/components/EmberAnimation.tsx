@@ -13,15 +13,14 @@
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
-const PARTICLE_COUNT = 600;
-const GOLD  = new THREE.Color('#D4A017');
-const ORANGE = new THREE.Color('#FF6B1A');
-const RED_EMBER = new THREE.Color('#CC3300');
+const PARTICLE_COUNT = 350;                       // reduced — model is the star
+const GOLD   = new THREE.Color('#D4A017');          // pure gold
+const ORANGE = new THREE.Color('#FF6B1A');          // warm orange only — no red/pink
 
 interface Ember {
-  vx: number; vy: number;        // world-space velocity
-  life: number; maxLife: number; // 0 → dead
-  hue: number;                   // 0=gold, 0.5=orange, 1=red
+  vx: number; vy: number;
+  life: number; maxLife: number;
+  hue: number;  // 0=gold → 1=orange (linear, no red)
   size: number;
 }
 
@@ -68,7 +67,7 @@ export default function EmberAnimation() {
       size: 4,
       vertexColors: true,
       transparent: true,
-      opacity: 0.85,
+      opacity: 0.65,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
       sizeAttenuation: false,
@@ -96,8 +95,8 @@ export default function EmberAnimation() {
       embers[i].vy      = 0.8 + Math.random() * 2.0;
       embers[i].maxLife = 120 + Math.random() * 180;
       embers[i].life    = 0;
-      embers[i].hue     = Math.random(); // 0=gold, 0.5=orange, 1=red-ember
-      embers[i].size    = 1.5 + Math.random() * 3.5;
+      embers[i].hue     = Math.random(); // 0=gold → 1=orange
+      embers[i].size    = 1.2 + Math.random() * 2.8;  // slightly smaller — more subtle
     };
 
     // Seed all particles at staggered heights on load
@@ -175,13 +174,11 @@ export default function EmberAnimation() {
         const t     = em.life / em.maxLife;
         const alpha = t < 0.1 ? t / 0.1 : 1 - Math.pow((t - 0.1) / 0.9, 1.5);
 
-        // Color: gold → orange → red based on hue + lifecycle
-        const colorMix = em.hue < 0.5
-          ? GOLD.clone().lerp(ORANGE, em.hue * 2)
-          : ORANGE.clone().lerp(RED_EMBER, (em.hue - 0.5) * 2);
+        // Color: simple gold → orange linear blend — no red
+        const colorMix = GOLD.clone().lerp(ORANGE, em.hue);
 
-        // Brighten at peak life (t≈0.3)
-        const brightness = 0.6 + 0.6 * Math.sin(t * Math.PI);
+        // Slightly dimmer overall — embers are background atmosphere
+        const brightness = 0.45 + 0.45 * Math.sin(t * Math.PI);
         tmpColor.copy(colorMix).multiplyScalar(brightness * alpha);
 
         colAttr.setXYZ(i, tmpColor.r, tmpColor.g, tmpColor.b);

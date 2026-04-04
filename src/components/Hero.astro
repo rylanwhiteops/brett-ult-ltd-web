@@ -4,32 +4,35 @@ import HeroHeadline from './HeroHeadline.tsx';
 import SprinklerModel from './SprinklerModel.tsx';
 ---
 
-<section id="hero" class="relative min-h-screen overflow-hidden">
+<section id="hero" class="relative min-h-screen overflow-hidden bg-[#0a0a0a]">
 
-  <!-- Ember particles — absolute, clipped to hero -->
+  <!-- Ember particles — absolute, clipped to hero, z:0 -->
   <EmberAnimation client:load />
 
-  <!-- Bottom vignette — text legibility -->
-  <div class="absolute inset-0 z-[1] pointer-events-none"
-    style="background: linear-gradient(to top, rgba(8,8,8,0.70) 0%, transparent 45%);">
-  </div>
+  <!-- Very subtle bottom fade — keeps ember-to-section transition clean -->
+  <div
+    class="absolute inset-x-0 bottom-0 h-40 z-[1] pointer-events-none"
+    style="background: linear-gradient(to top, #0a0a0a 0%, transparent 100%);"
+    aria-hidden="true"
+  ></div>
 
-  <!-- ── Desktop layout: copy left + model right ── -->
-  <div class="relative z-[2] hidden md:flex items-center min-h-screen max-w-[1500px] mx-auto w-full px-8 md:px-16 lg:px-24 pt-20 pb-12">
+  <!-- ── Desktop layout ──────────────────────────────── -->
+  <div class="relative z-[2] hidden md:flex items-center min-h-screen max-w-[1600px] mx-auto w-full">
 
-    <!-- Left: Copy (60% width) -->
-    <div class="flex flex-col justify-center flex-1 min-w-0 py-8 pr-8 lg:pr-16">
+    <!-- Left 40%: Copy — vertically centered -->
+    <div class="w-[40%] flex flex-col justify-center px-16 lg:px-24 py-28 flex-shrink-0">
 
+      <!-- Eyebrow -->
       <div class="flex items-center gap-4 mb-8">
         <span class="block w-8 h-px bg-[#D4AF37]/50"></span>
         <p class="eyebrow text-[#A08928]">Hamilton, Ontario · Est. 2003</p>
       </div>
 
-      <!-- Radial glow behind headline -->
-      <div class="relative">
+      <!-- Headline with radial glow behind -->
+      <div class="relative mb-6">
         <div
           class="absolute pointer-events-none"
-          style="inset: -30% -20%; background: radial-gradient(ellipse 65% 55% at 40% 50%, rgba(212,175,55,0.07) 0%, rgba(212,160,23,0.03) 40%, transparent 70%); z-index: 0;"
+          style="inset: -35% -15%; background: radial-gradient(ellipse 70% 60% at 35% 50%, rgba(212,175,55,0.08) 0%, rgba(212,160,23,0.03) 45%, transparent 72%); z-index: 0;"
           aria-hidden="true"
         ></div>
         <div class="relative z-[1]">
@@ -37,50 +40,56 @@ import SprinklerModel from './SprinklerModel.tsx';
         </div>
       </div>
 
-      <p class="text-[#F5F0E8]/60 text-base md:text-lg max-w-md leading-relaxed mb-10 font-sans">
-        Hamilton's elite fire suppression for industrial &amp;<br />
-        commercial infrastructure.
+      <!-- Sub -->
+      <p class="text-[#F5F0E8]/55 text-base md:text-lg max-w-sm leading-relaxed mb-10 font-sans">
+        Hamilton's elite fire suppression for industrial &amp; commercial infrastructure.
       </p>
 
+      <!-- CTAs -->
       <div class="flex flex-wrap gap-4 mb-14">
-        <a href="/contact"
-          class="inline-flex items-center gap-3 px-10 py-4 text-sm font-bold tracking-[0.2em] uppercase text-[#080808] bg-[#D4AF37] hover:bg-[#f7e98e] transition-colors duration-300">
+        <a
+          href="/contact"
+          class="inline-flex items-center px-10 py-4 text-sm font-bold tracking-[0.2em] uppercase text-[#0a0a0a] bg-[#D4AF37] hover:bg-[#f7e98e] transition-colors duration-300"
+        >
           Request Consultation
         </a>
-        <a href="/projects"
-          class="inline-flex items-center gap-3 px-10 py-4 text-sm font-bold tracking-[0.2em] uppercase text-[#D4AF37] border border-[#D4AF37]/30 hover:border-[#D4AF37] transition-colors duration-300">
+        <a
+          href="/projects"
+          class="inline-flex items-center px-10 py-4 text-sm font-bold tracking-[0.2em] uppercase text-[#D4AF37] border border-[#D4AF37]/30 hover:border-[#D4AF37] transition-colors duration-300"
+        >
           View Our Work
         </a>
       </div>
 
-      <div class="flex flex-wrap gap-x-8 gap-y-3">
-        {['NFPA 13', 'TSSA Licensed', 'ULC Listed', '500+ Installations', '24/7 Response'].map(tag => (
-          <span class="eyebrow text-[#6B6B6B]">{tag}</span>
+      <!-- Credential strip -->
+      <div class="flex flex-wrap gap-x-7 gap-y-3">
+        {['NFPA 13', 'TSSA Licensed', 'ULC Listed', '500+ Installs', '24/7 Response'].map(tag => (
+          <span class="eyebrow text-[#555]">{tag}</span>
         ))}
       </div>
     </div>
 
-    <!-- Right: 3D Sprinkler Pump (~40% width) -->
-    <div class="flex-shrink-0 w-[40%] max-w-[600px]" style="height: 75vh; min-height: 500px;">
+    <!-- Right 60%: 3D Model — dominant, full hero height -->
+    <div class="flex-1 self-stretch relative">
       <SprinklerModel client:load />
     </div>
 
   </div>
 
-  <!-- ── Mobile layout: copy top + model below ── -->
-  <div class="relative z-[2] flex md:hidden flex-col min-h-screen px-6 pt-24 pb-12">
+  <!-- ── Mobile layout ──────────────────────────────── -->
+  <div class="relative z-[2] flex md:hidden flex-col min-h-screen px-6 pt-24 pb-10">
 
-    <!-- Copy -->
-    <div class="flex flex-col justify-center flex-shrink-0 pb-6">
-      <div class="flex items-center gap-4 mb-6">
+    <!-- Copy block -->
+    <div class="flex flex-col flex-shrink-0 pb-4">
+      <div class="flex items-center gap-3 mb-6">
         <span class="block w-6 h-px bg-[#D4AF37]/50"></span>
-        <p class="eyebrow text-[#A08928]">Hamilton, Ontario · Est. 2003</p>
+        <p class="eyebrow text-[#A08928]">Hamilton · Est. 2003</p>
       </div>
 
-      <div class="relative mb-6">
+      <div class="relative mb-5">
         <div
           class="absolute pointer-events-none"
-          style="inset: -20% -10%; background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(212,175,55,0.07) 0%, transparent 70%); z-index: 0;"
+          style="inset: -20% -10%; background: radial-gradient(ellipse 80% 65% at 45% 50%, rgba(212,175,55,0.07) 0%, transparent 70%); z-index:0;"
           aria-hidden="true"
         ></div>
         <div class="relative z-[1]">
@@ -88,31 +97,29 @@ import SprinklerModel from './SprinklerModel.tsx';
         </div>
       </div>
 
-      <p class="text-[#F5F0E8]/60 text-base leading-relaxed mb-8 font-sans">
+      <p class="text-[#F5F0E8]/55 text-sm leading-relaxed mb-7 font-sans max-w-[320px]">
         Hamilton's elite fire suppression for industrial &amp; commercial infrastructure.
       </p>
 
-      <div class="flex flex-col gap-3 mb-10">
-        <a href="/contact"
-          class="inline-flex items-center justify-center px-8 py-4 text-sm font-bold tracking-[0.2em] uppercase text-[#080808] bg-[#D4AF37] hover:bg-[#f7e98e] transition-colors duration-300">
+      <div class="flex flex-col gap-3 mb-8">
+        <a href="/contact" class="inline-flex items-center justify-center px-8 py-4 text-sm font-bold tracking-[0.18em] uppercase text-[#0a0a0a] bg-[#D4AF37] hover:bg-[#f7e98e] transition-colors">
           Request Consultation
         </a>
-        <a href="/projects"
-          class="inline-flex items-center justify-center px-8 py-4 text-sm font-bold tracking-[0.2em] uppercase text-[#D4AF37] border border-[#D4AF37]/30 hover:border-[#D4AF37] transition-colors duration-300">
+        <a href="/projects" class="inline-flex items-center justify-center px-8 py-4 text-sm font-bold tracking-[0.18em] uppercase text-[#D4AF37] border border-[#D4AF37]/30 hover:border-[#D4AF37] transition-colors">
           View Our Work
         </a>
       </div>
     </div>
 
-    <!-- Model — below headline on mobile -->
-    <div class="flex-1 w-full" style="min-height: 280px; max-height: 380px;">
+    <!-- Model: scaled down, centered below headline -->
+    <div class="flex-1 w-full" style="min-height: 300px; max-height: 400px;">
       <SprinklerModel client:visible />
     </div>
 
-    <!-- Credential strip at bottom -->
-    <div class="flex-shrink-0 pt-4 flex flex-wrap gap-x-6 gap-y-2">
-      {['NFPA 13', 'TSSA Licensed', 'ULC Listed', '24/7 Response'].map(tag => (
-        <span class="eyebrow text-[#6B6B6B]">{tag}</span>
+    <!-- Credentials at very bottom -->
+    <div class="flex-shrink-0 pt-3 flex flex-wrap gap-x-5 gap-y-2">
+      {['NFPA 13', 'TSSA Licensed', 'ULC Listed', '24/7'].map(tag => (
+        <span class="eyebrow text-[#444]">{tag}</span>
       ))}
     </div>
   </div>
