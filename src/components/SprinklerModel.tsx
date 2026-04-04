@@ -148,6 +148,10 @@ export default function SprinklerModel() {
     };
     window.addEventListener('resize', onResize, { passive: true });
 
+    // ResizeObserver keeps renderer in sync as container expands during scroll
+    const ro = new ResizeObserver(onResize);
+    ro.observe(mount);
+
     /* ── Scroll progress (GSAP ScrollTrigger — desktop only) ── */
     const progress = { value: 0 };
 
@@ -160,12 +164,23 @@ export default function SprinklerModel() {
       onUpdate: (self) => {
         progress.value = self.progress;
 
+        const t = invLerp(0, 0.28, self.progress);
+
         // Fade + slide hero copy out over first 28% of scroll
         const copyEl = document.getElementById('hero-copy');
         if (copyEl) {
-          const t = invLerp(0, 0.28, self.progress);
           copyEl.style.opacity   = String(lerp(1, 0, t));
           copyEl.style.transform = `translateX(${lerp(0, -50, t)}px)`;
+        }
+
+        // Expand model container from right-60% → full screen as copy exits
+        const modelEl = document.getElementById('model-container');
+        if (modelEl) {
+          const pct = lerp(60, 100, t);
+          const left = lerp(40, 0, t);
+          modelEl.style.width = `${pct}%`;
+          modelEl.style.left  = `${left}%`;
+          modelEl.style.right = 'auto';
         }
       },
     }) : null;
@@ -313,10 +328,13 @@ export default function SprinklerModel() {
       cancelAnimationFrame(rafId);
       window.removeEventListener('mousemove', onMouse);
       window.removeEventListener('resize',    onResize);
+      ro.disconnect();
       st?.kill();
-      // Restore copy opacity on cleanup
+      // Restore state on cleanup
       const copyEl = document.getElementById('hero-copy');
       if (copyEl) { copyEl.style.opacity = '1'; copyEl.style.transform = ''; }
+      const modelEl = document.getElementById('model-container');
+      if (modelEl) { modelEl.style.width = '60%'; modelEl.style.left = ''; modelEl.style.right = '0'; }
       goldBase.dispose();
       wireBase.dispose();
       envTex.dispose();

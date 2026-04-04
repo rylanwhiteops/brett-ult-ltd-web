@@ -76,8 +76,8 @@ import SprinklerModel from './SprinklerModel.tsx';
       </div>
     </div>
 
-    <!-- Right 60%: model — full hero height, transparent canvas -->
-    <div class="flex-1 relative" style="height:100vh;">
+    <!-- Right 60%: model — expands to full screen on scroll -->
+    <div id="model-container" style="position:absolute; right:0; top:0; height:100vh; width:60%;">
       <SprinklerModel client:load />
     </div>
 
