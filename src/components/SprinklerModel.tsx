@@ -46,6 +46,10 @@ export default function SprinklerModel() {
     // Skip scroll-jack setup on mobile — desktop-only experience
     const isDesktop = window.innerWidth >= 768;
 
+    // Dimension fallbacks: mount may have height:0 if parent uses min-height (not height)
+    const getW = () => mount.clientWidth  || Math.round(window.innerWidth * 0.6);
+    const getH = () => mount.clientHeight || window.innerHeight;
+
     /* ── Renderer ────────────────────────────────────── */
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
@@ -58,7 +62,7 @@ export default function SprinklerModel() {
     renderer.toneMappingExposure = 1.4;
     renderer.shadowMap.enabled   = true;
     renderer.shadowMap.type      = THREE.PCFSoftShadowMap;
-    renderer.setSize(mount.clientWidth, mount.clientHeight);
+    renderer.setSize(getW(), getH());
     mount.appendChild(renderer.domElement);
 
     /* ── Scene ───────────────────────────────────────── */
@@ -75,7 +79,7 @@ export default function SprinklerModel() {
     /* ── Camera ──────────────────────────────────────── */
     const camera = new THREE.PerspectiveCamera(
       38,
-      mount.clientWidth / mount.clientHeight,
+      getW() / getH(),
       0.01, 200,
     );
     // Start position (outside model)
@@ -135,8 +139,8 @@ export default function SprinklerModel() {
 
     /* ── Resize ──────────────────────────────────────── */
     const onResize = () => {
-      const w = mount.clientWidth;
-      const h = mount.clientHeight;
+      const w = getW();
+      const h = getH();
       renderer.setSize(w, h);
       camera.aspect = w / h;
       camera.updateProjectionMatrix();
@@ -318,7 +322,7 @@ export default function SprinklerModel() {
     <div
       ref={mountRef}
       aria-hidden="true"
-      style={{ width: '100%', height: '100%' }}
+      style={{ position: 'absolute', inset: 0 }}
     />
   );
 }
