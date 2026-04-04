@@ -1,0 +1,105 @@
+---
+import '../styles/global.css';
+import PressurizedSystem from '../components/PressurizedSystem.tsx';
+import Navbar from '../components/Navbar.tsx';
+import LenisProvider from '../components/LenisProvider.tsx';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "Ultimate Fire Protection — Hamilton's Industrial Fire Specialists",
+  description = "Elite fire suppression systems for industrial and commercial infrastructure in Hamilton, Ontario.",
+} = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Barlow+Condensed:wght@600;700;800;900&display=swap" rel="stylesheet" />
+  </head>
+
+  <body class="bg-[#080808] text-[#F5F0E8] antialiased">
+
+    <!-- Lenis smooth scroll -->
+    <LenisProvider client:load />
+
+    <!-- Navbar -->
+    <Navbar client:load />
+
+    <!-- Layer 0 — Depth field -->
+    <div class="depth-field" aria-hidden="true"></div>
+
+    <!-- Layer 0b — Brushed metal vertical striations -->
+    <div class="brushed-metal" aria-hidden="true"></div>
+
+    <!-- Layer 1 — Noise / grain overlay -->
+    <div class="noise-overlay" aria-hidden="true"></div>
+
+    <!-- Layer 2 — Pressurized System (canvas) -->
+    <PressurizedSystem client:load />
+
+    <!-- Content -->
+    <slot />
+
+  </body>
+</html>
+
+<style>
+  .depth-field {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: radial-gradient(
+      ellipse 140% 90% at 50% 35%,
+      #141414 0%,
+      #0d0d0d 35%,
+      #080808 100%
+    );
+  }
+
+  .brushed-metal {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent        0px,
+      transparent        2px,
+      rgba(255,255,255,0.007) 2px,
+      rgba(255,255,255,0.007) 3px
+    );
+    mix-blend-mode: overlay;
+  }
+
+  .noise-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 180px 180px;
+  }
+
+  :global(section),
+  :global(main),
+  :global(header),
+  :global(footer) {
+    position: relative;
+    z-index: 10;
+  }
+</style>

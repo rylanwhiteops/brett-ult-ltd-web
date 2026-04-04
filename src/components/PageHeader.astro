@@ -1,0 +1,45 @@
+---
+interface Props {
+  eyebrow: string;
+  heading: string;       // e.g. "The Work"
+  headingGold: string;   // e.g. "Speaks."
+  sub: string;
+  watermark: string;     // large background text e.g. "PORTFOLIO"
+  stat?: string;         // optional right-side stat e.g. "9 Projects"
+  statLabel?: string;    // e.g. "Hamilton Corridor"
+}
+
+const { eyebrow, heading, headingGold, sub, watermark, stat, statLabel } = Astro.props;
+---
+
+<header class="page-header relative z-10">
+  <!-- Watermark -->
+  <div class="page-header__watermark">{watermark}</div>
+
+  <div class="max-w-7xl mx-auto px-8 md:px-16">
+    <!-- Top row: eyebrow label + optional right stat -->
+    <div class="flex items-center justify-between mb-10 border-b border-[#D4AF37]/10 pb-6">
+      <div class="flex items-center gap-4">
+        <span class="block w-6 h-px bg-[#D4AF37]/40"></span>
+        <p class="eyebrow">{eyebrow}</p>
+      </div>
+      {stat && (
+        <div class="text-right hidden sm:block">
+          <p class="font-display text-3xl font-black text-[#D4AF37] leading-none">{stat}</p>
+          {statLabel && <p class="eyebrow mt-1">{statLabel}</p>}
+        </div>
+      )}
+    </div>
+
+    <!-- Main heading -->
+    <h1 class="font-display font-black uppercase leading-[0.88] tracking-[-0.02em] text-[clamp(4rem,10vw,9rem)] mb-8">
+      <span class="text-[#F5F0E8]">{heading}<br /></span>
+      <span class="text-[#D4AF37]">{headingGold}</span>
+    </h1>
+
+    <!-- Sub text -->
+    <p class="text-[#F5F0E8]/50 text-base md:text-lg max-w-xl leading-relaxed font-sans">
+      {sub}
+    </p>
+  </div>
+</header>

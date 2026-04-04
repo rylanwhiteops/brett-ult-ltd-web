@@ -1,0 +1,204 @@
+---
+import Layout from '../layouts/Layout.astro';
+import StackingServiceCards from '../components/StackingServiceCards.tsx';
+import ScrollReveal from '../components/ScrollReveal.tsx';
+import Marquee from '../components/Marquee.tsx';
+import PageHeader from '../components/PageHeader.astro';
+import Footer from '../components/Footer.astro';
+
+const services = [
+  {
+    id: 's1',
+    number: '01',
+    title: 'Fire Suppression Systems',
+    description: 'Wet pipe, dry pipe, pre-action and deluge systems engineered for industrial and commercial occupancies across Southern Ontario. Full hydraulic design and installation.',
+    bullets: [
+      'NFPA 13 wet and dry pipe systems for commercial occupancies',
+      'Pre-action and double-interlock systems for cold storage and data centres',
+      'Deluge systems for high-hazard process areas and aircraft hangars',
+      'Complete hydraulic calculations and design drawings',
+      'Authority Having Jurisdiction (AHJ) submission and approval',
+    ],
+    standard: 'NFPA 13',
+  },
+  {
+    id: 's2',
+    number: '02',
+    title: 'Sprinkler Design & Engineering',
+    description: 'NFPA 13 hydraulic calculations and full engineered drawings for warehouses, manufacturing floors, high-piled storage, and complex occupancies.',
+    bullets: [
+      'AutoCAD and Hydracalc hydraulic modelling',
+      'In-rack and ESFR sprinkler design for high-piled rack storage',
+      'Occupancy classification and hazard analysis',
+      'Coordination with structural, mechanical and electrical trades',
+      'As-built drawings and record documents post-installation',
+    ],
+    standard: 'NFPA 13 / ULC',
+  },
+  {
+    id: 's3',
+    number: '03',
+    title: 'Fire Alarm Systems',
+    description: 'ULC-listed detection, notification and monitoring solutions — from single-panel buildings to multi-building networked campuses.',
+    bullets: [
+      'Addressable and conventional fire alarm panel installation',
+      'Smoke, heat and multi-sensor detector placement and commissioning',
+      'Voice evacuation and mass notification integration',
+      'Central station monitoring connections (ULC-S561)',
+      'Third-party verification and fire department interconnect',
+    ],
+    standard: 'CAN/ULC-S524',
+  },
+  {
+    id: 's4',
+    number: '04',
+    title: 'Annual Inspections & Testing',
+    description: 'Scheduled inspection programs keep your systems code-compliant and your insurance valid. We test sprinklers, fire pumps, suppression agents and alarm panels.',
+    bullets: [
+      'Sprinkler system quarterly, semi-annual and annual inspections (NFPA 25)',
+      'Fire pump flow testing and diesel engine service',
+      'Alarm system annual inspection and functional testing (ULC-S536)',
+      'Suppression agent weight checks and cylinder inspection',
+      'Inspection certificates and digital record-keeping',
+    ],
+    standard: 'NFPA 25 / ULC-S536',
+  },
+  {
+    id: 's5',
+    number: '05',
+    title: 'Industrial & High-Hazard Systems',
+    description: 'Foam, clean agent and CO₂ systems for environments where water suppression is not viable. Paint booths, chemical storage, server rooms — engineered for the hazard.',
+    bullets: [
+      'AFFF and alcohol-resistant foam systems for flammable liquid hazards',
+      'FM-200, Novec 1230 and inert gas clean agent systems',
+      'CO₂ total flood and local application for machinery and enclosures',
+      'Dry chemical systems for paint booths and open processes',
+      'Risk assessment, suppression agent selection and regulatory filing',
+    ],
+    standard: 'NFPA 11 / 12 / 2001',
+  },
+  {
+    id: 's6',
+    number: '06',
+    title: 'Emergency Service & Repair',
+    description: '24/7 emergency response for system impairments, freeze damage, mechanical failures and post-incident restoration.',
+    bullets: [
+      '24-hour emergency dispatch — live answer, no call centre',
+      'Impairment permits and watch service coordination',
+      'Freeze damage assessment and pipe repair',
+      'Post-fire system restoration and recharge',
+      'Insurance adjuster documentation support',
+    ],
+  },
+];
+---
+
+<Layout
+  title="Services — Ultimate Fire Protection"
+  description="Full-service fire suppression, alarm, inspection and high-hazard systems for industrial and commercial properties in Hamilton, Ontario."
+>
+
+  <PageHeader
+    eyebrow="What We Do · 6 Service Lines"
+    heading="Built for"
+    headingGold="Hard Jobs."
+    sub="All engineered to NFPA and ULC standards. All installed by the same crew that designed them. No handoffs."
+    watermark="SERVICE"
+    stat="06"
+    statLabel="Core Services"
+  />
+
+  <Marquee client:load />
+
+  <!-- ── Service List Index ── -->
+  <section class="relative z-10 border-b border-[#D4AF37]/08">
+    <div class="max-w-7xl mx-auto px-8 md:px-16">
+      {services.map((s, i) => (
+        <ScrollReveal client:visible delay={i * 0.05}>
+          <div class="service-card group flex items-start md:items-center gap-6 py-7 pl-6 pr-8 border-t border-[#D4AF37]/08">
+            <span class="font-mono text-[#D4AF37]/30 text-sm font-bold flex-shrink-0 w-8">{s.number}</span>
+            <h3 class="font-display font-black text-xl md:text-2xl uppercase text-[#F5F0E8] group-hover:text-[#D4AF37] transition-colors duration-300 flex-1 leading-tight">
+              {s.title}
+            </h3>
+            {s.standard && (
+              <span class="hidden md:block eyebrow text-[#6B6B6B] flex-shrink-0">{s.standard}</span>
+            )}
+            <span class="text-[#D4AF37]/30 group-hover:text-[#D4AF37] transition-colors duration-300 text-lg flex-shrink-0">→</span>
+          </div>
+        </ScrollReveal>
+      ))}
+    </div>
+  </section>
+
+  <!-- ── Stacking Detail Cards ── -->
+  <section class="relative z-10 py-20">
+    <div class="max-w-7xl mx-auto px-8 md:px-16 mb-16">
+      <ScrollReveal client:visible>
+        <div class="flex items-end gap-6">
+          <span class="block w-8 h-px bg-[#D4AF37]/40 mb-1"></span>
+          <p class="eyebrow text-[#A08928]">Full Breakdown</p>
+        </div>
+        <h2 class="font-display font-black text-5xl md:text-6xl uppercase leading-none mt-4">
+          <span class="text-[#F5F0E8]">Every Detail.</span><br />
+          <span class="text-[#D4AF37]">Every Standard.</span>
+        </h2>
+      </ScrollReveal>
+    </div>
+    <StackingServiceCards services={services} client:visible />
+  </section>
+
+  <!-- ── Why Brett ── -->
+  <section class="relative z-10 border-t border-b border-[#D4AF37]/08 py-28">
+    <div class="max-w-7xl mx-auto px-8 md:px-16 grid md:grid-cols-2 gap-20 items-center">
+      <ScrollReveal client:visible>
+        <h2 class="font-display font-black text-5xl md:text-6xl xl:text-7xl uppercase leading-none">
+          <span class="text-[#F5F0E8]">No Sales Team.</span><br />
+          <span class="text-[#D4AF37]">Just Brett.</span>
+        </h2>
+      </ScrollReveal>
+      <ScrollReveal client:visible>
+        <div class="space-y-8">
+          {[
+            { label: 'Direct Access', text: 'You talk to the person running the job — not a dispatcher or account manager.' },
+            { label: '20+ Years Local', text: 'Every AHJ in the Hamilton region. Every inspector. Every quirk in the code.' },
+            { label: 'Design-Build', text: 'We design what we install. No gap between the engineer and the contractor.' },
+            { label: 'Full Documentation', text: 'As-builts, certificates, inspection records — everything your insurer needs.' },
+          ].map((item) => (
+            <div class="flex gap-5 pb-8 border-b border-[#D4AF37]/08 last:border-0 last:pb-0">
+              <div class="w-1 h-full min-h-[1rem] bg-[#D4AF37]/30 flex-shrink-0 mt-1" />
+              <div>
+                <p class="font-display font-bold text-lg uppercase text-[#F5F0E8] mb-1">{item.label}</p>
+                <p class="text-[#F5F0E8]/50 text-sm leading-relaxed">{item.text}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </ScrollReveal>
+    </div>
+  </section>
+
+  <!-- ── CTA ── -->
+  <section class="relative z-10 py-28">
+    <div class="max-w-7xl mx-auto px-8 md:px-16 text-center">
+      <ScrollReveal client:visible>
+        <h2 class="font-display font-black text-6xl md:text-8xl uppercase leading-none tracking-[-0.02em] mb-10">
+          <span class="text-[#F5F0E8]">Tell Us About</span><br />
+          <span class="text-[#D4AF37]">Your Job.</span>
+        </h2>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/contact"
+            class="inline-flex items-center justify-center px-12 py-5 text-sm font-bold tracking-[0.2em] uppercase bg-[#D4AF37] text-[#080808] hover:bg-[#f7e98e] transition-colors duration-300">
+            Request Consultation
+          </a>
+          <a href="tel:+19055550000"
+            class="inline-flex items-center justify-center px-12 py-5 text-sm font-bold tracking-[0.2em] uppercase border border-[#D4AF37]/30 text-[#D4AF37] hover:border-[#D4AF37] transition-colors duration-300">
+            (905) 555-0000
+          </a>
+        </div>
+      </ScrollReveal>
+    </div>
+  </section>
+
+  <Footer />
+
+</Layout>

@@ -1,0 +1,309 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import ScrollReveal from '../components/ScrollReveal.tsx';
+import KineticGallery from '../components/KineticGallery.tsx';
+import Marquee from '../components/Marquee.tsx';
+import Footer from '../components/Footer.astro';
+
+const services = [
+  {
+    title: 'Fire Suppression',
+    desc: 'Wet pipe, dry pipe, pre-action and deluge systems for industrial and commercial occupancies.',
+    standard: 'NFPA 13',
+    icon: `<svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M14 3C10.5 8 9 11 9 14a5 5 0 0 0 10 0c0-3-1.5-6-5-11z"/>
+      <path d="M14 10c-1.5 2.5-2 4-2 5a2 2 0 0 0 4 0c0-1-.5-2.5-2-5z" fill="#D4AF37" fill-opacity="0.2"/>
+      <path d="M6 20h16M9 24h10"/>
+    </svg>`,
+  },
+  {
+    title: 'Sprinkler Design',
+    desc: 'NFPA 13 hydraulic calculations for warehouses, manufacturing floors, high-piled storage.',
+    standard: 'NFPA 13 / ULC',
+    icon: `<svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="14" cy="14" r="2"/>
+      <line x1="14" y1="4" x2="14" y2="8"/>
+      <line x1="14" y1="20" x2="14" y2="24"/>
+      <line x1="4" y1="14" x2="8" y2="14"/>
+      <line x1="20" y1="14" x2="24" y2="14"/>
+      <line x1="7" y1="7" x2="10" y2="10"/>
+      <line x1="18" y1="18" x2="21" y2="21"/>
+      <line x1="21" y1="7" x2="18" y2="10"/>
+      <line x1="10" y1="18" x2="7" y2="21"/>
+    </svg>`,
+  },
+  {
+    title: 'Fire Alarm Systems',
+    desc: 'ULC-listed detection, notification and monitoring — from single panels to multi-building networks.',
+    standard: 'CAN/ULC-S524',
+    icon: `<svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M14 4a8 8 0 0 0-8 8v5l-2 2v1h20v-1l-2-2v-5a8 8 0 0 0-8-8z"/>
+      <path d="M11.5 22a2.5 2.5 0 0 0 5 0"/>
+      <circle cx="14" cy="4" r="1" fill="#D4AF37"/>
+    </svg>`,
+  },
+  {
+    title: 'Annual Inspections',
+    desc: 'Scheduled inspection programs for sprinklers, pumps, suppression agents and alarm panels.',
+    standard: 'NFPA 25',
+    icon: `<svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="5" y="6" width="18" height="19" rx="1"/>
+      <line x1="9" y1="3" x2="9" y2="9"/>
+      <line x1="19" y1="3" x2="19" y2="9"/>
+      <line x1="5" y1="13" x2="23" y2="13"/>
+      <polyline points="10,18 13,21 18,16"/>
+    </svg>`,
+  },
+  {
+    title: 'Industrial & High-Hazard',
+    desc: 'Foam, clean agent and CO₂ systems for paint booths, chemical storage and server rooms.',
+    standard: 'NFPA 11 / 12',
+    icon: `<svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="4" y="14" width="8" height="10"/>
+      <rect x="16" y="10" width="8" height="14"/>
+      <rect x="10" y="6" width="8" height="18"/>
+      <line x1="2" y1="24" x2="26" y2="24"/>
+    </svg>`,
+  },
+  {
+    title: 'Emergency Response',
+    desc: '24/7 emergency dispatch for system impairments, freeze damage and post-incident restoration.',
+    standard: '24 / 7',
+    icon: `<svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="14" cy="14" r="10"/>
+      <polyline points="14,8 14,14 18,17"/>
+    </svg>`,
+  },
+];
+
+const featuredProjects = [
+  {
+    id: 'p1',
+    name: 'ArcelorMittal Steel Plant',
+    city: 'Hamilton, ON',
+    type: 'Industrial Suppression',
+    year: '2023',
+    image: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80&fit=crop',
+  },
+  {
+    id: 'p2',
+    name: 'First Ontario Centre',
+    city: 'Hamilton, ON',
+    type: 'Commercial Fire Alarm',
+    year: '2022',
+    image: 'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=800&q=80&fit=crop',
+  },
+  {
+    id: 'p3',
+    name: 'Hamilton General Hospital',
+    city: 'Hamilton, ON',
+    type: 'Suppression + Alarm',
+    year: '2023',
+    image: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&q=80&fit=crop',
+  },
+];
+---
+
+<Layout>
+
+  <!-- ── Hero ── -->
+  <Hero />
+
+  <!-- ── Marquee ── -->
+  <Marquee client:load />
+
+  <!-- ── Stats Bar ── -->
+  <section class="relative z-10 border-b border-[#D4AF37]/08">
+    <div class="max-w-7xl mx-auto px-8 md:px-16 grid grid-cols-2 md:grid-cols-4 divide-x divide-[#D4AF37]/08">
+      {[
+        { n: '500+', l: 'Installations' },
+        { n: '20+',  l: 'Years Hamilton' },
+        { n: '100%', l: 'Code Compliant' },
+        { n: '24/7', l: 'Emergency Response' },
+      ].map((s) => (
+        <div class="py-12 px-8 first:pl-0 last:pr-0">
+          <ScrollReveal client:visible>
+            <p class="stat-number text-4xl md:text-5xl font-black leading-none bg-gradient-to-br from-[#D4AF37] via-[#f5e27a] to-[#A08928] bg-clip-text text-transparent mb-2">{s.n}</p>
+            <p class="eyebrow text-[#6B6B6B]">{s.l}</p>
+          </ScrollReveal>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- ── Services Snapshot ── -->
+  <section id="services-snap" class="relative z-10 section-gap">
+    <div class="max-w-7xl mx-auto px-8 md:px-16">
+
+      <ScrollReveal client:visible>
+        <div class="mb-16 flex items-end justify-between">
+          <div>
+            <div class="flex items-center gap-4 mb-5">
+              <span class="block w-8 h-px bg-[#D4AF37]/40"></span>
+              <p class="eyebrow text-[#A08928]">What We Do</p>
+            </div>
+            <h2 class="font-display font-black text-5xl md:text-6xl xl:text-7xl uppercase leading-none">
+              <span class="text-[#F5F0E8]">Built for the</span><br />
+              <span class="text-[#D4AF37]">Hard Jobs.</span>
+            </h2>
+          </div>
+          <a href="/services" class="hidden md:inline-flex items-center gap-2 eyebrow text-[#A08928] hover:text-[#D4AF37] transition-colors">
+            All Services →
+          </a>
+        </div>
+      </ScrollReveal>
+
+      <!-- Services list — horizontal rows -->
+      <div class="border-t border-[#D4AF37]/08">
+        {services.map((s, i) => (
+          <ScrollReveal client:visible delay={i * 0.06}>
+            <div class="service-card group flex items-center gap-8 py-7 px-6 border-b border-[#D4AF37]/08">
+              <!-- Icon -->
+              <div class="flex-shrink-0 w-10 h-10 flex items-center justify-center opacity-80 group-hover:opacity-100 transition-opacity">
+                <Fragment set:html={s.icon} />
+              </div>
+              <!-- Text -->
+              <div class="flex-1 min-w-0">
+                <h3 class="font-display font-bold text-xl md:text-2xl uppercase text-[#F5F0E8] group-hover:text-[#D4AF37] transition-colors duration-300 leading-tight">{s.title}</h3>
+                <p class="text-[#F5F0E8]/40 text-sm leading-relaxed mt-1 hidden md:block">{s.desc}</p>
+              </div>
+              <!-- Standard -->
+              <span class="hidden lg:block eyebrow text-[#6B6B6B] flex-shrink-0">{s.standard}</span>
+              <!-- Arrow -->
+              <span class="text-[#D4AF37]/20 group-hover:text-[#D4AF37] transition-colors duration-300 text-lg flex-shrink-0">→</span>
+            </div>
+          </ScrollReveal>
+        ))}
+      </div>
+
+      <div class="mt-8 md:hidden">
+        <a href="/services" class="eyebrow text-[#A08928] hover:text-[#D4AF37] transition-colors">
+          All Services →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Featured Projects ── -->
+  <section id="projects-snap" class="relative z-10 section-gap border-t border-[#D4AF37]/08">
+    <div class="max-w-7xl mx-auto px-8 md:px-16 mb-14">
+      <ScrollReveal client:visible>
+        <div class="flex items-end justify-between">
+          <div>
+            <div class="flex items-center gap-4 mb-5">
+              <span class="block w-8 h-px bg-[#D4AF37]/40"></span>
+              <p class="eyebrow text-[#A08928]">Featured Work</p>
+            </div>
+            <h2 class="font-display font-black text-5xl md:text-6xl xl:text-7xl uppercase leading-none">
+              <span class="text-[#F5F0E8]">Real Jobs.</span><br />
+              <span class="text-[#D4AF37]">Real Authority.</span>
+            </h2>
+          </div>
+          <a href="/projects" class="hidden md:inline-flex items-center gap-2 eyebrow text-[#A08928] hover:text-[#D4AF37] transition-colors">
+            All Projects →
+          </a>
+        </div>
+      </ScrollReveal>
+    </div>
+
+    <KineticGallery projects={featuredProjects} preview={true} client:visible />
+
+    <div class="max-w-7xl mx-auto px-8 md:px-16 mt-8 md:hidden">
+      <a href="/projects" class="eyebrow text-[#A08928] hover:text-[#D4AF37] transition-colors">All Projects →</a>
+    </div>
+  </section>
+
+  <!-- ── About Brett ── -->
+  <section id="about" class="relative z-10 section-gap border-t border-[#D4AF37]/08">
+    <div class="max-w-7xl mx-auto px-8 md:px-16 grid md:grid-cols-[1fr_1fr] gap-16 xl:gap-28 items-center">
+
+      <ScrollReveal client:visible>
+        <div class="relative">
+          <div class="aspect-[4/5] bg-[#0d0d0d] border border-[#D4AF37]/12 overflow-hidden relative">
+            <!-- Replace src with real photo: /brett.jpg -->
+            <div class="absolute inset-0 flex flex-col items-center justify-center gap-4 opacity-15">
+              <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+                <circle cx="28" cy="20" r="11" stroke="#D4AF37" stroke-width="1.5"/>
+                <path d="M6 50c0-12.15 9.85-22 22-22s22 9.85 22 22" stroke="#D4AF37" stroke-width="1.5"/>
+              </svg>
+              <p class="eyebrow text-[#D4AF37]">Add brett.jpg to /public</p>
+            </div>
+            <div class="absolute top-4 left-4 w-8 h-8 border-t-2 border-l-2 border-[#D4AF37]/30"></div>
+            <div class="absolute top-4 right-4 w-8 h-8 border-t-2 border-r-2 border-[#D4AF37]/30"></div>
+            <div class="absolute bottom-4 left-4 w-8 h-8 border-b-2 border-l-2 border-[#D4AF37]/30"></div>
+            <div class="absolute bottom-4 right-4 w-8 h-8 border-b-2 border-r-2 border-[#D4AF37]/30"></div>
+          </div>
+          <div class="absolute -bottom-5 -right-5 bg-[#D4AF37] text-[#080808] p-5 hidden md:block">
+            <p class="font-mono text-3xl font-black leading-none">20+</p>
+            <p class="eyebrow mt-1">Yrs Experience</p>
+          </div>
+        </div>
+      </ScrollReveal>
+
+      <ScrollReveal client:visible>
+        <div class="flex items-center gap-4 mb-6">
+          <span class="block w-8 h-px bg-[#D4AF37]/40"></span>
+          <p class="eyebrow text-[#A08928]">The Person Behind the Work</p>
+        </div>
+        <h2 class="font-display font-black text-5xl md:text-6xl xl:text-7xl uppercase leading-none mb-8">
+          <span class="text-[#F5F0E8]">You Deal Directly</span><br />
+          <span class="text-[#D4AF37]">with Brett.</span>
+        </h2>
+        <p class="text-[#F5F0E8]/55 text-base leading-relaxed mb-5">
+          Brett has been designing and installing fire suppression systems in Hamilton for over two decades. Every quote, every site walk, every inspection — you're talking to the person who actually runs the job.
+        </p>
+        <p class="text-[#F5F0E8]/55 text-base leading-relaxed mb-10">
+          No sub-contractors. No account managers. Hamilton's industrial and commercial property managers trust Ultimate Fire Protection because they know who picks up the phone.
+        </p>
+        <div class="grid grid-cols-2 gap-3 mb-10">
+          {[
+            'NFPA 13 Certified Designer',
+            'ULC Listed Installer',
+            'TSSA Licensed',
+            'Ontario Building Code',
+            '$5M Liability Insurance',
+            'AHJ Submissions',
+          ].map((cred) => (
+            <div class="flex items-center gap-2.5">
+              <div class="w-1 h-1 rounded-full bg-[#D4AF37] flex-shrink-0" />
+              <p class="text-[#F5F0E8]/55 text-xs">{cred}</p>
+            </div>
+          ))}
+        </div>
+        <a href="/contact" class="inline-flex items-center gap-3 font-display font-bold text-lg uppercase text-[#D4AF37] hover:gap-5 transition-all duration-300">
+          Talk to Brett <span>→</span>
+        </a>
+      </ScrollReveal>
+    </div>
+  </section>
+
+  <!-- ── Contact CTA ── -->
+  <section id="contact-cta" class="relative z-10 section-gap border-t border-[#D4AF37]/08">
+    <div class="max-w-7xl mx-auto px-8 md:px-16 text-center">
+      <ScrollReveal client:visible>
+        <p class="eyebrow text-[#A08928] mb-6">Ready to Build</p>
+        <h2 class="font-display font-black text-6xl md:text-8xl xl:text-9xl uppercase tracking-[-0.02em] leading-none mb-8">
+          <span class="text-[#F5F0E8]">Let's Talk</span><br />
+          <span class="text-[#D4AF37]">About Your Job.</span>
+        </h2>
+        <p class="text-[#F5F0E8]/50 text-lg max-w-md mx-auto leading-relaxed mb-12">
+          Hamilton's commercial and industrial fire suppression specialists. No sales team — you talk directly to Brett.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/contact"
+            class="inline-flex items-center justify-center px-12 py-5 text-sm font-bold tracking-[0.2em] uppercase bg-[#D4AF37] text-[#080808] hover:bg-[#f7e98e] transition-colors duration-300">
+            Request Consultation
+          </a>
+          <a href="tel:+19055550000"
+            class="inline-flex items-center justify-center px-12 py-5 text-sm font-bold tracking-[0.2em] uppercase border border-[#D4AF37]/30 text-[#D4AF37] hover:border-[#D4AF37] transition-colors duration-300">
+            (905) 555-0000
+          </a>
+        </div>
+      </ScrollReveal>
+    </div>
+  </section>
+
+  <Footer />
+
+</Layout>

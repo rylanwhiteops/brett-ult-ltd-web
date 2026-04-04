@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(open \"http://localhost:4325/projects\")",
+      "Bash(screencapture -x /tmp/audit_projects.png)",
+      "Bash(open \"http://localhost:4325/services\")",
+      "Bash(screencapture -x /tmp/audit_services.png)",
+      "Bash(open \"http://localhost:4325/contact\")",
+      "Bash(open \"http://localhost:4325\")",
+      "Bash(screencapture -x /tmp/new_home.png)"
+    ]
+  }
+}

@@ -1,0 +1,158 @@
+---
+import Layout from '../layouts/Layout.astro';
+import KineticGallery from '../components/KineticGallery.tsx';
+import ScrollReveal from '../components/ScrollReveal.tsx';
+import Marquee from '../components/Marquee.tsx';
+import PageHeader from '../components/PageHeader.astro';
+import Footer from '../components/Footer.astro';
+
+const projects = [
+  {
+    id: 'p1',
+    name: 'ArcelorMittal Steel Plant',
+    city: 'Hamilton, ON',
+    type: 'Industrial Suppression',
+    year: '2023',
+    image: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80&fit=crop',
+  },
+  {
+    id: 'p2',
+    name: 'First Ontario Centre',
+    city: 'Hamilton, ON',
+    type: 'Commercial Fire Alarm',
+    year: '2022',
+    image: 'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=800&q=80&fit=crop',
+  },
+  {
+    id: 'p3',
+    name: 'Hamilton General Hospital',
+    city: 'Hamilton, ON',
+    type: 'Suppression + Alarm',
+    year: '2023',
+    image: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&q=80&fit=crop',
+  },
+  {
+    id: 'p4',
+    name: 'Stelco Lake Erie Works',
+    city: 'Nanticoke, ON',
+    type: 'High-Hazard Foam System',
+    year: '2022',
+    image: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=800&q=80&fit=crop',
+  },
+  {
+    id: 'p5',
+    name: 'Meridian Credit Union HQ',
+    city: 'St. Catharines, ON',
+    type: 'Clean Agent + Alarm',
+    year: '2021',
+    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80&fit=crop',
+  },
+  {
+    id: 'p6',
+    name: 'Burlington Mall',
+    city: 'Burlington, ON',
+    type: 'Wet Pipe Suppression',
+    year: '2023',
+    image: 'https://images.unsplash.com/photo-1555636222-cae831e670b3?w=800&q=80&fit=crop',
+  },
+  {
+    id: 'p7',
+    name: 'CN Rail Logistics Hub',
+    city: 'Hamilton, ON',
+    type: 'Pre-Action System',
+    year: '2021',
+    image: 'https://images.unsplash.com/photo-1473445730015-841f29a9490b?w=800&q=80&fit=crop',
+  },
+  {
+    id: 'p8',
+    name: 'Dofasco Distribution Centre',
+    city: 'Hamilton, ON',
+    type: 'ESFR Rack Storage',
+    year: '2020',
+    image: 'https://images.unsplash.com/photo-1565793979873-4fcab1f2ef48?w=800&q=80&fit=crop',
+  },
+  {
+    id: 'p9',
+    name: 'McMaster University Research',
+    city: 'Hamilton, ON',
+    type: 'Lab Suppression + Alarm',
+    year: '2022',
+    image: 'https://images.unsplash.com/photo-1562774053-701939374585?w=800&q=80&fit=crop',
+  },
+];
+---
+
+<Layout
+  title="Projects — Ultimate Fire Protection"
+  description="Real fire suppression and alarm projects across Hamilton's industrial and commercial sector."
+>
+
+  <PageHeader
+    eyebrow="Portfolio · Hamilton, Ontario"
+    heading="The Work"
+    headingGold="Speaks."
+    sub="500+ installations across Hamilton's industrial corridor. Each job engineered to code, built to last — and still running."
+    watermark="WORK"
+    stat="500+"
+    statLabel="Completed Jobs"
+  />
+
+  <Marquee client:load />
+
+  <!-- ── Stats Strip ── -->
+  <section class="relative z-10 border-b border-[#D4AF37]/08">
+    <div class="max-w-7xl mx-auto px-8 md:px-16 grid grid-cols-2 md:grid-cols-4 divide-x divide-[#D4AF37]/08">
+      {[
+        { n: '500+', l: 'Installations' },
+        { n: '20+',  l: 'Years Active' },
+        { n: '12',   l: 'Industries' },
+        { n: '100%', l: 'Code Compliant' },
+      ].map((s) => (
+        <div class="py-10 px-8 first:pl-0 last:pr-0">
+          <ScrollReveal client:visible>
+            <p class="stat-number text-3xl md:text-4xl font-black leading-none bg-gradient-to-br from-[#D4AF37] via-[#f5e27a] to-[#A08928] bg-clip-text text-transparent mb-1">{s.n}</p>
+            <p class="eyebrow text-[#6B6B6B]">{s.l}</p>
+          </ScrollReveal>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- ── Filter Bar ── -->
+  <section class="relative z-10 border-b border-[#D4AF37]/08 py-5">
+    <div class="max-w-7xl mx-auto px-8 md:px-16 flex items-center gap-8 overflow-x-auto">
+      <span class="eyebrow text-[#6B6B6B] whitespace-nowrap flex-shrink-0">Filter:</span>
+      {['All', 'Industrial', 'Commercial', 'Suppression', 'Fire Alarm', 'High-Hazard'].map((label, i) => (
+        <button class={`eyebrow whitespace-nowrap flex-shrink-0 transition-colors duration-200 hover:text-[#F5F0E8] ${i === 0 ? 'text-[#D4AF37]' : 'text-[#6B6B6B]'}`}>
+          {label}
+        </button>
+      ))}
+    </div>
+  </section>
+
+  <!-- ── Gallery ── -->
+  <section class="relative z-10">
+    <KineticGallery projects={projects} client:visible />
+  </section>
+
+  <!-- ── CTA Strip ── -->
+  <section class="relative z-10 border-t border-[#D4AF37]/08 py-28">
+    <div class="max-w-7xl mx-auto px-8 md:px-16 flex flex-col md:flex-row items-center justify-between gap-10">
+      <ScrollReveal client:visible>
+        <h2 class="font-display font-black text-5xl md:text-6xl uppercase leading-none">
+          <span class="text-[#F5F0E8]">Ready to be</span><br />
+          <span class="text-[#D4AF37]">on this list?</span>
+        </h2>
+      </ScrollReveal>
+      <ScrollReveal client:visible>
+        <a href="/contact"
+          class="inline-flex items-center justify-center gap-3 px-12 py-5 text-sm font-bold tracking-[0.2em] uppercase bg-[#D4AF37] text-[#080808] hover:bg-[#f7e98e] transition-colors duration-300 whitespace-nowrap">
+          Start Your Project →
+        </a>
+      </ScrollReveal>
+    </div>
+  </section>
+
+  <Footer />
+
+</Layout>
