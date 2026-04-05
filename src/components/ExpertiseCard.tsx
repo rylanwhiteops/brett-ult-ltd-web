@@ -4,13 +4,14 @@ import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 
 interface Props {
-  icon: string;       // inline SVG string
+  icon: string;
   title: string;
   description: string;
-  index: number;      // stagger delay source
+  index: number;
+  acquired?: boolean;
 }
 
-export default function ExpertiseCard({ icon, title, description, index }: Props) {
+export default function ExpertiseCard({ icon, title, description, index, acquired = false }: Props) {
   const ref = useRef<HTMLDivElement>(null);
 
   /*
@@ -54,10 +55,17 @@ export default function ExpertiseCard({ icon, title, description, index }: Props
         dangerouslySetInnerHTML={{ __html: icon }}
       />
 
-      {/* Title */}
-      <h3 className="text-[#F5F0E8] text-lg font-bold tracking-tight mb-3 group-hover:text-[#D4AF37] transition-colors duration-300">
-        {title}
-      </h3>
+      {/* Title + optional acquired badge */}
+      <div className="flex items-center gap-2 flex-wrap mb-3">
+        <h3 className="text-[#F5F0E8] text-lg font-bold tracking-tight group-hover:text-[#D4AF37] transition-colors duration-300">
+          {title}
+        </h3>
+        {acquired && (
+          <span className="inline-flex items-center px-2 py-0.5 text-[10px] font-bold tracking-[0.15em] uppercase bg-[#D4A017]/15 text-[#D4A017] border border-[#D4A017]/30">
+            Acquired Co.
+          </span>
+        )}
+      </div>
 
       {/* Description */}
       <p className="text-[#F5F0E8]/50 text-sm leading-relaxed">

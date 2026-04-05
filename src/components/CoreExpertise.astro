@@ -21,14 +21,6 @@ const services = [
     </svg>`,
   },
   {
-    title: 'Fire Alarm Systems',
-    description: 'ULC-listed detection, notification and monitoring systems. From single-panel retrofits to addressable multi-building networked installations.',
-    icon: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-      <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-      <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-    </svg>`,
-  },
-  {
     title: 'Annual Inspections & Certification',
     description: 'Scheduled inspection programs for sprinklers, standpipes, fire pumps, suppression agents and alarm panels — fully documented for insurance and AHJ.',
     icon: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -45,12 +37,13 @@ const services = [
     </svg>`,
   },
   {
-    title: 'Industrial & High-Hazard',
-    description: 'Specialty suppression for paint booths, chemical storage, server rooms and high-challenge occupancies requiring foam, clean agent or CO₂ systems.',
+    title: 'NICO Fire Protection',
+    acquired: true,
+    description: 'Acquired full-service fire protection company. NICO\'s operations are integrated into Ultimate Fire Protection, expanding crew capacity and service coverage across the Hamilton region.',
     icon: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-      <rect x="2" y="7" width="20" height="14" rx="2"/>
-      <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
-      <path d="M12 12v4M10 14h4"/>
+      <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+      <path d="M2 17l10 5 10-5"/>
+      <path d="M2 12l10 5 10-5"/>
     </svg>`,
   },
 ];
@@ -78,6 +71,7 @@ const services = [
           icon={service.icon}
           title={service.title}
           description={service.description}
+          acquired={(service as any).acquired ?? false}
           index={i}
         />
       ))}

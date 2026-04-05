@@ -26,6 +26,8 @@ const {
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Barlow+Condensed:wght@600;700;800;900&display=swap" rel="stylesheet" />
+    <!-- Preload GLB so browser fetches it during HTML parse, before JS runs -->
+    <link rel="preload" href="/red_sprinkler_pump.glb" as="fetch" crossorigin="anonymous" />
   </head>
 
   <body class="bg-[#080808] text-[#F5F0E8] antialiased">
