@@ -1,17 +1,12 @@
 'use client';
 
 /**
- * SprinklerModel — Scroll-jacked 3D sprinkler pump
+ * SprinklerModel — Scroll-jacked holographic sprinkler pump
  *
- * Renderer: autoClear=true, clear() before every frame, powerPreference high-performance,
- *           setPixelRatio(devicePixelRatio), no CSS background on canvas
- * Material:  matte gold #B8860B — metalness 0.7, roughness 0.6
- * Lights:    gold key 4.0, orange fill 1.0, white rim 2.0
- * Grouping:  single THREE.Object3D parent — only parent ever transforms
- * Dissolve:  solid phase doubled (0→0.55 solid, then transition)
- * Zoom:      z 6.2→4.8 (never closer than 40% of start; 4.8/6.2=77%)
- * Base:      centroid-Y filter removes platform meshes
- * Desktop-only — hard bail on mobile
+ * Holographic look: semi-transparent solid faces (opacity 0.78), persistent
+ * edge glow (opacity 0.22 baseline), emissive inner amber, low roughness.
+ * Parts filter: base centroid-Y + XZ outlier radius — removes scattered
+ * assembly components (side valve, crate, fittings) that are far from main body.
  */
 
 import { useEffect, useRef } from 'react';
@@ -45,69 +40,74 @@ export default function SprinklerModel() {
       alpha:           true,
       powerPreference: 'high-performance',
     });
-    renderer.autoClear           = true;                        // no ghost lines
-    renderer.setClearColor(0x000000, 0);                        // fully transparent
-    renderer.setPixelRatio(window.devicePixelRatio);            // crisp on retina
+    renderer.autoClear           = true;
+    renderer.setClearColor(0x000000, 0);
+    renderer.setPixelRatio(window.devicePixelRatio);
     renderer.toneMapping         = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.2;
-    renderer.shadowMap.enabled   = true;
-    renderer.shadowMap.type      = THREE.PCFSoftShadowMap;
+    renderer.toneMappingExposure = 1.1;
+    renderer.shadowMap.enabled   = false; // off for perf — holographic look doesn't need shadows
     renderer.setSize(getW(), getH());
-    renderer.domElement.style.background = '';                  // no CSS bg on canvas
+    renderer.domElement.style.background = '';
     mount.appendChild(renderer.domElement);
 
     /* ── Scene ───────────────────────────────────────────────────────────── */
     const scene = new THREE.Scene();
 
-    /* ── Environment (low intensity — lights do the heavy work) ─────────── */
+    /* ── Environment ─────────────────────────────────────────────────────── */
     const pmrem  = new THREE.PMREMGenerator(renderer);
     pmrem.compileEquirectangularShader();
     const envTex = pmrem.fromScene(new RoomEnvironment(), 0.02).texture;
     scene.environment          = envTex;
-    scene.environmentIntensity = 0.2;
+    scene.environmentIntensity = 0.15;
     pmrem.dispose();
 
-    /* ── Camera ─────────────────────────────────────────────────── */
+    /* ── Camera ──────────────────────────────────────────────────────────── */
     const camera = new THREE.PerspectiveCamera(38, getW() / getH(), 0.01, 200);
     camera.position.set(0, 0.4, 6.2);
     camera.lookAt(-1.4, 0.0, 0);
 
-    /* ── Lights ──────────────────────────────────────────────────────────
-       Gold key (upper-right) + orange fill (left) + white rim (behind)
-    ── */
-    scene.add(new THREE.AmbientLight(0x1a1000, 1.5));
+    /* ── Lights — holographic: gold key + blue-teal hologram fill + white rim */
+    scene.add(new THREE.AmbientLight(0x0a0800, 1.2));
 
-    const keyLight = new THREE.PointLight(0xD4A017, 4.0, 35);
+    const keyLight = new THREE.PointLight(0xD4A017, 3.5, 35);
     keyLight.position.set(6, 9, 5);
-    keyLight.castShadow = true;
-    keyLight.shadow.mapSize.set(512, 512);
     scene.add(keyLight);
 
-    const fillLight = new THREE.PointLight(0xFF6B00, 1.0, 28);
-    fillLight.position.set(-5, 1, 4);
-    scene.add(fillLight);
+    // Holographic blue-teal fill (replaces orange — gives cold/tech contrast to gold)
+    const holoFill = new THREE.PointLight(0x2060FF, 0.6, 30);
+    holoFill.position.set(-5, 2, 6);
+    scene.add(holoFill);
 
-    const rimLight = new THREE.DirectionalLight(0xffffff, 2.0);
+    // Warm secondary fill so it doesn't go too cold
+    const warmFill = new THREE.PointLight(0xFF8800, 0.4, 20);
+    warmFill.position.set(-4, -2, 3);
+    scene.add(warmFill);
+
+    const rimLight = new THREE.DirectionalLight(0xffffff, 1.6);
     rimLight.position.set(0, 2, -8);
     scene.add(rimLight);
 
-    /* ── Material — matte industrial gold ───────────────────────────────── */
+    /* ── Material — holographic gold ─────────────────────────────────────── */
     const goldBase = new THREE.MeshStandardMaterial({
-      color:               new THREE.Color('#B8860B'),
-      metalness:           0.7,
-      roughness:           0.6,
-      envMapIntensity:     0.4,
+      color:               new THREE.Color('#B8941A'),  // warm gold
+      emissive:            new THREE.Color('#3D1800'),  // amber inner glow
+      emissiveIntensity:   0.5,
+      metalness:           0.85,
+      roughness:           0.25,   // low roughness = holographic sheen
+      envMapIntensity:     0.5,
       transparent:         true,
-      opacity:             1,
+      opacity:             0.78,   // semi-transparent — holographic look
+      side:                THREE.FrontSide,
       polygonOffset:       true,
       polygonOffsetFactor: 1,
       polygonOffsetUnits:  1,
     });
 
+    // Wireframe edges: always slightly glowing from the start
     const wireBase = new THREE.LineBasicMaterial({
-      color:       0xD4A017,
+      color:       0xFFD040,  // bright gold-yellow edges
       transparent: true,
-      opacity:     0,
+      opacity:     0.22,      // baseline — holographic edges always visible
       blending:    THREE.AdditiveBlending,
       depthWrite:  false,
     });
@@ -128,7 +128,7 @@ export default function SprinklerModel() {
     };
     window.addEventListener('resize', onResize, { passive: true });
 
-    /* ── Scroll / ScrollTrigger ──────────────────────────────────────────── */
+    /* ── ScrollTrigger ───────────────────────────────────────────────────── */
     const progress = { value: 0 };
 
     const st = ScrollTrigger.create({
@@ -156,13 +156,12 @@ export default function SprinklerModel() {
     let solidEntries: SolidEntry[] = [];
     let wireEntries:  WireEntry[]  = [];
 
-    // Single parent — ONLY this ever transforms; individual meshes never move
     const parent = new THREE.Object3D();
     scene.add(parent);
 
     let baseRotY = 0;
 
-    /* ── GLB Load — DRACOLoader ready (handles compressed or plain GLB) ─── */
+    /* ── GLB Load ─────────────────────────────────────────────────────────── */
     const dracoLoader = new DRACOLoader();
     dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
 
@@ -172,7 +171,6 @@ export default function SprinklerModel() {
     gltfLoader.load('/red_sprinkler_pump.glb', (gltf) => {
       const root = gltf.scene;
 
-      // Log mesh count so we can verify all children are present
       let meshCount = 0;
       root.traverse(c => { if ((c as THREE.Mesh).isMesh) meshCount++; });
       console.log(`[SprinklerModel] GLB loaded — ${meshCount} meshes`);
@@ -185,25 +183,63 @@ export default function SprinklerModel() {
       const fullCentre = fullBox.getCenter(new THREE.Vector3());
       root.position.sub(fullCentre.multiplyScalar(normScale));
 
-      /* 2. Base-platform centroid filter */
+      /* 2. Base-platform centroid filter — hide bottom 35% by Y */
       const scaledBox = new THREE.Box3().setFromObject(root);
       const modelH    = scaledBox.max.y - scaledBox.min.y;
-      // Hide any mesh whose centroid sits in the bottom 35% — that's the base disc
-      const centroidThreshold = scaledBox.min.y + modelH * 0.35;
+      const centroidThresholdY = scaledBox.min.y + modelH * 0.35;
 
-      /* 3. Apply material to EVERY mesh; hide only base-platform pieces */
       root.traverse((child) => {
         if (!(child as THREE.Mesh).isMesh) return;
         const mesh = child as THREE.Mesh;
-        mesh.castShadow    = true;
-        mesh.receiveShadow = true;
-
         const mb        = new THREE.Box3().setFromObject(mesh);
         const centroidY = (mb.min.y + mb.max.y) * 0.5;
-        if (centroidY < centroidThreshold) {
-          mesh.visible = false;
-          return;
-        }
+        if (centroidY < centroidThresholdY) mesh.visible = false;
+      });
+
+      /* 3. XZ outlier filter — remove parts far from the main body centroid.
+            Computes mean XZ position of all currently-visible mesh centroids,
+            then hides anything beyond MAX_RADIUS world units from that mean.
+            This removes side valves, crates, and loose fittings that are
+            physically separated from the main pump body in the GLB assembly. */
+      const visibleCentroids: THREE.Vector3[] = [];
+      root.traverse((child) => {
+        if (!(child as THREE.Mesh).isMesh || !child.visible) return;
+        const mb = new THREE.Box3().setFromObject(child);
+        visibleCentroids.push(mb.getCenter(new THREE.Vector3()));
+      });
+
+      if (visibleCentroids.length > 1) {
+        const mean = visibleCentroids
+          .reduce((acc, c) => acc.add(c), new THREE.Vector3())
+          .divideScalar(visibleCentroids.length);
+
+        // Compute median distance (more robust than mean for outlier detection)
+        const distances = visibleCentroids.map(c =>
+          Math.sqrt(Math.pow(c.x - mean.x, 2) + Math.pow(c.z - mean.z, 2))
+        );
+        distances.sort((a, b) => a - b);
+        const medianDist = distances[Math.floor(distances.length / 2)];
+
+        // Threshold: 3× median distance (keeps clustered body, drops outliers)
+        const MAX_RADIUS = Math.max(medianDist * 3, 0.4);
+        console.log(`[SprinklerModel] XZ filter — mean=(${mean.x.toFixed(2)},${mean.z.toFixed(2)}) medianDist=${medianDist.toFixed(2)} radius=${MAX_RADIUS.toFixed(2)}`);
+
+        root.traverse((child) => {
+          if (!(child as THREE.Mesh).isMesh || !child.visible) return;
+          const mb = new THREE.Box3().setFromObject(child);
+          const c  = mb.getCenter(new THREE.Vector3());
+          const dxz = Math.sqrt(Math.pow(c.x - mean.x, 2) + Math.pow(c.z - mean.z, 2));
+          if (dxz > MAX_RADIUS) {
+            child.visible = false;
+            console.log(`[SprinklerModel] Filtered outlier at dxz=${dxz.toFixed(2)}`);
+          }
+        });
+      }
+
+      /* 4. Apply holographic material to all remaining visible meshes */
+      root.traverse((child) => {
+        if (!(child as THREE.Mesh).isMesh || !child.visible) return;
+        const mesh = child as THREE.Mesh;
 
         const solidMat = goldBase.clone() as THREE.MeshStandardMaterial;
         mesh.material  = solidMat;
@@ -217,22 +253,24 @@ export default function SprinklerModel() {
         wireEntries.push({ mat: wireMat });
       });
 
-      /* 4. Re-centre on visible geometry */
+      /* 5. Re-centre on visible geometry */
       const visBox = new THREE.Box3();
       root.traverse(c => {
         if ((c as THREE.Mesh).isMesh && c.visible) visBox.expandByObject(c);
       });
       if (!visBox.isEmpty()) {
-        root.position.y -= visBox.getCenter(new THREE.Vector3()).y;
+        const visCenter = visBox.getCenter(new THREE.Vector3());
+        root.position.x -= visCenter.x;
+        root.position.y -= visCenter.y;
+        // don't offset Z — keep depth natural
       }
 
-      /* 5. Scale group so visible portion fills target world size */
-      const visSize = new THREE.Box3();
-      root.traverse(c => { if ((c as THREE.Mesh).isMesh && c.visible) visSize.expandByObject(c); });
-      const visDim = Math.max(...visSize.getSize(new THREE.Vector3()).toArray());
+      /* 6. Scale group so visible portion fills target world size */
+      const visSizeBox = new THREE.Box3();
+      root.traverse(c => { if ((c as THREE.Mesh).isMesh && c.visible) visSizeBox.expandByObject(c); });
+      const visDim = Math.max(...visSizeBox.getSize(new THREE.Vector3()).toArray());
       parent.scale.setScalar(visDim > 0.001 ? 3.9 / visDim : 1);
 
-      /* 6. Add root under the single parent — nothing else ever moves */
       parent.add(root);
     });
 
@@ -240,10 +278,8 @@ export default function SprinklerModel() {
     const FRAME_MS = 1000 / 30;
     let lastFrame  = 0, rafId = 0, lerpRX = 0, lerpRY = 0, lastP = -1;
 
-    // Camera path: start z=6.2, end z=4.8 — never closer than 40% of 6.2 (2.48)
     const CAM_START  = new THREE.Vector3(0, 0.4,  6.2);
     const CAM_END    = new THREE.Vector3(0, 0.3,  4.8);
-    // LookAt sweeps from offset-left (model appears right) to centre
     const LOOK_START = new THREE.Vector3(-1.4, 0.0, 0);
     const LOOK_END   = new THREE.Vector3( 0,   0.0, 0);
     const LOOK_NOW   = new THREE.Vector3();
@@ -253,7 +289,7 @@ export default function SprinklerModel() {
       if (ts - lastFrame < FRAME_MS) return;
       lastFrame = ts;
 
-      renderer.clear(); // explicit clear — no ghost/artifact lines
+      renderer.clear();
 
       const p = progress.value;
 
@@ -262,18 +298,22 @@ export default function SprinklerModel() {
       LOOK_NOW.lerpVectors(LOOK_START, LOOK_END, clamp01(p / 0.55));
       camera.lookAt(LOOK_NOW);
 
-      /* Dissolve — solid phase doubled: solid 0→0.55, transition 0.55→0.78, wire 0.78→0.92, fade 0.92→1 */
+      /* Dissolve — holographic from the start:
+         solid starts at 0.78 opacity, wire starts at 0.22
+         transition 0.55→0.78: solid fades out, wire ramps to full
+         wire 0.78→0.92: full wireframe
+         fade 0.92→1.0: everything out */
       if (Math.abs(p - lastP) > 0.002) {
         lastP = p;
 
         const solidOpacity =
-          p < 0.55 ? 1 :
-          p < 0.78 ? lerp(1, 0, invLerp(0.55, 0.78, p)) :
+          p < 0.55 ? 0.78 :
+          p < 0.78 ? lerp(0.78, 0, invLerp(0.55, 0.78, p)) :
           0;
 
         const wireOpacity =
-          p < 0.55 ? 0 :
-          p < 0.78 ? lerp(0, 1, invLerp(0.55, 0.78, p)) :
+          p < 0.55 ? 0.22 :                                  // always glowing
+          p < 0.78 ? lerp(0.22, 1, invLerp(0.55, 0.78, p)) :
           p < 0.92 ? 1 :
                      lerp(1, 0, invLerp(0.92, 1.00, p));
 
@@ -282,7 +322,7 @@ export default function SprinklerModel() {
           mat.visible = solidOpacity > 0.005;
         });
         wireEntries.forEach(({ mat }) => {
-          mat.opacity = Math.max(0, wireOpacity * 0.88);
+          mat.opacity = Math.max(0, wireOpacity);
         });
       }
 
