@@ -138,7 +138,7 @@ export default function SprinklerModel() {
     const st = ScrollTrigger.create({
       trigger: '#hero',
       start:   'top top',
-      end:     '+=130%',
+      end:     '+=165%',
       pin:     true,
       scrub:   0.6,
       onUpdate: (self) => {
@@ -158,10 +158,12 @@ export default function SprinklerModel() {
     });
 
     /* ── Model state ─────────────────────────────────────────────────────── */
-    interface SolidEntry { mat: THREE.MeshStandardMaterial }
-    interface WireEntry  { mat: THREE.LineBasicMaterial    }
-    let solidEntries: SolidEntry[] = [];
-    let wireEntries:  WireEntry[]  = [];
+    interface SolidEntry   { mat: THREE.MeshStandardMaterial }
+    interface WireEntry    { mat: THREE.LineBasicMaterial    }
+    interface ExplodeEntry { mesh: THREE.Mesh; origPos: THREE.Vector3; dir: THREE.Vector3 }
+    let solidEntries:   SolidEntry[]   = [];
+    let wireEntries:    WireEntry[]    = [];
+    let explodeEntries: ExplodeEntry[] = [];
 
     const parent = new THREE.Object3D();
     scene.add(parent);
@@ -280,6 +282,22 @@ export default function SprinklerModel() {
 
       parent.add(root);
 
+      // Collect explosion data now that world matrices are finalised
+      const explodeBox = new THREE.Box3();
+      root.traverse(c => { if ((c as THREE.Mesh).isMesh && c.visible) explodeBox.expandByObject(c); });
+      const explodeCenter = explodeBox.getCenter(new THREE.Vector3());
+
+      root.traverse((child) => {
+        if (!(child as THREE.Mesh).isMesh || !child.visible) return;
+        const mesh = child as THREE.Mesh;
+        const worldPos = new THREE.Vector3();
+        mesh.getWorldPosition(worldPos);
+        const dir = worldPos.sub(explodeCenter);
+        if (dir.lengthSq() < 0.0001) dir.set((Math.random()-.5), 0.4, (Math.random()-.5));
+        dir.normalize();
+        explodeEntries.push({ mesh, origPos: mesh.position.clone(), dir });
+      });
+
       // Signal loader after two RAF ticks — gives the render loop time to
       // paint the model's first frame before the loader fades out
       requestAnimationFrame(() => {
@@ -313,24 +331,26 @@ export default function SprinklerModel() {
       LOOK_NOW.lerpVectors(LOOK_START, LOOK_END, clamp01(p / 0.55));
       camera.lookAt(LOOK_NOW);
 
-      /* Dissolve — holographic from the start:
-         solid starts at 0.78 opacity, wire starts at 0.22
-         transition 0.55→0.78: solid fades out, wire ramps to full
-         wire 0.78→0.92: full wireframe
-         fade 0.92→1.0: everything out */
+      /* Dissolve timeline:
+         0.00–0.52  solid holographic (opacity 0.52)
+         0.52–0.72  transition: solid fades, wire rises
+         0.72–0.84  full wireframe
+         0.84–0.97  EXPLODE: pieces fly outward, wire holds then fades
+         0.97–1.00  fade everything to zero */
       if (Math.abs(p - lastP) > 0.002) {
         lastP = p;
 
         const solidOpacity =
-          p < 0.55 ? 0.52 :
-          p < 0.78 ? lerp(0.52, 0, invLerp(0.55, 0.78, p)) :
+          p < 0.52 ? 0.52 :
+          p < 0.72 ? lerp(0.52, 0, invLerp(0.52, 0.72, p)) :
           0;
 
         const wireOpacity =
-          p < 0.55 ? 0.40 :                                  // always glowing
-          p < 0.78 ? lerp(0.40, 1, invLerp(0.55, 0.78, p)) :
-          p < 0.92 ? 1 :
-                     lerp(1, 0, invLerp(0.92, 1.00, p));
+          p < 0.52 ? 0.40 :
+          p < 0.72 ? lerp(0.40, 1,  invLerp(0.52, 0.72, p)) :
+          p < 0.84 ? 1 :
+          p < 0.97 ? lerp(1, 0,    invLerp(0.84, 0.97, p)) :
+          0;
 
         solidEntries.forEach(({ mat }) => {
           mat.opacity = Math.max(0, solidOpacity);
@@ -338,6 +358,15 @@ export default function SprinklerModel() {
         });
         wireEntries.forEach(({ mat }) => {
           mat.opacity = Math.max(0, wireOpacity);
+        });
+
+        /* Explosion — pieces fly outward from 0.84 → 0.97
+           cubic ease-in so it feels like a sudden burst */
+        const explodeRaw  = invLerp(0.84, 0.97, p);
+        const explodeEase = explodeRaw * explodeRaw * explodeRaw;
+        const dist        = explodeEase * 5.0 / Math.max(parent.scale.x, 0.01);
+        explodeEntries.forEach(({ mesh, origPos, dir }) => {
+          mesh.position.copy(origPos).addScaledVector(dir, dist);
         });
       }
 
@@ -367,6 +396,7 @@ export default function SprinklerModel() {
       if (copyEl) { copyEl.style.opacity = '1'; copyEl.style.transform = ''; }
       const maskEl = document.getElementById('model-mask');
       if (maskEl) maskEl.style.opacity = '1';
+      explodeEntries.forEach(({ mesh, origPos }) => mesh.position.copy(origPos));
       goldBase.dispose();
       wireBase.dispose();
       envTex.dispose();
