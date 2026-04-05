@@ -48,7 +48,7 @@ function ServiceCard({
           {/* Label */}
           <p className="text-[#A08928] text-[10px] font-semibold tracking-[0.35em] uppercase mb-4">
             Service {service.number}
-            {service.standard && ` · ${service.standard}`}
+            {service.standard && `  ${service.standard}`}
           </p>
 
           {/* Title */}

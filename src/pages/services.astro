@@ -42,7 +42,7 @@ const services = [
     description: 'Acquired full-service fire protection company. NICO\'s operations have been integrated into Ultimate Fire Protection, expanding our crew capacity, equipment fleet, and service coverage across the Hamilton region.',
     bullets: [
       'Expanded crew capacity for large-scale commercial and industrial projects',
-      'Additional equipment fleet — pumps, pipe equipment, specialty tools',
+      'Additional equipment fleet: pumps, pipe equipment, specialty tools',
       'Broader service coverage across the Golden Horseshoe',
       'Continuity of service for all existing NICO clients',
       'Same NFPA / ULC standards and direct-owner accountability',
@@ -70,7 +70,7 @@ const services = [
     title: 'Emergency Service & Repair',
     description: '24/7 emergency response for system impairments, freeze damage, mechanical failures and post-incident restoration.',
     bullets: [
-      '24-hour emergency dispatch — live answer, no call centre',
+      '24-hour emergency dispatch, live answer, no call centre',
       'Impairment permits and watch service coordination',
       'Freeze damage assessment and pipe repair',
       'Post-fire system restoration and recharge',
@@ -81,12 +81,12 @@ const services = [
 ---
 
 <Layout
-  title="Services — Ultimate Fire Protection"
+  title="Services | Ultimate Fire Protection"
   description="Full-service fire suppression, alarm, inspection and high-hazard systems for industrial and commercial properties in Hamilton, Ontario."
 >
 
   <PageHeader
-    eyebrow="What We Do · 5 Service Lines"
+    eyebrow="What We Do"
     heading="Built for"
     headingGold="Hard Jobs."
     sub="All engineered to NFPA and ULC standards. All installed by the same crew that designed them. No handoffs."
@@ -113,7 +113,7 @@ const services = [
               )}
             </div>
             {s.standard && !s.acquired && (
-              <span class="hidden md:block eyebrow text-[#6B6B6B] flex-shrink-0">{s.standard}</span>
+              <span class="hidden md:block eyebrow text-[#909090] flex-shrink-0">{s.standard}</span>
             )}
             <span class="text-[#D4AF37]/30 group-hover:text-[#D4AF37] transition-colors duration-300 text-lg flex-shrink-0">→</span>
           </div>
@@ -151,10 +151,10 @@ const services = [
       <ScrollReveal client:visible>
         <div class="space-y-8">
           {[
-            { label: 'Direct Access', text: 'You talk to the person running the job — not a dispatcher or account manager.' },
+            { label: 'Direct Access', text: 'You talk to the person running the job. Not a dispatcher or account manager.' },
             { label: '20+ Years Local', text: 'Every AHJ in the Hamilton region. Every inspector. Every quirk in the code.' },
             { label: 'Design-Build', text: 'We design what we install. No gap between the engineer and the contractor.' },
-            { label: 'Full Documentation', text: 'As-builts, certificates, inspection records — everything your insurer needs.' },
+            { label: 'Full Documentation', text: 'As-builts, certificates, inspection records. Everything your insurer needs.' },
           ].map((item) => (
             <div class="flex gap-5 pb-8 border-b border-[#D4AF37]/08 last:border-0 last:pb-0">
               <div class="w-1 h-full min-h-[1rem] bg-[#D4AF37]/30 flex-shrink-0 mt-1" />

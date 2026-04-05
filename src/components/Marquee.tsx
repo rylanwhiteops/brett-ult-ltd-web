@@ -29,7 +29,7 @@ export default function Marquee() {
       >
         {all.map((item, i) => (
           <span key={i} className="inline-flex items-center gap-12 flex-shrink-0">
-            <span className="text-[#8B7D6B] text-[10px] font-semibold tracking-[0.35em] uppercase">
+            <span className="text-[#909090] text-[10px] font-semibold tracking-[0.35em] uppercase">
               {item}
             </span>
             <span className="text-[#D4AF37]/30 text-[8px]">◆</span>
