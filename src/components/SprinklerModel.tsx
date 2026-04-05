@@ -29,7 +29,11 @@ export default function SprinklerModel() {
   useEffect(() => {
     const mount = mountRef.current;
     if (!mount) return;
-    if (window.innerWidth < 768) return; // desktop only
+    if (window.innerWidth < 768) {
+      // No model on mobile — signal loader immediately
+      window.dispatchEvent(new CustomEvent('app:ready'));
+      return;
+    }
 
     const getW = () => mount.clientWidth  || Math.round(window.innerWidth * 0.6);
     const getH = () => mount.clientHeight || window.innerHeight;
@@ -272,6 +276,14 @@ export default function SprinklerModel() {
       parent.scale.setScalar(visDim > 0.001 ? 3.9 / visDim : 1);
 
       parent.add(root);
+
+      // Signal loader after two RAF ticks — gives the render loop time to
+      // paint the model's first frame before the loader fades out
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          window.dispatchEvent(new CustomEvent('app:ready'));
+        });
+      });
     });
 
     /* ── RAF 30fps ───────────────────────────────────────────────────────── */

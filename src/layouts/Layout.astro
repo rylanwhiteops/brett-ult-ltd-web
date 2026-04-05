@@ -76,28 +76,34 @@ const {
         const bar    = document.getElementById('loader-bar');
         if (!loader || !bar) return;
 
-        // Animate bar to ~88% while waiting for load, then snap to 100% and fade
+        let called = false;
         let p = 0;
+
+        // Ease bar toward 90% while waiting — never reaches 100% on its own
         const tick = setInterval(() => {
-          p = p + (88 - p) * 0.04;
+          p = p + (90 - p) * 0.035;
           bar.style.width = p.toFixed(1) + '%';
         }, 40);
 
         const done = () => {
+          if (called) return;
+          called = true;
           clearInterval(tick);
           bar.style.width = '100%';
           setTimeout(() => {
             loader.style.opacity = '0';
             setTimeout(() => { loader.style.display = 'none'; }, 750);
-          }, 250);
+          }, 200);
         };
 
-        if (document.readyState === 'complete') {
-          done();
-        } else {
-          window.addEventListener('load', done, { once: true });
-          setTimeout(done, 6000); // hard cap — never block longer than 6s
-        }
+        // Primary: SprinklerModel dispatches this after GLB is loaded + first frame painted
+        window.addEventListener('app:ready', done, { once: true });
+
+        // Fallback 1: window.load + 1s buffer for React hydration (mobile / no model)
+        window.addEventListener('load', () => setTimeout(done, 1000), { once: true });
+
+        // Fallback 2: hard cap — never block more than 8s on slow connections
+        setTimeout(done, 8000);
       })();
     </script>
 
