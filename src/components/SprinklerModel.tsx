@@ -138,7 +138,7 @@ export default function SprinklerModel() {
     const st = ScrollTrigger.create({
       trigger: '#hero',
       start:   'top top',
-      end:     '+=210%',
+      end:     '+=235%',
       pin:     true,
       scrub:   0.6,
       onUpdate: (self) => {
@@ -156,7 +156,7 @@ export default function SprinklerModel() {
 
         // Curtain wipe — slides up over the last 22% of scroll
         // easeInQuart so it accelerates into the next section
-        const raw  = invLerp(0.78, 1.0, self.progress);
+        const raw  = invLerp(0.85, 1.0, self.progress);
         const ease = raw * raw * raw;          // cubic ease-in
         const curtainEl = document.getElementById('hero-curtain');
         if (curtainEl) {
