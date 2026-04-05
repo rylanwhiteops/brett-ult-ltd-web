@@ -11,7 +11,7 @@ export default function HeroHeadline() {
     <h1
       className="font-black uppercase leading-[0.92] tracking-[-0.03em] mb-6"
       // clamp keeps text inside the 40% left column at all viewport widths
-      style={{ fontSize: 'clamp(2.9rem, 10vw, 5.8rem)', overflow: 'visible' }}
+      style={{ fontSize: 'clamp(2.9rem, 5.5vw, 5.8rem)', overflow: 'visible' }}
     >
       {WORDS.map((word, wi) => (
         // clip the slide-up animation, but let the settled text overflow freely
