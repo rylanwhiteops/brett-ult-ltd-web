@@ -1,0 +1,11 @@
+import { chromium } from 'playwright';
+const browser = await chromium.launch();
+const page = await browser.newPage();
+const failures = [];
+page.on('requestfailed', req => failures.push(`FAIL: ${req.url()} — ${req.failure()?.errorText}`));
+page.on('response', resp => { if (resp.status() >= 400) failures.push(`${resp.status()}: ${resp.url()}`); });
+await page.setViewportSize({ width: 1440, height: 900 });
+await page.goto('http://localhost:4322/', { waitUntil: 'domcontentloaded', timeout: 30000 });
+await page.waitForTimeout(3000);
+console.log('Failures:\n' + failures.join('\n'));
+await browser.close();

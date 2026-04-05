@@ -1,0 +1,17 @@
+import { chromium } from 'playwright';
+const browser = await chromium.launch({ headless: true });
+const page = await browser.newPage();
+const errors = [];
+page.on('console', msg => { if (msg.type() === 'error') errors.push(msg.text()); });
+page.on('pageerror', err => errors.push(`PAGEERROR: ${err.message}`));
+await page.setViewportSize({ width: 1440, height: 900 });
+await page.goto('http://localhost:4322/', { waitUntil: 'domcontentloaded', timeout: 15000 });
+await page.waitForTimeout(5000);
+await page.screenshot({ path: '/tmp/hero2.png' });
+console.log('Screenshot saved');
+const canvases = await page.evaluate(() => Array.from(document.querySelectorAll('canvas')).map(c=>({w:c.width,h:c.height})));
+console.log('Canvases:', JSON.stringify(canvases));
+const islands = await page.evaluate(() => document.querySelectorAll('astro-island').length);
+console.log('Astro islands:', islands);
+if (errors.length) console.log('ERRORS:', errors.join('\n'));
+await browser.close();

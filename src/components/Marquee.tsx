@@ -9,10 +9,10 @@ const ITEMS = [
   'Ontario Building Code',
   '500+ Installations',
   '20+ Years Hamilton',
-  'Industrial · Commercial',
+  'Industrial  Commercial',
   '24/7 Emergency Response',
-  'Fully Insured · $5M',
-  'Design · Supply · Install',
+  'Fully Insured  $5M',
+  'Design  Supply  Install',
 ];
 
 export default function Marquee() {
@@ -29,7 +29,7 @@ export default function Marquee() {
       >
         {all.map((item, i) => (
           <span key={i} className="inline-flex items-center gap-12 flex-shrink-0">
-            <span className="text-[#6B6B6B] text-[10px] font-semibold tracking-[0.35em] uppercase">
+            <span className="text-[#8B7D6B] text-[10px] font-semibold tracking-[0.35em] uppercase">
               {item}
             </span>
             <span className="text-[#D4AF37]/30 text-[8px]">◆</span>
