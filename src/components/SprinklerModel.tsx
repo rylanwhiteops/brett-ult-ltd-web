@@ -89,25 +89,25 @@ export default function SprinklerModel() {
 
     /* ── Material — holographic gold ─────────────────────────────────────── */
     const goldBase = new THREE.MeshStandardMaterial({
-      color:               new THREE.Color('#B8941A'),  // warm gold
-      emissive:            new THREE.Color('#3D1800'),  // amber inner glow
-      emissiveIntensity:   0.5,
-      metalness:           0.85,
-      roughness:           0.25,   // low roughness = holographic sheen
-      envMapIntensity:     0.5,
+      color:               new THREE.Color('#C4A030'),  // bright warm gold
+      emissive:            new THREE.Color('#5A2800'),  // strong amber inner glow
+      emissiveIntensity:   0.9,
+      metalness:           0.9,
+      roughness:           0.15,   // very low roughness = mirror-like holographic sheen
+      envMapIntensity:     0.7,
       transparent:         true,
-      opacity:             0.78,   // semi-transparent — holographic look
+      opacity:             0.52,   // clearly semi-transparent — holographic projection look
       side:                THREE.FrontSide,
       polygonOffset:       true,
       polygonOffsetFactor: 1,
       polygonOffsetUnits:  1,
     });
 
-    // Wireframe edges: always slightly glowing from the start
+    // Wireframe edges: prominent holographic glow from the start
     const wireBase = new THREE.LineBasicMaterial({
-      color:       0xFFD040,  // bright gold-yellow edges
+      color:       0xFFE060,  // bright gold-white edges
       transparent: true,
-      opacity:     0.22,      // baseline — holographic edges always visible
+      opacity:     0.40,      // clearly visible baseline glow
       blending:    THREE.AdditiveBlending,
       depthWrite:  false,
     });
@@ -134,7 +134,7 @@ export default function SprinklerModel() {
     const st = ScrollTrigger.create({
       trigger: '#hero',
       start:   'top top',
-      end:     '+=220%',
+      end:     '+=320%',
       pin:     true,
       scrub:   1.0,
       onUpdate: (self) => {
@@ -186,7 +186,7 @@ export default function SprinklerModel() {
       /* 2. Base-platform centroid filter — hide bottom 35% by Y */
       const scaledBox = new THREE.Box3().setFromObject(root);
       const modelH    = scaledBox.max.y - scaledBox.min.y;
-      const centroidThresholdY = scaledBox.min.y + modelH * 0.35;
+      const centroidThresholdY = scaledBox.min.y + modelH * 0.12; // only cuts the very lowest flat base disc
 
       root.traverse((child) => {
         if (!(child as THREE.Mesh).isMesh) return;
@@ -307,13 +307,13 @@ export default function SprinklerModel() {
         lastP = p;
 
         const solidOpacity =
-          p < 0.55 ? 0.78 :
-          p < 0.78 ? lerp(0.78, 0, invLerp(0.55, 0.78, p)) :
+          p < 0.55 ? 0.52 :
+          p < 0.78 ? lerp(0.52, 0, invLerp(0.55, 0.78, p)) :
           0;
 
         const wireOpacity =
-          p < 0.55 ? 0.22 :                                  // always glowing
-          p < 0.78 ? lerp(0.22, 1, invLerp(0.55, 0.78, p)) :
+          p < 0.55 ? 0.40 :                                  // always glowing
+          p < 0.78 ? lerp(0.40, 1, invLerp(0.55, 0.78, p)) :
           p < 0.92 ? 1 :
                      lerp(1, 0, invLerp(0.92, 1.00, p));
 

@@ -41,9 +41,6 @@ const {
     <!-- Layer 0 — Depth field -->
     <div class="depth-field" aria-hidden="true"></div>
 
-    <!-- Layer 0b — Brushed metal vertical striations -->
-    <div class="brushed-metal" aria-hidden="true"></div>
-
     <!-- Layer 1 — Noise / grain overlay -->
     <div class="noise-overlay" aria-hidden="true"></div>
 
@@ -65,21 +62,6 @@ const {
       #0d0d0d 35%,
       #080808 100%
     );
-  }
-
-  .brushed-metal {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    background: repeating-linear-gradient(
-      90deg,
-      transparent        0px,
-      transparent        2px,
-      rgba(255,255,255,0.007) 2px,
-      rgba(255,255,255,0.007) 3px
-    );
-    mix-blend-mode: overlay;
   }
 
   .noise-overlay {
