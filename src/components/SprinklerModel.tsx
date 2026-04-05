@@ -134,7 +134,7 @@ export default function SprinklerModel() {
     const st = ScrollTrigger.create({
       trigger: '#hero',
       start:   'top top',
-      end:     '+=265%',
+      end:     '+=248%',
       pin:     true,
       scrub:   1.0,
       onUpdate: (self) => {
