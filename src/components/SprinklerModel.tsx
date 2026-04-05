@@ -93,7 +93,7 @@ export default function SprinklerModel() {
 
     /* ── Material — holographic gold ─────────────────────────────────────── */
     const goldBase = new THREE.MeshStandardMaterial({
-      color:               new THREE.Color('#C4A030'),  // bright warm gold
+      color:               new THREE.Color('#D4AF37'),  // brand gold — matches headline text
       emissive:            new THREE.Color('#5A2800'),  // strong amber inner glow
       emissiveIntensity:   0.9,
       metalness:           0.9,
@@ -109,7 +109,7 @@ export default function SprinklerModel() {
 
     // Wireframe edges: prominent holographic glow from the start
     const wireBase = new THREE.LineBasicMaterial({
-      color:       0xFFE060,  // bright gold-white edges
+      color:       0xD4AF37,  // brand gold edges
       transparent: true,
       opacity:     0.40,      // clearly visible baseline glow
       blending:    THREE.AdditiveBlending,
@@ -154,13 +154,10 @@ export default function SprinklerModel() {
         const maskEl = document.getElementById('model-mask');
         if (maskEl) maskEl.style.opacity = String(lerp(1, 0, t));
 
-        // Curtain wipe — slides up over the last 22% of scroll
-        // easeInQuart so it accelerates into the next section
-        const raw  = invLerp(0.85, 1.0, self.progress);
-        const ease = raw * raw * raw;          // cubic ease-in
-        const curtainEl = document.getElementById('hero-curtain');
-        if (curtainEl) {
-          curtainEl.style.transform = `translateY(${lerp(100, 0, ease)}%)`;
+        // Fade to black over the last 15% — cinematic dissolve into next section
+        const fadeEl = document.getElementById('hero-fade');
+        if (fadeEl) {
+          fadeEl.style.opacity = String(invLerp(0.85, 1.0, self.progress));
         }
       },
     });
@@ -375,8 +372,8 @@ export default function SprinklerModel() {
       if (copyEl) { copyEl.style.opacity = '1'; copyEl.style.transform = ''; }
       const maskEl = document.getElementById('model-mask');
       if (maskEl) maskEl.style.opacity = '1';
-      const curtainEl = document.getElementById('hero-curtain');
-      if (curtainEl) curtainEl.style.transform = 'translateY(100%)';
+      const fadeEl = document.getElementById('hero-fade');
+      if (fadeEl) fadeEl.style.opacity = '0';
       goldBase.dispose();
       wireBase.dispose();
       envTex.dispose();

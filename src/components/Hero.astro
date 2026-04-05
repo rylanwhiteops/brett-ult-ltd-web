@@ -20,12 +20,12 @@ import SprinklerModel from './SprinklerModel.tsx';
     aria-hidden="true"
   ></div>
 
-  <!-- Curtain wipe — slides up from bottom at end of scroll to cleanly
-       transition into the next section. Driven by SprinklerModel onUpdate. -->
+  <!-- Fade-to-black overlay — fades in at end of scroll for a cinematic
+       handoff into the next section. Driven by SprinklerModel onUpdate. -->
   <div
-    id="hero-curtain"
+    id="hero-fade"
     class="absolute inset-0 pointer-events-none"
-    style="z-index: 50; transform: translateY(100%); background: #080808; will-change: transform;"
+    style="z-index: 50; opacity: 0; background: #080808; will-change: opacity;"
     aria-hidden="true"
   ></div>
 
