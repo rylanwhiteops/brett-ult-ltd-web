@@ -18,7 +18,7 @@ function KineticCard({ project, scrollVelocity }: { project: Project; scrollVelo
     stiffness: 80,
     damping: 40,
   });
-  const skew = useTransform(smoothVelocity, [-1500, 0, 1500], [-8, 0, 8]);
+  const skew = useTransform(smoothVelocity, [-1500, 0, 1500], [-4, 0, 4]);
 
   return (
     <motion.div
@@ -44,7 +44,7 @@ function KineticCard({ project, scrollVelocity }: { project: Project; scrollVelo
       {/* Card metadata */}
       <div className="absolute bottom-0 left-0 right-0 p-5">
         <p className="text-[#A08928] text-[10px] font-semibold tracking-[0.3em] uppercase mb-1">
-          {project.type} · {project.year}
+          {project.type}  {project.year}
         </p>
         <h3 className="text-[#F5F0E8] text-lg font-bold leading-tight">{project.name}</h3>
         <p className="text-[#F5F0E8]/50 text-xs tracking-widest uppercase mt-0.5">{project.city}</p>
@@ -71,7 +71,7 @@ export default function KineticGallery({ projects, preview = false }: Props) {
   const cols = preview ? 3 : 3;
 
   return (
-    <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-${cols} gap-px bg-[#D4AF37]/10`}>
+    <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-${cols} gap-px bg-[#D4AF37]/10 overflow-hidden`}>
       {displayProjects.map((project) => (
         <div key={project.id} className="bg-[#080808]">
           <KineticCard project={project} scrollVelocity={scrollYVelocity} />
