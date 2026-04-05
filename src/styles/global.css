@@ -57,9 +57,9 @@ h1, h2, h3 {
   100% { background-position: -250% center; }
 }
 
-/* ── Stat numbers — monospace gold gradient ────────────────── */
+/* ── Stat numbers — Barlow Condensed, matches brand headings ── */
 .stat-number {
-  font-family: ui-monospace, 'SF Mono', Consolas, 'Courier New', monospace;
+  font-family: 'Barlow Condensed', 'Inter', sans-serif;
 }
 
 /* ── Gold conduit line ─────────────────────────────────────── */

@@ -99,8 +99,10 @@ const featuredProjects = [
   <!-- ── Hero ── -->
   <Hero />
 
-  <!-- ── Marquee ── -->
-  <Marquee client:load />
+  <!-- ── Marquee — negative margin pulls it up into hero's trailing spacer ── -->
+  <div style="margin-top: -3rem; position: relative; z-index: 10;">
+    <Marquee client:load />
+  </div>
 
   <!-- ── Stats Bar ── -->
   <section class="relative z-10 border-b border-[#D4AF37]/08">
