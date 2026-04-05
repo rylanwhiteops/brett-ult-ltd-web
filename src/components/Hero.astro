@@ -20,6 +20,15 @@ import SprinklerModel from './SprinklerModel.tsx';
     aria-hidden="true"
   ></div>
 
+  <!-- Curtain wipe — slides up from bottom at end of scroll to cleanly
+       transition into the next section. Driven by SprinklerModel onUpdate. -->
+  <div
+    id="hero-curtain"
+    class="absolute inset-0 pointer-events-none"
+    style="z-index: 50; transform: translateY(100%); background: #080808; will-change: transform;"
+    aria-hidden="true"
+  ></div>
+
   <!--
     3D model — always full-screen, z:1.
     Camera starts offset-right so model reads as right-column at rest.

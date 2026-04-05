@@ -138,11 +138,13 @@ export default function SprinklerModel() {
     const st = ScrollTrigger.create({
       trigger: '#hero',
       start:   'top top',
-      end:     '+=248%',
+      end:     '+=210%',
       pin:     true,
-      scrub:   1.0,
+      scrub:   0.6,
       onUpdate: (self) => {
         progress.value = self.progress;
+
+        // Copy slides out (0 → 28%)
         const t = invLerp(0, 0.28, self.progress);
         const copyEl = document.getElementById('hero-copy');
         if (copyEl) {
@@ -151,6 +153,15 @@ export default function SprinklerModel() {
         }
         const maskEl = document.getElementById('model-mask');
         if (maskEl) maskEl.style.opacity = String(lerp(1, 0, t));
+
+        // Curtain wipe — slides up over the last 22% of scroll
+        // easeInQuart so it accelerates into the next section
+        const raw  = invLerp(0.78, 1.0, self.progress);
+        const ease = raw * raw * raw;          // cubic ease-in
+        const curtainEl = document.getElementById('hero-curtain');
+        if (curtainEl) {
+          curtainEl.style.transform = `translateY(${lerp(100, 0, ease)}%)`;
+        }
       },
     });
 
@@ -364,6 +375,8 @@ export default function SprinklerModel() {
       if (copyEl) { copyEl.style.opacity = '1'; copyEl.style.transform = ''; }
       const maskEl = document.getElementById('model-mask');
       if (maskEl) maskEl.style.opacity = '1';
+      const curtainEl = document.getElementById('hero-curtain');
+      if (curtainEl) curtainEl.style.transform = 'translateY(100%)';
       goldBase.dispose();
       wireBase.dispose();
       envTex.dispose();
