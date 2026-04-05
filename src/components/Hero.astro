@@ -15,19 +15,11 @@ import SprinklerModel from './SprinklerModel.tsx';
 
   <!-- Bottom edge fade — clean transition into stats section -->
   <div
-    class="absolute inset-x-0 bottom-0 h-32 z-[1] pointer-events-none"
-    style="background: linear-gradient(to top, #0a0a0a, transparent);"
+    class="absolute inset-x-0 bottom-0 h-48 z-[1] pointer-events-none"
+    style="background: linear-gradient(to top, #080808 30%, transparent);"
     aria-hidden="true"
   ></div>
 
-  <!-- Fade-to-black overlay — fades in at end of scroll for a cinematic
-       handoff into the next section. Driven by SprinklerModel onUpdate. -->
-  <div
-    id="hero-fade"
-    class="absolute inset-0 pointer-events-none"
-    style="z-index: 50; opacity: 0; background: #080808; will-change: opacity;"
-    aria-hidden="true"
-  ></div>
 
   <!--
     3D model — always full-screen, z:1.

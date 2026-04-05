@@ -138,7 +138,7 @@ export default function SprinklerModel() {
     const st = ScrollTrigger.create({
       trigger: '#hero',
       start:   'top top',
-      end:     '+=235%',
+      end:     '+=175%',
       pin:     true,
       scrub:   0.6,
       onUpdate: (self) => {
@@ -154,11 +154,6 @@ export default function SprinklerModel() {
         const maskEl = document.getElementById('model-mask');
         if (maskEl) maskEl.style.opacity = String(lerp(1, 0, t));
 
-        // Fade to black over the last 15% — cinematic dissolve into next section
-        const fadeEl = document.getElementById('hero-fade');
-        if (fadeEl) {
-          fadeEl.style.opacity = String(invLerp(0.85, 1.0, self.progress));
-        }
       },
     });
 
@@ -372,8 +367,6 @@ export default function SprinklerModel() {
       if (copyEl) { copyEl.style.opacity = '1'; copyEl.style.transform = ''; }
       const maskEl = document.getElementById('model-mask');
       if (maskEl) maskEl.style.opacity = '1';
-      const fadeEl = document.getElementById('hero-fade');
-      if (fadeEl) fadeEl.style.opacity = '0';
       goldBase.dispose();
       wireBase.dispose();
       envTex.dispose();
