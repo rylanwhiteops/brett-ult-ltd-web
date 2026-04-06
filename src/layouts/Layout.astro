@@ -9,9 +9,11 @@ interface Props {
 }
 
 const {
-  title = "Ultimate Fire Protection — Hamilton's Industrial Fire Specialists",
+  title = "Ultimate Fire Protection | Hamilton's Industrial Fire Specialists",
   description = "Elite fire suppression systems for industrial and commercial infrastructure in Hamilton, Ontario.",
 } = Astro.props;
+
+const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '';
 ---
 
 <html lang="en">
@@ -32,86 +34,87 @@ const {
 
   <body class="bg-[#080808] text-[#F5F0E8] antialiased">
 
-    <!-- ── Page loader — inline HTML so it shows before any JS hydration ── -->
-    <div id="page-loader" style="
-      position: fixed; inset: 0; z-index: 99999;
-      background: #080808;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      padding: 0 2rem;
-      transition: opacity 0.7s ease;
-    ">
-      <!-- Top gold rule -->
-      <div style="width: 32px; height: 2px; background: #D4AF37; margin-bottom: 1.5rem; flex-shrink:0;"></div>
+    {isHome && (
+      <>
+        <!-- ── Page loader — home only, shown before any JS hydration ── -->
+        <div id="page-loader" style="
+          position: fixed; inset: 0; z-index: 99999;
+          background: radial-gradient(ellipse 140% 90% at 50% 35%, #141414 0%, #0d0d0d 35%, #080808 100%);
+          display: flex; flex-direction: column; align-items: center; justify-content: center;
+          padding: 0 2rem;
+          transition: opacity 0.6s ease;
+        ">
+          <!-- Top gold rule -->
+          <div style="width: 32px; height: 2px; background: #D4AF37; margin-bottom: 1.5rem; flex-shrink:0;"></div>
 
-      <!-- Company name — clamp keeps it on-screen at any width -->
-      <p style="
-        font-family: 'Barlow Condensed', 'Inter', sans-serif;
-        font-size: clamp(1.5rem, 8vw, 2.6rem); font-weight: 800;
-        color: #F5F0E8; letter-spacing: 0.08em;
-        text-transform: uppercase; margin: 0 0 0.4rem;
-        line-height: 1; text-align: center; white-space: nowrap;
-      ">Ultimate Fire Protection</p>
+          <!-- Company name -->
+          <p style="
+            font-family: 'Barlow Condensed', 'Inter', sans-serif;
+            font-size: clamp(1.5rem, 8vw, 2.6rem); font-weight: 800;
+            color: #F5F0E8; letter-spacing: 0.08em;
+            text-transform: uppercase; margin: 0 0 0.4rem;
+            line-height: 1; text-align: center; white-space: nowrap;
+          ">Ultimate Fire Protection</p>
 
-      <!-- Location eyebrow -->
-      <p style="
-        font-family: 'Inter', sans-serif;
-        font-size: clamp(0.5rem, 2vw, 0.6rem); font-weight: 600;
-        color: #D4AF37; letter-spacing: 0.4em;
-        text-transform: uppercase; margin: 0 0 2rem;
-        text-align: center;
-      ">Hamilton, Ontario &nbsp;&nbsp; Est. 2003</p>
+          <!-- Location eyebrow -->
+          <p style="
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(0.5rem, 2vw, 0.6rem); font-weight: 600;
+            color: #D4AF37; letter-spacing: 0.4em;
+            text-transform: uppercase; margin: 0 0 2rem;
+            text-align: center;
+          ">Hamilton, Ontario &nbsp;&nbsp; Est. 2003</p>
 
-      <!-- Progress track -->
-      <div style="
-        width: min(200px, 60vw); height: 1px;
-        background: rgba(212,175,55,0.15);
-        position: relative; overflow: hidden; flex-shrink:0;
-      ">
-        <div id="loader-bar" style="
-          position: absolute; left: 0; top: 0;
-          height: 100%; width: 0%;
-          background: linear-gradient(to right, #A08928, #D4AF37, #F7E98E);
-          transition: width 0.15s linear;
-        "></div>
-      </div>
-    </div>
+          <!-- Progress track -->
+          <div style="
+            width: min(200px, 60vw); height: 1px;
+            background: rgba(212,175,55,0.15);
+            position: relative; overflow: hidden; flex-shrink:0;
+          ">
+            <div id="loader-bar" style="
+              position: absolute; left: 0; top: 0;
+              height: 100%; width: 0%;
+              background: linear-gradient(to right, #A08928, #D4AF37, #F7E98E);
+              transition: width 0.15s linear;
+            "></div>
+          </div>
+        </div>
 
-    <script>
-      (function () {
-        const loader = document.getElementById('page-loader');
-        const bar    = document.getElementById('loader-bar');
-        if (!loader || !bar) return;
+        <script>
+          (function () {
+            const loader = document.getElementById('page-loader');
+            const bar    = document.getElementById('loader-bar');
+            if (!loader || !bar) return;
 
-        let called = false;
-        let p = 0;
+            let called = false;
+            let p = 0;
 
-        // Ease bar toward 90% while waiting — never reaches 100% on its own
-        const tick = setInterval(() => {
-          p = p + (90 - p) * 0.035;
-          bar.style.width = p.toFixed(1) + '%';
-        }, 40);
+            const tick = setInterval(() => {
+              p = p + (90 - p) * 0.035;
+              bar.style.width = p.toFixed(1) + '%';
+            }, 40);
 
-        const done = () => {
-          if (called) return;
-          called = true;
-          clearInterval(tick);
-          bar.style.width = '100%';
-          setTimeout(() => {
-            loader.style.opacity = '0';
-            setTimeout(() => { loader.style.display = 'none'; }, 750);
-          }, 200);
-        };
+            const done = () => {
+              if (called) return;
+              called = true;
+              clearInterval(tick);
+              bar.style.width = '100%';
+              setTimeout(() => {
+                loader.style.opacity = '0';
+                setTimeout(() => { loader.style.display = 'none'; }, 650);
+              }, 150);
+            };
 
-        // Primary: SprinklerModel dispatches this after GLB is loaded + first frame painted
-        window.addEventListener('app:ready', done, { once: true });
-
-        // Fallback 1: window.load + 1s buffer for React hydration (mobile / no model)
-        window.addEventListener('load', () => setTimeout(done, 1000), { once: true });
-
-        // Fallback 2: hard cap — never block more than 8s on slow connections
-        setTimeout(done, 8000);
-      })();
-    </script>
+            // Primary: SprinklerModel fires this after GLB loaded + first frame
+            window.addEventListener('app:ready', done, { once: true });
+            // Fallback: window.load + buffer for React hydration
+            window.addEventListener('load', () => setTimeout(done, 1200), { once: true });
+            // Hard cap
+            setTimeout(done, 8000);
+          })();
+        </script>
+      </>
+    )}
 
     <!-- Lenis smooth scroll -->
     <LenisProvider client:load />

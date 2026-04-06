@@ -111,7 +111,7 @@ const projects = [
         <div class="py-10 px-8 first:pl-0 last:pr-0">
           <ScrollReveal client:visible>
             <p class="stat-number text-3xl md:text-4xl font-black leading-none bg-gradient-to-br from-[#D4AF37] via-[#f5e27a] to-[#A08928] bg-clip-text text-transparent mb-1">{s.n}</p>
-            <p class="eyebrow text-[#6B6B6B]">{s.l}</p>
+            <p class="eyebrow text-[#909090]">{s.l}</p>
           </ScrollReveal>
         </div>
       ))}
@@ -121,9 +121,9 @@ const projects = [
   <!-- ── Filter Bar ── -->
   <section class="relative z-10 border-b border-[#D4AF37]/08 py-5">
     <div class="max-w-7xl mx-auto px-8 md:px-16 flex items-center gap-8 overflow-x-auto">
-      <span class="eyebrow text-[#6B6B6B] whitespace-nowrap flex-shrink-0">Filter:</span>
+      <span class="eyebrow text-[#909090] whitespace-nowrap flex-shrink-0">Filter:</span>
       {['All', 'Industrial', 'Commercial', 'Suppression', 'Fire Alarm', 'High-Hazard'].map((label, i) => (
-        <button class={`eyebrow whitespace-nowrap flex-shrink-0 transition-colors duration-200 hover:text-[#F5F0E8] ${i === 0 ? 'text-[#D4AF37]' : 'text-[#6B6B6B]'}`}>
+        <button class={`eyebrow whitespace-nowrap flex-shrink-0 transition-colors duration-200 hover:text-[#F5F0E8] ${i === 0 ? 'text-[#D4AF37]' : 'text-[#909090]'}`}>
           {label}
         </button>
       ))}

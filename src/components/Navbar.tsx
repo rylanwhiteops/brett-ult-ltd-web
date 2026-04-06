@@ -204,7 +204,7 @@ export default function Navbar() {
                 <path d="M18 10c-3 4.5-4.5 7.5-4.5 10a4.5 4.5 0 0 0 9 0c0-2.5-1.5-5.5-4.5-10z" fill="#D4AF37" opacity="0.9"/>
                 <path d="M18 15c-1.2 2-1.8 3.5-1.8 5a1.8 1.8 0 0 0 3.6 0c0-1.5-.6-3-1.8-5z" fill="#f7e98e" opacity="0.8"/>
               </svg>
-              <p className="text-[#6B6B6B] text-xs tracking-[0.3em] uppercase">Hamilton, Ontario · Est. 2003</p>
+              <p className="text-[#909090] text-xs tracking-[0.3em] uppercase">Hamilton, Ontario  Est. 2003</p>
             </motion.div>
           </motion.div>
         )}
