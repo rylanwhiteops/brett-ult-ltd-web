@@ -42,7 +42,7 @@ import SprinklerModel from './SprinklerModel.tsx';
   <div
     id="model-mask"
     class="hidden md:block absolute inset-y-0 left-0 pointer-events-none"
-    style="width:55%; z-index:2; background: linear-gradient(to right, #0a0a0a 55%, transparent 100%);"
+    style="width:60%; z-index:2; background: linear-gradient(to right, #0a0a0a 50%, transparent 100%);"
     aria-hidden="true"
   ></div>
 
@@ -52,12 +52,12 @@ import SprinklerModel from './SprinklerModel.tsx';
     <!-- Left copy — id="hero-copy" so GSAP can fade it -->
     <div
       id="hero-copy"
-      class="w-[42%] flex-shrink-0 flex flex-col justify-center pl-20 lg:pl-28 xl:pl-36 pr-8 py-20 pointer-events-auto"
+      class="w-[46%] flex-shrink-0 flex flex-col justify-center pl-20 lg:pl-28 xl:pl-36 pr-10 py-20 pointer-events-auto"
       style="will-change: opacity, transform;"
     >
       <!-- Brand lockup — fills dead space above headline -->
-      <div class="flex items-center gap-3 mb-14">
-        <svg width="34" height="40" viewBox="0 0 36 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <div class="flex items-center gap-4 mb-14">
+        <svg width="40" height="46" viewBox="0 0 36 44" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M18 2L3 8v14c0 9 6.5 17 15 20 8.5-3 15-11 15-20V8L18 2z"
             fill="rgba(212,175,55,0.06)" stroke="#D4AF37" stroke-width="1.2" stroke-linejoin="round"/>
           <path d="M18 10c-3 4.5-4.5 7.5-4.5 10a4.5 4.5 0 0 0 9 0c0-2.5-1.5-5.5-4.5-10z"
@@ -66,8 +66,8 @@ import SprinklerModel from './SprinklerModel.tsx';
             fill="#f7e98e" opacity="0.8"/>
         </svg>
         <div class="leading-none">
-          <p class="text-[#D4AF37] text-sm font-black tracking-[0.22em] uppercase">ULTIMATE</p>
-          <p class="text-[#F5F0E8]/30 text-[9px] tracking-[0.3em] uppercase mt-1">Fire Protection</p>
+          <p class="text-[#D4AF37] text-base font-black tracking-[0.22em] uppercase">ULTIMATE</p>
+          <p class="text-[#F5F0E8]/30 text-[10px] tracking-[0.3em] uppercase mt-1">Fire Protection</p>
         </div>
       </div>
 
@@ -90,7 +90,7 @@ import SprinklerModel from './SprinklerModel.tsx';
       </div>
 
       <!-- Subtext -->
-      <p class="text-[#F5F0E8]/70 text-base max-w-[340px] leading-relaxed mb-9 font-sans">
+      <p class="text-[#F5F0E8]/70 text-lg max-w-[380px] leading-relaxed mb-9 font-sans">
         Hamilton's elite fire suppression for industrial &amp; commercial infrastructure.
       </p>
 
@@ -98,13 +98,13 @@ import SprinklerModel from './SprinklerModel.tsx';
       <div class="flex flex-wrap gap-4 mb-12">
         <a
           href="/contact"
-          class="inline-flex items-center px-9 py-4 text-sm font-bold tracking-[0.2em] uppercase text-[#0a0a0a] bg-[#D4AF37] hover:bg-[#f7e98e] transition-colors duration-300"
+          class="inline-flex items-center px-10 py-5 text-sm font-bold tracking-[0.2em] uppercase text-[#0a0a0a] bg-[#D4AF37] hover:bg-[#f7e98e] transition-colors duration-300"
         >
           Request Consultation
         </a>
         <a
           href="/projects"
-          class="inline-flex items-center px-9 py-4 text-sm font-bold tracking-[0.2em] uppercase text-[#D4AF37] border border-[#D4AF37]/30 hover:border-[#D4AF37] transition-colors duration-300"
+          class="inline-flex items-center px-10 py-5 text-sm font-bold tracking-[0.2em] uppercase text-[#D4AF37] border border-[#D4AF37]/30 hover:border-[#D4AF37] transition-colors duration-300"
         >
           View Our Work
         </a>
