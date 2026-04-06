@@ -49,6 +49,24 @@ import SprinklerModel from './SprinklerModel.tsx';
   <!-- ── Desktop: copy (in-flow so section has definite height) ── -->
   <div class="hidden md:flex relative z-[3] items-center min-h-screen w-full pointer-events-none">
 
+    <!-- Watermark — "ULTIMATE" behind left copy, matches inner page language -->
+    <div
+      aria-hidden="true"
+      class="absolute left-0 top-1/2 pointer-events-none select-none"
+      style="
+        transform: translateY(-52%);
+        font-family: 'Barlow Condensed', sans-serif;
+        font-size: clamp(10rem, 22vw, 20rem);
+        font-weight: 900;
+        line-height: 1;
+        letter-spacing: -0.04em;
+        color: rgba(212,175,55,0.035);
+        white-space: nowrap;
+        padding-left: 4rem;
+        z-index: 0;
+      "
+    >ULTIMATE</div>
+
     <!-- Left copy — id="hero-copy" so GSAP can fade it -->
     <div
       id="hero-copy"
