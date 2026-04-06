@@ -57,14 +57,14 @@ function ServiceCard({
           </h2>
 
           {/* Description */}
-          <p className="text-[#F5F0E8]/60 text-base leading-relaxed mb-8 max-w-lg">
+          <p className="text-[#9B9487] text-base mb-8 max-w-lg" style={{ lineHeight: '1.78', letterSpacing: '0.012em' }}>
             {service.description}
           </p>
 
           {/* Bullets */}
           <ul className="space-y-2">
             {service.bullets.map((b, i) => (
-              <li key={i} className="flex items-start gap-3 text-sm text-[#F5F0E8]/70">
+              <li key={i} className="flex items-start gap-3 text-sm text-[#9B9487]" style={{ lineHeight: '1.78' }}>
                 <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#D4AF37] flex-shrink-0" />
                 {b}
               </li>

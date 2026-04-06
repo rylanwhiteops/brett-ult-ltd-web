@@ -41,6 +41,15 @@ h1, h2, h3 {
   font-family: 'Barlow Condensed', sans-serif;
 }
 
+/* ── Body copy — solid warm grey, no opacity hacks ────────── */
+/*    Primary body: #9B9487  Dim/secondary: #6B6560           */
+.body-copy {
+  color: #9B9487;
+  line-height: 1.78;
+  letter-spacing: 0.012em;
+  font-weight: 400;
+}
+
 /* ── Eyebrow label ─────────────────────────────────────────── */
 .eyebrow {
   font-family: 'Inter', sans-serif;
