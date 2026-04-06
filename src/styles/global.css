@@ -72,13 +72,13 @@ h1, h2, h3 {
 
 /* ── Section spacing ───────────────────────────────────────── */
 .section-gap {
-  padding-top:    clamp(6rem, 10vw, 12rem);
-  padding-bottom: clamp(6rem, 10vw, 12rem);
+  padding-top:    clamp(3.5rem, 10vw, 12rem);
+  padding-bottom: clamp(3.5rem, 10vw, 12rem);
 }
 
 .section-gap--lg {
-  padding-top:    clamp(8rem, 12vw, 14rem);
-  padding-bottom: clamp(8rem, 12vw, 14rem);
+  padding-top:    clamp(5rem, 12vw, 14rem);
+  padding-bottom: clamp(5rem, 12vw, 14rem);
 }
 
 /* ── Service cards — home page ─────────────────────────────── */
@@ -141,8 +141,8 @@ h1, h2, h3 {
 .page-header {
   position: relative;
   overflow: hidden;
-  padding-top: 9rem;
-  padding-bottom: 4rem;
+  padding-top: clamp(5.5rem, 12vw, 9rem);
+  padding-bottom: clamp(2.5rem, 5vw, 4rem);
   border-bottom: 1px solid rgba(212,175,55,0.08);
 }
 
