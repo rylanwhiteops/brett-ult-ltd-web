@@ -9,11 +9,13 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function LenisProvider() {
   useEffect(() => {
+    // Native touch scroll feels better on mobile — only run Lenis on desktop
+    if (window.innerWidth < 768) return;
+
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
-      touchMultiplier: 2,
     });
 
     // Connect Lenis scroll events → GSAP ScrollTrigger
