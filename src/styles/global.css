@@ -163,6 +163,11 @@ h1, h2, h3 {
   white-space: nowrap;
 }
 
+/* ── iPhone safe area for bottom nav ──────────────────────── */
+.pb-safe {
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+}
+
 /* ── Bento / stat card ─────────────────────────────────────── */
 .bento-card {
   background: #0a0a0a;

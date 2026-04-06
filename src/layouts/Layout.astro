@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import Navbar from '../components/Navbar.tsx';
+import MobileNav from '../components/MobileNav.tsx';
 import LenisProvider from '../components/LenisProvider.tsx';
 
 interface Props {
@@ -125,8 +126,13 @@ const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '';
     <!-- Layer 0 — Depth field -->
     <div class="depth-field" aria-hidden="true"></div>
 
-    <!-- Content -->
-    <slot />
+    <!-- Mobile bottom nav -->
+    <MobileNav client:load />
+
+    <!-- Content — extra bottom padding on mobile so footer clears the nav bar -->
+    <div class="md:pb-0 pb-20">
+      <slot />
+    </div>
 
   </body>
 </html>
