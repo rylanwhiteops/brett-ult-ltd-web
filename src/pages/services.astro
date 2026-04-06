@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import StackingServiceCards from '../components/StackingServiceCards.tsx';
+import MobileServiceCarousel from '../components/MobileServiceCarousel.tsx';
 import ScrollReveal from '../components/ScrollReveal.tsx';
 import Marquee from '../components/Marquee.tsx';
 import PageHeader from '../components/PageHeader.astro';
@@ -142,34 +143,9 @@ const services = [
       <StackingServiceCards services={services} client:visible />
     </div>
 
-    <!-- Mobile: flat readable cards -->
-    <div class="md:hidden max-w-7xl mx-auto px-6 space-y-6">
-      {services.map((s, i) => (
-        <ScrollReveal client:visible delay={i * 0.05}>
-          <div class="border-l-[3px] border-[#D4AF37] bg-[#0f0f0f] p-6"
-            style="border-top: 1px solid rgba(212,175,55,0.15); border-right: 1px solid rgba(212,175,55,0.08); border-bottom: 1px solid rgba(212,175,55,0.08);">
-            <!-- Eyebrow -->
-            <p class="eyebrow text-[#A08928] mb-3">
-              Service {s.number}{s.standard ? `  ${s.standard}` : ''}
-            </p>
-            <!-- Title -->
-            <h3 class="font-display font-black text-2xl uppercase text-[#F5F0E8] leading-tight mb-4">
-              {s.title}
-            </h3>
-            <!-- Description -->
-            <p class="body-copy text-sm mb-5">{s.description}</p>
-            <!-- Bullets -->
-            <ul class="space-y-2.5">
-              {s.bullets.map((b) => (
-                <li class="flex items-start gap-3">
-                  <span class="mt-[7px] w-1.5 h-1.5 rounded-full bg-[#D4AF37] flex-shrink-0"></span>
-                  <span class="body-copy text-sm">{b}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </ScrollReveal>
-      ))}
+    <!-- Mobile: swipe carousel -->
+    <div class="md:hidden">
+      <MobileServiceCarousel services={services} client:visible />
     </div>
   </section>
 
