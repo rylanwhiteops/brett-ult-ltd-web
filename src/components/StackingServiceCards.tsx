@@ -33,11 +33,11 @@ function ServiceCard({
       style={{ top }}
     >
       <motion.div
-        className="w-full max-w-3xl mx-auto"
+        className="w-full max-w-5xl mx-auto"
         style={{ scale, transformOrigin: 'top center' }}
       >
         <div
-          className="relative bg-[#0f0f0f] border-l-[3px] border-[#D4AF37] p-10 md:p-14"
+          className="relative bg-[#0f0f0f] border-l-[3px] border-[#D4AF37] p-10 md:p-16"
           style={{ borderTop: '1px solid rgba(212,175,55,0.15)', borderRight: '1px solid rgba(212,175,55,0.08)', borderBottom: '1px solid rgba(212,175,55,0.08)' }}
         >
           {/* Number */}
@@ -57,7 +57,7 @@ function ServiceCard({
           </h2>
 
           {/* Description */}
-          <p className="text-[#9B9487] text-base mb-8 max-w-lg" style={{ lineHeight: '1.78', letterSpacing: '0.012em' }}>
+          <p className="text-[#9B9487] text-base mb-8 max-w-2xl" style={{ lineHeight: '1.78', letterSpacing: '0.012em' }}>
             {service.description}
           </p>
 
