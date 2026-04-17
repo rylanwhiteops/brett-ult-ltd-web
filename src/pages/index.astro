@@ -274,6 +274,109 @@ const featuredProjects = [
     </div>
   </section>
 
+  <!-- ── Reviews ── -->
+  <section id="reviews" class="relative z-10 section-gap border-t border-[#D4AF37]/08">
+    <div class="max-w-7xl mx-auto px-8 md:px-16">
+
+      <ScrollReveal client:visible>
+        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16">
+          <div>
+            <div class="flex items-center gap-4 mb-5">
+              <span class="block w-8 h-px bg-[#D4AF37]/40"></span>
+              <p class="eyebrow text-[#A08928]">Google Reviews</p>
+            </div>
+            <h2 class="font-display font-black text-5xl md:text-6xl xl:text-7xl uppercase leading-none">
+              <span class="text-[#F5F0E8]">4.9 Stars.</span><br />
+              <span class="text-[#D4AF37]">Real Clients.</span>
+            </h2>
+          </div>
+          <a href="https://www.google.com/search?q=Ultimate+Fire+Protection+Ltd+Stoney+Creek" target="_blank" rel="noopener"
+            class="hidden md:inline-flex items-center gap-2 eyebrow text-[#A08928] hover:text-[#D4AF37] transition-colors">
+            All Reviews on Google →
+          </a>
+        </div>
+      </ScrollReveal>
+
+      <!-- Star rating bar -->
+      <ScrollReveal client:visible>
+        <div class="flex items-center gap-4 mb-14 pb-14 border-b border-[#D4AF37]/08">
+          <div class="flex gap-1">
+            {[1,2,3,4,5].map(() => (
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="#D4AF37">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+              </svg>
+            ))}
+          </div>
+          <span class="text-[#F5F0E8] text-2xl font-black">4.9</span>
+          <span class="text-[#909090] text-sm">out of 5  ·  8 reviews</span>
+        </div>
+      </ScrollReveal>
+
+      <!-- Review cards -->
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {[
+          {
+            name: 'Steve Lucignolo',
+            text: 'I needed to get sprinklers done at my warehouse and had a strict time line that had to have been met to ensure we could open as scheduled. Ultimate Fire Protection delivered on time and on budget. Highly recommend.',
+            stars: 5,
+          },
+          {
+            name: 'Becky Green',
+            text: 'An excellent company to work with. Very professional, quick response and reliable.',
+            stars: 5,
+          },
+          {
+            name: 'Mik Kulikowski',
+            text: 'Very helpful in getting all documentation needed for compliance!',
+            stars: 5,
+          },
+          {
+            name: 'Johnny D\'Ambrosio',
+            text: 'A very reputable professional company for any job small or large. You can bet you\'re dealing with quality professionals.',
+            stars: 5,
+          },
+          {
+            name: 'Verified Client',
+            text: 'Very professional, work site always kept clean. The team works well together and is respected by management. The job is always done to the highest of standards.',
+            stars: 5,
+          },
+        ].map((review, i) => (
+          <ScrollReveal client:visible delay={i * 0.06}>
+            <div class="h-full border border-[#D4AF37]/10 bg-[#0f0f0f] p-7 flex flex-col">
+              {/* Stars */}
+              <div class="flex gap-0.5 mb-4">
+                {[1,2,3,4,5].map(() => (
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="#D4AF37">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                  </svg>
+                ))}
+              </div>
+              {/* Quote */}
+              <p class="body-copy text-sm flex-1 mb-5">"{review.text}"</p>
+              {/* Name */}
+              <div class="flex items-center gap-3 pt-4 border-t border-[#D4AF37]/08">
+                <div class="w-8 h-8 rounded-full bg-[#D4AF37]/10 flex items-center justify-center flex-shrink-0">
+                  <span class="text-[#D4AF37] text-xs font-bold">{review.name.charAt(0)}</span>
+                </div>
+                <div>
+                  <p class="text-[#F5F0E8] text-sm font-semibold">{review.name}</p>
+                  <p class="text-[#909090] text-[10px] tracking-[0.2em] uppercase">Google Review</p>
+                </div>
+              </div>
+            </div>
+          </ScrollReveal>
+        ))}
+      </div>
+
+      <div class="mt-8 md:hidden">
+        <a href="https://www.google.com/search?q=Ultimate+Fire+Protection+Ltd+Stoney+Creek" target="_blank" rel="noopener"
+          class="eyebrow text-[#A08928] hover:text-[#D4AF37] transition-colors">
+          All Reviews on Google →
+        </a>
+      </div>
+    </div>
+  </section>
+
   <!-- ── Contact CTA ── -->
   <section id="contact-cta" class="relative z-10 section-gap border-t border-[#D4AF37]/08">
     <div class="max-w-7xl mx-auto px-8 md:px-16 text-center">
