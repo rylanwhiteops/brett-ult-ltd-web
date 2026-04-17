@@ -83,7 +83,7 @@ const services = [
 
 <Layout
   title="Services | Ultimate Fire Protection"
-  description="Full-service fire suppression, alarm, inspection and high-hazard systems for industrial and commercial properties in Hamilton, Ontario."
+  description="Full-service fire suppression, alarm, inspection and high-hazard systems for industrial and commercial properties across Ontario."
 >
 
   <PageHeader
@@ -149,6 +149,29 @@ const services = [
     </div>
   </section>
 
+  <!-- ── M&A Callout ── -->
+  <section class="relative z-10 border-t border-[#D4AF37]/08">
+    <div class="max-w-7xl mx-auto px-8 md:px-16 py-14">
+      <ScrollReveal client:visible>
+        <div class="flex flex-col md:flex-row items-start md:items-center gap-6 md:gap-10">
+          <div class="flex-1">
+            <p class="eyebrow text-[#A08928] mb-3">Growth Through Acquisition</p>
+            <h3 class="font-display font-black text-2xl md:text-3xl uppercase text-[#F5F0E8] leading-tight mb-3">
+              Looking to Sell Your Fire Protection Company?
+            </h3>
+            <p class="body-copy text-sm max-w-xl">
+              Ultimate Fire Protection is actively acquiring fire protection companies across Ontario. If you're a business owner looking to transition, talk directly to Brett about a straightforward, respectful process.
+            </p>
+          </div>
+          <a href="mailto:brett@ultimatefire.ca"
+            class="inline-flex items-center justify-center px-10 py-4 text-sm font-bold tracking-[0.18em] uppercase border border-[#D4AF37]/30 text-[#D4AF37] hover:border-[#D4AF37] hover:bg-[#D4AF37]/5 transition-all duration-300 whitespace-nowrap flex-shrink-0">
+            brett@ultimatefire.ca
+          </a>
+        </div>
+      </ScrollReveal>
+    </div>
+  </section>
+
   <!-- ── Why Brett ── -->
   <section class="relative z-10 border-t border-b border-[#D4AF37]/08 py-28">
     <div class="max-w-7xl mx-auto px-8 md:px-16 grid md:grid-cols-2 gap-20 items-center">
@@ -162,7 +185,7 @@ const services = [
         <div class="space-y-8">
           {[
             { label: 'Direct Access', text: 'You talk to the person running the job. Not a dispatcher or account manager.' },
-            { label: '20+ Years Local', text: 'Every AHJ in the Hamilton region. Every inspector. Every quirk in the code.' },
+            { label: 'Ontario-Wide', text: 'Every AHJ in the province. Every inspector. Every quirk in the code.' },
             { label: 'Design-Build', text: 'We design what we install. No gap between the engineer and the contractor.' },
             { label: 'Full Documentation', text: 'As-builts, certificates, inspection records. Everything your insurer needs.' },
           ].map((item) => (

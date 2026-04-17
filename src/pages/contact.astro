@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import ScrollReveal from '../components/ScrollReveal.tsx';
-import GHLForm from '../components/GHLForm.tsx';
+import ContactForm from '../components/ContactForm.tsx';
 import Marquee from '../components/Marquee.tsx';
 import PageHeader from '../components/PageHeader.astro';
 import Footer from '../components/Footer.astro';
@@ -9,7 +9,7 @@ import Footer from '../components/Footer.astro';
 
 <Layout
   title="Contact | Ultimate Fire Protection"
-  description="Get in touch with Brett at Ultimate Fire Protection. Fire suppression and alarm specialists in Hamilton, Ontario."
+  description="Get in touch with Brett at Ultimate Fire Protection. Fire suppression and alarm specialists serving all of Ontario."
 >
 
   <PageHeader
@@ -54,8 +54,7 @@ import Footer from '../components/Footer.astro';
           </div>
         </ScrollReveal>
 
-        <!-- GHL form embed — paste your URL in GHLForm.tsx -->
-        <GHLForm client:load />
+        <ContactForm client:load />
       </div>
 
       <!-- Right Sidebar -->
@@ -89,7 +88,7 @@ import Footer from '../components/Footer.astro';
               <div>
                 <p class="text-[#A08928] text-[10px] font-semibold tracking-[0.3em] uppercase mb-1">Based In</p>
                 <p class="text-[#F5F0E8] font-bold">Hamilton, Ontario</p>
-                <p class="text-[#909090] text-xs mt-1">Serving Golden Horseshoe</p>
+                <p class="text-[#909090] text-xs mt-1">Serving All of Ontario</p>
               </div>
             </div>
           </div>
@@ -101,11 +100,11 @@ import Footer from '../components/Footer.astro';
             <p class="text-[#A08928] text-[10px] font-semibold tracking-[0.3em] uppercase mb-5">Credentials</p>
             <div class="space-y-2.5">
               {[
+                'Fully Licensed & Insured',
+                'Red Seal Journeymen on Staff',
+                'Registered Apprentices',
                 'NFPA 13 Certified Designer',
-                'ULC Listed Fire Alarm Installer',
-                'TSSA Licensed Fire Protection',
                 'Ontario Building Code Qualified',
-                'Fully Insured  $5M Liability',
               ].map((cred) => (
                 <div class="flex items-center gap-3">
                   <div class="w-1 h-1 rounded-full bg-[#D4AF37] flex-shrink-0" />
@@ -134,10 +133,11 @@ import Footer from '../components/Footer.astro';
             <div class="grid grid-cols-2 gap-x-4 gap-y-2">
               {[
                 'Hamilton', 'Burlington',
-                'Stoney Creek', 'Oakville',
-                'Brantford', 'St. Catharines',
-                'Guelph', 'Niagara Region',
-                'Cambridge', 'Mississauga',
+                'Toronto / GTA', 'Oakville',
+                'Niagara Region', 'St. Catharines',
+                'Kitchener-Waterloo', 'London',
+                'Barrie', 'Ottawa',
+                'Sudbury', 'Thunder Bay',
               ].map((city) => (
                 <p class="body-copy text-sm">{city}</p>
               ))}
@@ -156,18 +156,18 @@ import Footer from '../components/Footer.astro';
       <div class="absolute inset-0 z-10 pointer-events-none"
         style="background: linear-gradient(to right, #080808 0%, transparent 15%, transparent 85%, #080808 100%);" />
       <iframe
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d184551.80690539925!2d-80.08470597890623!3d43.25010499999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x882c9ade4e26e5b5%3A0x5037b28c7231b90!2sHamilton%2C%20ON!5e0!3m2!1sen!2sca!4v1700000000000!5m2!1sen!2sca"
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2948849.0841956683!2d-82.5!3d44.5!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4cce05b25f5113af%3A0x8a6a51e131dd15ed!2sOntario!5e0!3m2!1sen!2sca!4v1700000000000!5m2!1sen!2sca"
         width="100%"
         height="360"
         style="border:0; filter: grayscale(100%) invert(92%) contrast(75%) brightness(28%) sepia(40%) hue-rotate(185deg);"
         allowfullscreen=""
         loading="lazy"
         referrerpolicy="no-referrer-when-downgrade"
-        title="Hamilton, Ontario service area"
+        title="Ontario-wide service area"
       ></iframe>
     </div>
     <div class="max-w-7xl mx-auto px-8 md:px-16 py-8 flex items-center justify-between">
-      <p class="text-[#909090] text-xs tracking-[0.3em] uppercase">Hamilton, Ontario  Greater Golden Horseshoe</p>
+      <p class="text-[#909090] text-xs tracking-[0.3em] uppercase">Headquartered in Hamilton  Serving All of Ontario</p>
       <a href="https://maps.google.com/?q=Hamilton,Ontario" target="_blank" rel="noopener" class="text-[#A08928] text-[10px] font-semibold tracking-[0.25em] uppercase hover:text-[#D4AF37] transition-colors">
         Open in Maps →
       </a>

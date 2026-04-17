@@ -4,11 +4,11 @@ import { motion } from 'framer-motion';
 
 const ITEMS = [
   'NFPA 13 Certified',
-  'ULC Listed Installer',
-  'TSSA Licensed',
+  'Fully Licensed & Insured',
+  'Red Seal Journeymen',
   'Ontario Building Code',
   '500+ Installations',
-  '20+ Years Hamilton',
+  'Ontario-Wide Service',
   'Industrial  Commercial',
   '24/7 Emergency Response',
   'Fully Insured  $5M',

@@ -109,8 +109,8 @@ const featuredProjects = [
     <div class="max-w-7xl mx-auto px-8 md:px-16 grid grid-cols-2 md:grid-cols-4 md:divide-x md:divide-[#D4AF37]/08">
       {[
         { n: '500+', l: 'Installations' },
-        { n: '20+',  l: 'Years Hamilton' },
-        { n: '100%', l: 'Code Compliant' },
+        { n: '100%', l: 'Owner-Operated' },
+        { n: 'Red Seal', l: 'Certified Crew' },
         { n: '24/7', l: 'Emergency Response' },
       ].map((s) => (
         <div class="py-7 px-5 md:py-12 md:px-8 first:pl-0 last:pr-0">
@@ -210,8 +210,8 @@ const featuredProjects = [
     </div>
   </section>
 
-  <!-- ── About Brett ── (hidden until real photo is provided) -->
-  <section id="about" class="hidden">
+  <!-- ── About Brett ── -->
+  <section id="about" class="relative z-10 section-gap border-t border-[#D4AF37]/08">
     <div class="max-w-7xl mx-auto px-8 md:px-16 grid md:grid-cols-[1fr_1fr] gap-16 xl:gap-28 items-center">
 
       <ScrollReveal client:visible>
@@ -231,8 +231,8 @@ const featuredProjects = [
             <div class="absolute bottom-4 right-4 w-8 h-8 border-b-2 border-r-2 border-[#D4AF37]/30"></div>
           </div>
           <div class="absolute -bottom-5 -right-5 bg-[#D4AF37] text-[#080808] p-5 hidden md:block">
-            <p class="font-mono text-3xl font-black leading-none">20+</p>
-            <p class="eyebrow mt-1">Yrs Experience</p>
+            <p class="font-mono text-3xl font-black leading-none">500+</p>
+            <p class="eyebrow mt-1">Installations</p>
           </div>
         </div>
       </ScrollReveal>
@@ -246,24 +246,24 @@ const featuredProjects = [
           <span class="text-[#F5F0E8]">You Deal Directly</span><br />
           <span class="text-[#D4AF37]">with Brett.</span>
         </h2>
-        <p class="text-[#F5F0E8]/55 text-base leading-relaxed mb-5">
-          Brett has been designing and installing fire suppression systems in Hamilton for over two decades. Every quote, every site walk, every inspection — you're talking to the person who actually runs the job.
+        <p class="body-copy text-base mb-5">
+          Brett founded Ultimate Fire Protection in 2020 and has built it into one of Ontario's fastest-growing fire protection companies. Every quote, every site walk, every inspection — you're talking to the person who actually runs the job.
         </p>
-        <p class="text-[#F5F0E8]/55 text-base leading-relaxed mb-10">
-          No sub-contractors. No account managers. Hamilton's industrial and commercial property managers trust Ultimate Fire Protection because they know who picks up the phone.
+        <p class="body-copy text-base mb-10">
+          With a crew of Red Seal journeymen and registered apprentices, Ultimate handles everything from design to installation to inspection. No sub-contractors. No account managers. Ontario's commercial and industrial property managers trust Ultimate because they know who picks up the phone.
         </p>
         <div class="grid grid-cols-2 gap-3 mb-10">
           {[
-            'NFPA 13 Certified Designer',
-            'ULC Listed Installer',
-            'TSSA Licensed',
+            'Fully Licensed & Insured',
+            'Red Seal Journeymen on Staff',
+            'Registered Apprentices',
+            'NFPA 13 Certified',
             'Ontario Building Code',
-            '$5M Liability Insurance',
-            'AHJ Submissions',
+            'Ontario-Wide Service',
           ].map((cred) => (
             <div class="flex items-center gap-2.5">
               <div class="w-1 h-1 rounded-full bg-[#D4AF37] flex-shrink-0" />
-              <p class="text-[#F5F0E8]/55 text-xs">{cred}</p>
+              <p class="body-copy text-xs">{cred}</p>
             </div>
           ))}
         </div>
@@ -284,7 +284,7 @@ const featuredProjects = [
           <span class="text-[#D4AF37]">About Your Job.</span>
         </h2>
         <p class="body-copy text-lg max-w-md mx-auto mb-12">
-          Hamilton's commercial and industrial fire suppression specialists. No sales team. You talk directly to Brett.
+          Ontario's commercial and industrial fire suppression specialists. No sales team. You talk directly to Brett.
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
           <a href="/contact"

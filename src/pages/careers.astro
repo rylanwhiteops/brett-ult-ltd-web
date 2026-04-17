@@ -1,0 +1,174 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ScrollReveal from '../components/ScrollReveal.tsx';
+import Marquee from '../components/Marquee.tsx';
+import PageHeader from '../components/PageHeader.astro';
+import Footer from '../components/Footer.astro';
+
+const positions = [
+  {
+    title: 'Red Seal Sprinkler Fitter',
+    type: 'Full-Time',
+    description: 'Licensed Red Seal sprinkler fitter for commercial and industrial fire suppression installations across Ontario.',
+    requirements: [
+      'Valid Red Seal certification (Sprinkler Fitter 427A)',
+      'Experience with wet, dry, pre-action, and deluge systems',
+      'Ability to read hydraulic drawings and isometrics',
+      'Valid Ontario driver\'s licence',
+      'Willingness to travel across Ontario',
+    ],
+  },
+  {
+    title: 'Registered Apprentice — Sprinkler Fitter',
+    type: 'Full-Time  Apprenticeship',
+    description: 'Join our crew as a registered apprentice and learn fire suppression from experienced Red Seal journeymen on real jobs.',
+    requirements: [
+      'Registered or willing to register as a 427A apprentice',
+      'Mechanically inclined with strong work ethic',
+      'Valid Ontario driver\'s licence',
+      'Comfortable working at heights and in industrial environments',
+      'No experience required — we train on the job',
+    ],
+  },
+  {
+    title: 'Fire Protection Designer',
+    type: 'Full-Time',
+    description: 'NFPA 13 sprinkler system designer for commercial, industrial, and high-hazard occupancies.',
+    requirements: [
+      'Experience with AutoCAD and hydraulic calculation software',
+      'Working knowledge of NFPA 13, NFPA 25, and Ontario Building Code',
+      'Ability to perform occupancy classification and hazard analysis',
+      'Strong communication skills for AHJ coordination',
+      'NICET certification is an asset',
+    ],
+  },
+];
+---
+
+<Layout
+  title="Careers | Ultimate Fire Protection"
+  description="Join the crew at Ultimate Fire Protection. Red Seal sprinkler fitters, apprentices, and fire protection designers wanted across Ontario."
+>
+
+  <PageHeader
+    eyebrow="Join the Crew"
+    heading="Build Your"
+    headingGold="Career."
+    sub="We're hiring Red Seal journeymen, apprentices, and designers. Real work, real training, and a crew that has your back."
+    watermark="CAREERS"
+    stat="Hiring"
+    statLabel="Now"
+  />
+
+  <Marquee client:load />
+
+  <!-- ── Why Work Here ── -->
+  <section class="relative z-10 border-b border-[#D4AF37]/08 py-20">
+    <div class="max-w-7xl mx-auto px-8 md:px-16">
+      <ScrollReveal client:visible>
+        <div class="grid md:grid-cols-2 gap-16 items-start">
+          <div>
+            <div class="flex items-center gap-4 mb-5">
+              <span class="block w-8 h-px bg-[#D4AF37]/40"></span>
+              <p class="eyebrow text-[#A08928]">Why Ultimate</p>
+            </div>
+            <h2 class="font-display font-black text-4xl md:text-5xl uppercase leading-none mb-6">
+              <span class="text-[#F5F0E8]">Not a Corporation.</span><br />
+              <span class="text-[#D4AF37]">A Crew.</span>
+            </h2>
+            <p class="body-copy text-sm max-w-lg mb-6">
+              Ultimate Fire Protection is owner-operated by Brett. You work directly with the person who runs the company — no layers of management, no corporate runaround. When you do good work, it's noticed.
+            </p>
+            <p class="body-copy text-sm max-w-lg">
+              We're growing across Ontario and we need skilled tradespeople who take pride in their work. If you're looking for a company where you're valued as a person and not just a number, reach out.
+            </p>
+          </div>
+          <div class="space-y-6">
+            {[
+              { label: 'Competitive Pay', text: 'Top-of-market rates for Red Seal fitters and apprentices.' },
+              { label: 'Real Training', text: 'Apprentices learn on commercial and industrial jobs alongside experienced journeymen.' },
+              { label: 'Ontario-Wide Work', text: 'Projects across the province — variety, not monotony.' },
+              { label: 'Direct Communication', text: 'Talk to Brett. No HR department. No hoops to jump through.' },
+            ].map((item) => (
+              <div class="flex gap-5 pb-6 border-b border-[#D4AF37]/08 last:border-0 last:pb-0">
+                <div class="w-1 h-full min-h-[1rem] bg-[#D4AF37]/30 flex-shrink-0 mt-1" />
+                <div>
+                  <p class="font-display font-bold text-lg uppercase text-[#F5F0E8] mb-1">{item.label}</p>
+                  <p class="body-copy text-sm">{item.text}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </ScrollReveal>
+    </div>
+  </section>
+
+  <!-- ── Open Positions ── -->
+  <section class="relative z-10 py-20">
+    <div class="max-w-7xl mx-auto px-8 md:px-16">
+      <ScrollReveal client:visible>
+        <div class="flex items-center gap-4 mb-5">
+          <span class="block w-8 h-px bg-[#D4AF37]/40"></span>
+          <p class="eyebrow text-[#A08928]">Open Positions</p>
+        </div>
+        <h2 class="font-display font-black text-4xl md:text-5xl uppercase leading-none mb-14">
+          <span class="text-[#F5F0E8]">Current</span>{' '}
+          <span class="text-[#D4AF37]">Openings.</span>
+        </h2>
+      </ScrollReveal>
+
+      <div class="space-y-6">
+        {positions.map((pos, i) => (
+          <ScrollReveal client:visible delay={i * 0.06}>
+            <div class="border border-[#D4AF37]/10 bg-[#0f0f0f] p-8 md:p-10">
+              <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6">
+                <div>
+                  <h3 class="font-display font-black text-2xl uppercase text-[#F5F0E8] leading-tight mb-2">
+                    {pos.title}
+                  </h3>
+                  <p class="eyebrow text-[#A08928]">{pos.type}</p>
+                </div>
+              </div>
+              <p class="body-copy text-sm mb-6 max-w-2xl">{pos.description}</p>
+              <ul class="space-y-2 mb-8">
+                {pos.requirements.map((req) => (
+                  <li class="flex items-start gap-3">
+                    <span class="mt-[7px] w-1.5 h-1.5 rounded-full bg-[#D4AF37] flex-shrink-0" />
+                    <span class="body-copy text-sm">{req}</span>
+                  </li>
+                ))}
+              </ul>
+              <a href="mailto:brett@ultimatefire.ca?subject=Application — {pos.title}"
+                class="inline-flex items-center gap-2 text-[#D4AF37] text-sm font-bold tracking-[0.15em] uppercase hover:gap-3 transition-all duration-300">
+                Apply Now <span>→</span>
+              </a>
+            </div>
+          </ScrollReveal>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── General Application CTA ── -->
+  <section class="relative z-10 border-t border-[#D4AF37]/08 py-20">
+    <div class="max-w-7xl mx-auto px-8 md:px-16 text-center">
+      <ScrollReveal client:visible>
+        <h2 class="font-display font-black text-5xl md:text-6xl uppercase leading-none mb-6">
+          <span class="text-[#F5F0E8]">Don't See</span><br />
+          <span class="text-[#D4AF37]">Your Role?</span>
+        </h2>
+        <p class="body-copy text-base max-w-md mx-auto mb-10">
+          We're always interested in hearing from skilled tradespeople. Send your resume and we'll keep you in mind.
+        </p>
+        <a href="mailto:brett@ultimatefire.ca?subject=General Application — Ultimate Fire Protection"
+          class="inline-flex items-center justify-center px-12 py-5 text-sm font-bold tracking-[0.2em] uppercase bg-[#D4AF37] text-[#080808] hover:bg-[#f7e98e] transition-colors duration-300">
+          Send Your Resume
+        </a>
+      </ScrollReveal>
+    </div>
+  </section>
+
+  <Footer />
+
+</Layout>
