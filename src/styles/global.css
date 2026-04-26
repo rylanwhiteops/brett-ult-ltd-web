@@ -150,7 +150,7 @@ h1, h2, h3 {
 .page-header {
   position: relative;
   overflow: hidden;
-  padding-top: clamp(5.5rem, 12vw, 9rem);
+  padding-top: clamp(7rem, 13vw, 10rem);
   padding-bottom: clamp(2.5rem, 5vw, 4rem);
   border-bottom: 1px solid rgba(212,175,55,0.08);
 }

@@ -149,7 +149,7 @@ const featuredProjects = [
       <div class="border-t border-[#D4AF37]/08">
         {services.map((s, i) => (
           <ScrollReveal client:visible delay={i * 0.06}>
-            <div class="service-card group flex items-center gap-8 py-5 md:py-7 px-4 md:px-6 border-b border-[#D4AF37]/08">
+            <div class="service-card group flex items-center gap-4 md:gap-8 py-5 md:py-7 px-2 md:px-6 border-b border-[#D4AF37]/08">
               <!-- Icon -->
               <div class="flex-shrink-0 w-10 h-10 flex items-center justify-center opacity-80 group-hover:opacity-100 transition-opacity">
                 <Fragment set:html={s.icon} />
@@ -215,22 +215,20 @@ const featuredProjects = [
     <div class="max-w-7xl mx-auto px-8 md:px-16 grid md:grid-cols-[1fr_1fr] gap-16 xl:gap-28 items-center">
 
       <ScrollReveal client:visible>
-        <div class="relative">
+        <div class="relative hidden md:block">
           <div class="aspect-[4/5] bg-[#0d0d0d] border border-[#D4AF37]/12 overflow-hidden relative">
-            <!-- Replace src with real photo: /brett.jpg -->
             <div class="absolute inset-0 flex flex-col items-center justify-center gap-4 opacity-15">
               <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
                 <circle cx="28" cy="20" r="11" stroke="#D4AF37" stroke-width="1.5"/>
                 <path d="M6 50c0-12.15 9.85-22 22-22s22 9.85 22 22" stroke="#D4AF37" stroke-width="1.5"/>
               </svg>
-              <p class="eyebrow text-[#D4AF37]">Add brett.jpg to /public</p>
             </div>
             <div class="absolute top-4 left-4 w-8 h-8 border-t-2 border-l-2 border-[#D4AF37]/30"></div>
             <div class="absolute top-4 right-4 w-8 h-8 border-t-2 border-r-2 border-[#D4AF37]/30"></div>
             <div class="absolute bottom-4 left-4 w-8 h-8 border-b-2 border-l-2 border-[#D4AF37]/30"></div>
             <div class="absolute bottom-4 right-4 w-8 h-8 border-b-2 border-r-2 border-[#D4AF37]/30"></div>
           </div>
-          <div class="absolute -bottom-5 -right-5 bg-[#D4AF37] text-[#080808] p-5 hidden md:block">
+          <div class="absolute -bottom-5 -right-5 bg-[#D4AF37] text-[#080808] p-5">
             <p class="font-mono text-3xl font-black leading-none">500+</p>
             <p class="eyebrow mt-1">Installations</p>
           </div>
