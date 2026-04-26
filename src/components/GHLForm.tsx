@@ -9,7 +9,7 @@
  * Example: https://api.leadconnectorhq.com/widget/form/xxxxxxxxxxxxxxxx
  */
 
-const GHL_EMBED_URL = ''; // ← PASTE YOUR GHL FORM URL HERE
+const GHL_EMBED_URL = 'https://api.leadconnectorhq.com/widget/form/IIF8oJfuJz71mN6VHS9W';
 
 export default function GHLForm() {
   if (!GHL_EMBED_URL) {

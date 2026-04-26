@@ -4,6 +4,7 @@ import ScrollReveal from '../components/ScrollReveal.tsx';
 import Marquee from '../components/Marquee.tsx';
 import PageHeader from '../components/PageHeader.astro';
 import Footer from '../components/Footer.astro';
+import GHLForm from '../components/GHLForm.tsx';
 ---
 
 <Layout
@@ -53,13 +54,7 @@ import Footer from '../components/Footer.astro';
           </div>
         </ScrollReveal>
 
-        <iframe
-          src="https://api.leadconnectorhq.com/widget/form/IIF8oJfuJz71mN6VHS9W"
-          style="width:100%; height:700px; border:none; background:transparent;"
-          scrolling="no"
-          id="ghl-contact-form"
-          title="Contact Form"
-        ></iframe>
+        <GHLForm client:load />
       </div>
 
       <!-- Right Sidebar -->
