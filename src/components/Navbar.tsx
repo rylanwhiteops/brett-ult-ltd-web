@@ -82,30 +82,8 @@ export default function Navbar() {
           }}
         >
           {/* Logo */}
-          <a href="/" className="flex items-center gap-3 group flex-shrink-0">
-            <svg width="34" height="38" viewBox="0 0 36 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M18 2L3 8v14c0 9 6.5 17 15 20 8.5-3 15-11 15-20V8L18 2z"
-                fill="rgba(212,175,55,0.08)"
-                stroke="#D4AF37"
-                strokeWidth="1.4"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M18 10c-3 4.5-4.5 7.5-4.5 10a4.5 4.5 0 0 0 9 0c0-2.5-1.5-5.5-4.5-10z"
-                fill="#D4AF37"
-                opacity="0.9"
-              />
-              <path
-                d="M18 15c-1.2 2-1.8 3.5-1.8 5a1.8 1.8 0 0 0 3.6 0c0-1.5-.6-3-1.8-5z"
-                fill="#f7e98e"
-                opacity="0.85"
-              />
-            </svg>
-            <div className="leading-none">
-              <p className="text-[#D4AF37] text-[10px] font-black tracking-[0.28em] uppercase">ULTIMATE</p>
-              <p className="text-[#F5F0E8]/35 text-[7.5px] tracking-[0.32em] uppercase mt-0.5">Fire Protection</p>
-            </div>
+          <a href="/" className="flex items-center group flex-shrink-0">
+            <img src="/logo-horizontal.png" alt="Ultimate Fire Protection" className="h-9 w-auto" />
           </a>
 
           {/* Desktop nav */}
@@ -200,11 +178,7 @@ export default function Navbar() {
               transition={{ delay: 0.4 }}
               className="mt-16 flex items-center gap-4"
             >
-              <svg width="26" height="30" viewBox="0 0 36 44" fill="none" opacity={0.4}>
-                <path d="M18 2L3 8v14c0 9 6.5 17 15 20 8.5-3 15-11 15-20V8L18 2z" fill="rgba(212,175,55,0.08)" stroke="#D4AF37" strokeWidth="1.2" strokeLinejoin="round"/>
-                <path d="M18 10c-3 4.5-4.5 7.5-4.5 10a4.5 4.5 0 0 0 9 0c0-2.5-1.5-5.5-4.5-10z" fill="#D4AF37" opacity="0.9"/>
-                <path d="M18 15c-1.2 2-1.8 3.5-1.8 5a1.8 1.8 0 0 0 3.6 0c0-1.5-.6-3-1.8-5z" fill="#f7e98e" opacity="0.8"/>
-              </svg>
+              <img src="/logo-stacked.png" alt="Ultimate Fire Protection" className="h-8 w-auto opacity-60" />
               <p className="text-[#909090] text-xs tracking-[0.3em] uppercase">Hamilton, Ontario  Est. 2020</p>
             </motion.div>
           </motion.div>
