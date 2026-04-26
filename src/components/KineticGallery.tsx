@@ -22,9 +22,8 @@ function KineticCard({ project, scrollVelocity }: { project: Project; scrollVelo
 
   return (
     <motion.div
-      className="relative overflow-hidden group cursor-pointer"
+      className="relative overflow-hidden group"
       style={{ skewX: skew }}
-      whileHover={{ scale: 1.02 }}
       transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
     >
       <div className="aspect-[4/3] overflow-hidden bg-[#121212]">

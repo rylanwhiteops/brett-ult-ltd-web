@@ -71,7 +71,7 @@ export default function Navbar() {
       {/* CSS-driven entrance — avoids Framer Motion hydration race */}
       <header className="navbar-root fixed top-0 left-0 right-0 z-50">
         <div
-          className="mx-auto px-8 md:px-16 h-16 flex items-center justify-between transition-all duration-500"
+          className="mx-auto px-8 md:px-16 h-20 md:h-24 flex items-center justify-between transition-all duration-500"
           style={{
             background: scrolled ? 'rgba(10,10,10,0.96)' : 'rgba(10,10,10,0.80)',
             backdropFilter: 'blur(14px)',
@@ -83,7 +83,7 @@ export default function Navbar() {
         >
           {/* Logo */}
           <a href="/" className="flex items-center group flex-shrink-0">
-            <img src="/logo-horizontal.png" alt="Ultimate Fire Protection" className="h-9 w-auto" />
+            <img src="/logo-horizontal.png" alt="Ultimate Fire Protection" className="h-14 md:h-16 w-auto" />
           </a>
 
           {/* Desktop nav */}

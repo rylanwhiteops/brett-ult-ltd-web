@@ -25,12 +25,12 @@ function ServiceCard({
 }) {
   const targetScale = 1 - (total - index) * 0.035;
   const scale = useTransform(progress, [index / total, 1], [1, targetScale]);
-  const top = 80 + index * 28;
+  const top = 100 + index * 28;
 
   return (
     <div
-      className="sticky h-screen flex items-center justify-center"
-      style={{ top }}
+      className="sticky flex items-start justify-center"
+      style={{ top, height: '70vh', paddingTop: '2rem' }}
     >
       <motion.div
         className="w-full max-w-5xl mx-auto"
@@ -88,7 +88,7 @@ export default function StackingServiceCards({ services }: Props) {
   });
 
   return (
-    <div ref={container} style={{ minHeight: `${services.length * 100}vh` }}>
+    <div ref={container} style={{ minHeight: `${services.length * 70}vh` }}>
       {services.map((service, i) => (
         <ServiceCard
           key={service.id}

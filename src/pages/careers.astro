@@ -139,7 +139,7 @@ const positions = [
                   </li>
                 ))}
               </ul>
-              <a href="mailto:brett@ultimatefire.ca?subject=Application — {pos.title}"
+              <a href={`mailto:brett@ultimatefire.ca?subject=${encodeURIComponent('Application — ' + pos.title)}`}
                 class="inline-flex items-center gap-2 text-[#D4AF37] text-sm font-bold tracking-[0.15em] uppercase hover:gap-3 transition-all duration-300">
                 Apply Now <span>→</span>
               </a>
@@ -161,7 +161,7 @@ const positions = [
         <p class="body-copy text-base max-w-md mx-auto mb-10">
           We're always interested in hearing from skilled tradespeople. Send your resume and we'll keep you in mind.
         </p>
-        <a href="mailto:brett@ultimatefire.ca?subject=General Application — Ultimate Fire Protection"
+        <a href="mailto:brett@ultimatefire.ca?subject=General%20Application%20%E2%80%94%20Ultimate%20Fire%20Protection"
           class="inline-flex items-center justify-center px-12 py-5 text-sm font-bold tracking-[0.2em] uppercase bg-[#D4AF37] text-[#080808] hover:bg-[#f7e98e] transition-colors duration-300">
           Send Your Resume
         </a>
