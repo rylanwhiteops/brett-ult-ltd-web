@@ -297,7 +297,7 @@ const featuredProjects = [
 
       <!-- Star rating bar -->
       <ScrollReveal client:visible>
-        <div class="flex items-center gap-4 mb-14 pb-14 border-b border-[#D4AF37]/08">
+        <div class="flex items-center flex-wrap gap-x-4 gap-y-2 mb-14 pb-14 border-b border-[#D4AF37]/08">
           <div class="flex gap-1">
             {[1,2,3,4,5].map(() => (
               <svg width="22" height="22" viewBox="0 0 24 24" fill="#D4AF37">
@@ -306,7 +306,7 @@ const featuredProjects = [
             ))}
           </div>
           <span class="text-[#F5F0E8] text-2xl font-black">4.9</span>
-          <span class="text-[#909090] text-sm">out of 5  ·  8 reviews</span>
+          <span class="text-[#909090] text-sm">8 reviews</span>
         </div>
       </ScrollReveal>
 
@@ -340,7 +340,7 @@ const featuredProjects = [
           },
         ].map((review, i) => (
           <ScrollReveal client:visible delay={i * 0.06}>
-            <div class="h-full border border-[#D4AF37]/10 bg-[#0f0f0f] p-7 flex flex-col">
+            <div class="h-full border border-[#D4AF37]/10 bg-[#0f0f0f] p-6 md:p-7 flex flex-col">
               {/* Stars */}
               <div class="flex gap-0.5 mb-4">
                 {[1,2,3,4,5].map(() => (
