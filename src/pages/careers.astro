@@ -4,6 +4,7 @@ import ScrollReveal from '../components/ScrollReveal.tsx';
 import Marquee from '../components/Marquee.tsx';
 import PageHeader from '../components/PageHeader.astro';
 import Footer from '../components/Footer.astro';
+import CareersForm from '../components/CareersForm.tsx';
 
 const positions = [
   {
@@ -139,7 +140,7 @@ const positions = [
                   </li>
                 ))}
               </ul>
-              <a href={`mailto:brett@ultimatefire.ca?subject=${encodeURIComponent('Application: ' + pos.title)}`}
+              <a href="#apply"
                 class="inline-flex items-center gap-2 text-[#D4AF37] text-sm font-bold tracking-[0.15em] uppercase hover:gap-3 transition-all duration-300">
                 Apply Now <span>→</span>
               </a>
@@ -150,21 +151,28 @@ const positions = [
     </div>
   </section>
 
-  <!-- ── General Application CTA ── -->
-  <section class="relative z-10 border-t border-[#D4AF37]/08 py-14 md:py-20">
-    <div class="max-w-7xl mx-auto px-8 md:px-16 text-center">
+  <!-- ── Application Form ── -->
+  <section id="apply" class="relative z-10 border-t border-[#D4AF37]/08 py-14 md:py-20 scroll-mt-24">
+    <div class="max-w-3xl mx-auto px-8 md:px-16">
       <ScrollReveal client:visible>
-        <h2 class="font-display font-black text-5xl md:text-6xl uppercase leading-none mb-6">
-          <span class="text-[#F5F0E8]">Don't See</span><br />
-          <span class="text-[#D4AF37]">Your Role?</span>
-        </h2>
-        <p class="body-copy text-base max-w-md mx-auto mb-10">
-          We're always interested in hearing from skilled tradespeople. Send your resume and we'll keep you in mind.
-        </p>
-        <a href="mailto:brett@ultimatefire.ca?subject=General%20Application%20Ultimate%20Fire%20Protection"
-          class="inline-flex items-center justify-center px-12 py-5 text-sm font-bold tracking-[0.2em] uppercase bg-[#D4AF37] text-[#080808] hover:bg-[#f7e98e] transition-colors duration-300">
-          Send Your Resume
-        </a>
+        <div class="text-center mb-12">
+          <div class="flex items-center justify-center gap-4 mb-5">
+            <span class="block w-8 h-px bg-[#D4AF37]/40"></span>
+            <p class="eyebrow text-[#A08928]">Apply</p>
+            <span class="block w-8 h-px bg-[#D4AF37]/40"></span>
+          </div>
+          <h2 class="font-display font-black text-5xl md:text-6xl uppercase leading-none mb-6">
+            <span class="text-[#F5F0E8]">Send Your</span>{' '}
+            <span class="text-[#D4AF37]">Application.</span>
+          </h2>
+          <p class="body-copy text-base max-w-md mx-auto">
+            Attach your resume and tell us a bit about yourself. We review every application and respond directly.
+          </p>
+        </div>
+      </ScrollReveal>
+
+      <ScrollReveal client:visible>
+        <CareersForm client:load />
       </ScrollReveal>
     </div>
   </section>
