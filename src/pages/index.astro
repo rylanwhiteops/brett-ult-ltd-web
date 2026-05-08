@@ -106,14 +106,14 @@ const featuredProjects = [
 
   <!-- ── Stats Bar ── -->
   <section class="relative z-10 border-b border-[#D4AF37]/08">
-    <div class="max-w-7xl mx-auto px-8 md:px-16 grid grid-cols-2 md:grid-cols-4 md:divide-x md:divide-[#D4AF37]/08">
+    <div class="max-w-7xl mx-auto px-8 md:px-16 grid grid-cols-2 md:grid-cols-4 md:divide-x md:divide-[#D4AF37]/08 items-start">
       {[
         { n: '500+', l: 'Installations' },
         { n: '100%', l: 'Owner Operated' },
-        { n: '100%', l: 'Red Seal Fitters' },
+        { n: '100%', l: 'Red Seal Crew' },
         { n: '24/7', l: 'Emergency Line' },
       ].map((s) => (
-        <div class="py-7 px-5 md:py-12 md:px-8 first:pl-0 last:pr-0 flex flex-col justify-end">
+        <div class="py-7 px-5 md:py-12 md:px-8 first:pl-0 last:pr-0">
           <ScrollReveal client:visible>
             <p class="stat-number text-4xl md:text-5xl font-black leading-none bg-gradient-to-br from-[#D4AF37] via-[#f5e27a] to-[#A08928] bg-clip-text text-transparent mb-2">{s.n}</p>
             <p class="eyebrow text-[#909090]">{s.l}</p>
