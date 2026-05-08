@@ -3,15 +3,15 @@
 import { motion } from 'framer-motion';
 
 const ITEMS = [
-  'NFPA 13 Certified',
+  'NFPA 13 Compliant',
   'Fully Licensed & Insured',
-  'Red Seal Journeymen',
-  'Ontario Building Code',
+  'Red Seal Licensed Fitters',
+  'Local 853 Union Member',
   '500+ Installations',
   'Ontario-Wide Service',
-  'Industrial  Commercial',
+  'Residential  Commercial  Industrial',
   '24/7 Emergency Response',
-  'Fully Insured  $5M',
+  'West Hamilton Builder Association',
   'Design  Supply  Install',
 ];
 
