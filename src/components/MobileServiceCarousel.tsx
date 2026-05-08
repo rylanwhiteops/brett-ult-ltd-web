@@ -21,9 +21,10 @@ export default function MobileServiceCarousel({ services }: { services: ServiceI
     const track = trackRef.current;
     if (!track) return;
 
-    // Hide swipe hint after first interaction
+    // Hide swipe hint after first interaction OR 3 seconds
     const onScroll = () => setShowHint(false);
     track.addEventListener('scroll', onScroll, { once: true, passive: true });
+    const t = setTimeout(() => setShowHint(false), 3000);
 
     // IntersectionObserver to track which card is active
     const observer = new IntersectionObserver(
@@ -42,6 +43,7 @@ export default function MobileServiceCarousel({ services }: { services: ServiceI
     cards.forEach(card => observer.observe(card));
 
     return () => {
+      clearTimeout(t);
       observer.disconnect();
       track.removeEventListener('scroll', onScroll);
     };
@@ -57,13 +59,13 @@ export default function MobileServiceCarousel({ services }: { services: ServiceI
   return (
     <div className="relative">
 
-      {/* Swipe hint — fades out after first scroll */}
+      {/* Swipe hint — sits above cards, fades after 3s or first scroll */}
       <div
-        className="absolute right-4 top-1/2 z-20 flex items-center gap-1.5 pointer-events-none transition-opacity duration-500"
-        style={{ opacity: showHint ? 1 : 0, transform: 'translateY(-50%)' }}
+        className="flex items-center justify-end gap-1.5 px-6 mb-3 pointer-events-none transition-opacity duration-700"
+        style={{ opacity: showHint ? 1 : 0, height: showHint ? 'auto' : 0 }}
       >
         <span className="text-[#D4AF37]/50 text-[10px] font-semibold tracking-[0.25em] uppercase">Swipe</span>
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
           <path d="M3 8h10M9 4l4 4-4 4" stroke="#D4AF37" strokeOpacity="0.5" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
       </div>

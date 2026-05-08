@@ -37,6 +37,17 @@ const TABS = [
     ),
   },
   {
+    label: 'Careers',
+    href: '/careers',
+    icon: (active: boolean) => (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={active ? '#D4AF37' : '#909090'} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="7" width="18" height="13" rx="1.5"/>
+        <path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/>
+        <line x1="3" y1="13" x2="21" y2="13"/>
+      </svg>
+    ),
+  },
+  {
     label: 'Contact',
     href: '/contact',
     icon: (active: boolean) => (
@@ -84,7 +95,7 @@ export default function MobileNav() {
         </div>
 
         {/* Tab row */}
-        <div className="grid grid-cols-4 pb-safe">
+        <div className="grid grid-cols-5 pb-safe">
           {TABS.map((tab, i) => {
             const active = pathname === tab.href;
             return (
@@ -99,7 +110,7 @@ export default function MobileNav() {
                 {active && (
                   <motion.div
                     layoutId="tab-glow"
-                    className="absolute inset-0 mx-3 rounded-xl"
+                    className="absolute inset-0 mx-2 rounded-xl"
                     style={{ background: 'rgba(212,175,55,0.06)' }}
                     transition={{ type: 'spring', stiffness: 380, damping: 32 }}
                   />
@@ -107,7 +118,7 @@ export default function MobileNav() {
 
                 <span className="relative z-10">{tab.icon(active)}</span>
                 <span
-                  className="relative z-10 text-[9px] font-semibold tracking-[0.18em] uppercase transition-colors duration-200"
+                  className="relative z-10 text-[9px] font-semibold tracking-[0.16em] uppercase transition-colors duration-200"
                   style={{ color: active ? '#D4AF37' : '#909090' }}
                 >
                   {tab.label}

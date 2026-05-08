@@ -26,37 +26,29 @@ const page = await context.newPage();
 for (const p of PAGES) {
   const url = PRODUCTION_URL + p.path;
   console.log(`→ ${url}`);
-  await page.goto(url, { waitUntil: 'networkidle', timeout: 60000 });
-  await page.waitForTimeout(1500);
+  await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
+  await page.waitForTimeout(2000);
 
-  // Scroll the entire page slowly so every ScrollReveal IntersectionObserver fires
-  await page.evaluate(async () => {
-    await new Promise((resolve) => {
-      let total = 0;
-      const step = 400;
-      const timer = setInterval(() => {
-        window.scrollBy(0, step);
-        total += step;
-        if (total >= document.body.scrollHeight) {
-          clearInterval(timer);
-          resolve();
-        }
-      }, 80);
-    });
-  });
+  // Bounded scroll: 30 steps of 600px = up to 18000px (covers home page which is tallest)
+  for (let i = 0; i < 30; i++) {
+    await page.evaluate((step) => window.scrollBy(0, step), 600);
+    await page.waitForTimeout(150);
+  }
 
-  // Force any still-hidden ScrollReveal elements to be visible
+  // Force any still-hidden ScrollReveal elements to be visible (style attr based)
   await page.evaluate(() => {
-    document.querySelectorAll('[style*="opacity: 0"]').forEach((el) => {
-      el.style.opacity = '1';
-      el.style.filter = 'none';
-      el.style.transform = 'none';
+    document.querySelectorAll('*').forEach((el) => {
+      const s = el.getAttribute('style') || '';
+      if (s.includes('opacity: 0') || s.includes('opacity:0')) {
+        el.style.opacity = '1';
+        el.style.filter = 'none';
+        el.style.transform = 'none';
+      }
     });
   });
 
-  // Scroll back to top before taking screenshot
   await page.evaluate(() => window.scrollTo(0, 0));
-  await page.waitForTimeout(500);
+  await page.waitForTimeout(800);
 
   await page.screenshot({
     path: `${OUT_DIR}/${p.name}-full.png`,
