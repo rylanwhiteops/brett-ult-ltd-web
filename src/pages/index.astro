@@ -9,7 +9,7 @@ import Footer from '../components/Footer.astro';
 const services = [
   {
     title: 'Fire Suppression',
-    desc: 'Wet pipe, dry pipe, pre-action and deluge systems for industrial and commercial occupancies.',
+    desc: 'Wet pipe, dry pipe, pre-action and deluge systems for residential, commercial, and industrial occupancies.',
     standard: 'NFPA 13',
     icon: `<svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
       <path d="M14 3C10.5 8 9 11 9 14a5 5 0 0 0 10 0c0-3-1.5-6-5-11z"/>
@@ -19,8 +19,8 @@ const services = [
   },
   {
     title: 'Sprinkler Design',
-    desc: 'NFPA 13 hydraulic calculations for warehouses, manufacturing floors, high-piled storage.',
-    standard: 'NFPA 13 / ULC',
+    desc: 'Design-build sprinkler systems delivered with trusted fire engineering partners for any application or building type.',
+    standard: 'Design-Build',
     icon: `<svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
       <circle cx="14" cy="14" r="2"/>
       <line x1="14" y1="4" x2="14" y2="8"/>
@@ -35,8 +35,8 @@ const services = [
   },
   {
     title: 'NAICO Fire Protection',
-    desc: 'Acquired full-service fire protection company expanding Ultimate\'s capacity and coverage across the Hamilton region.',
-    standard: 'Acquired',
+    desc: 'Acquired in 2021. NAICO\'s operations expand Ultimate\'s capacity and coverage across the Niagara region.',
+    standard: 'Acquired 2021',
     acquired: true,
     icon: `<svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
       <path d="M14 3L4 7v8c0 6 4.5 11 10 13 5.5-2 10-7 10-13V7L14 3z"/>
@@ -45,7 +45,7 @@ const services = [
   },
   {
     title: 'Annual Inspections',
-    desc: 'Scheduled inspection programs for sprinklers, pumps, suppression agents and alarm panels.',
+    desc: 'Scheduled inspections for sprinkler and standpipe systems, electric/diesel fire pumps, dry and pre-action systems, and backflow preventers.',
     standard: 'NFPA 25',
     icon: `<svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
       <rect x="5" y="6" width="18" height="19" rx="1"/>
@@ -110,7 +110,7 @@ const featuredProjects = [
       {[
         { n: '500+', l: 'Installations' },
         { n: '100%', l: 'Owner Operated' },
-        { n: '100%', l: 'Red Seal Crew' },
+        { n: '100%', l: 'Red Seal Fitters' },
         { n: '24/7', l: 'Emergency Line' },
       ].map((s) => (
         <div class="py-7 px-5 md:py-12 md:px-8 first:pl-0 last:pr-0 flex flex-col justify-end">
@@ -192,9 +192,12 @@ const featuredProjects = [
               <p class="eyebrow text-[#A08928]">Featured Work</p>
             </div>
             <h2 class="font-display font-black text-5xl md:text-6xl xl:text-7xl uppercase leading-none">
-              <span class="text-[#F5F0E8]">Real Jobs.</span><br />
-              <span class="text-[#D4AF37]">Real Authority.</span>
+              <span class="text-[#F5F0E8]">The Work.</span><br />
+              <span class="text-[#D4AF37]">Speaks for Itself.</span>
             </h2>
+            <p class="body-copy text-base mt-6 max-w-xl">
+              500+ installations across Ontario's residential, commercial, and industrial sectors. You can trust Ultimate to take care of any project. References available upon request.
+            </p>
           </div>
           <a href="/projects" class="hidden md:inline-flex items-center gap-2 eyebrow text-[#A08928] hover:text-[#D4AF37] transition-colors">
             All Projects →
@@ -255,8 +258,8 @@ const featuredProjects = [
             'Fully Licensed & Insured',
             'Red Seal Journeymen on Staff',
             'Registered Apprentices',
-            'NFPA 13 Certified',
-            'Ontario Building Code',
+            'Local 853 Member',
+            'West Hamilton Builder Association',
             'Ontario-Wide Service',
           ].map((cred) => (
             <div class="flex items-center gap-2.5">
@@ -389,8 +392,8 @@ const featuredProjects = [
           <span class="text-[#F5F0E8]">Let's Talk</span><br />
           <span class="text-[#D4AF37]">About Your Job.</span>
         </h2>
-        <p class="body-copy text-lg max-w-md mx-auto mb-12">
-          Ontario's commercial and industrial fire suppression specialists. No sales team. You talk directly to Brett.
+        <p class="body-copy text-lg max-w-lg mx-auto mb-12">
+          Ontario's leading fire protection specialists for residential, commercial, and industrial buildings. Talk to Brett or Damien directly. No sales team, no runaround.
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
           <a href="/contact"
