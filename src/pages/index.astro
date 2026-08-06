@@ -2,7 +2,6 @@
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import ScrollReveal from '../components/ScrollReveal.tsx';
-import KineticGallery from '../components/KineticGallery.tsx';
 import Marquee from '../components/Marquee.tsx';
 import Footer from '../components/Footer.astro';
 
@@ -66,32 +65,6 @@ const services = [
   },
 ];
 
-const featuredProjects = [
-  {
-    id: 'p1',
-    name: 'ArcelorMittal Steel Plant',
-    city: 'Hamilton, ON',
-    type: 'Industrial Suppression',
-    year: '2023',
-    image: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80&fit=crop',
-  },
-  {
-    id: 'p2',
-    name: 'First Ontario Centre',
-    city: 'Hamilton, ON',
-    type: 'Commercial Fire Alarm',
-    year: '2022',
-    image: 'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=800&q=80&fit=crop',
-  },
-  {
-    id: 'p3',
-    name: 'Hamilton General Hospital',
-    city: 'Hamilton, ON',
-    type: 'Suppression + Alarm',
-    year: '2023',
-    image: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&q=80&fit=crop',
-  },
-];
 ---
 
 <Layout>
@@ -206,7 +179,46 @@ const featuredProjects = [
       </ScrollReveal>
     </div>
 
-    <KineticGallery projects={featuredProjects} preview={true} client:visible />
+    <!-- Single featured case study card -->
+    <div class="max-w-7xl mx-auto px-8 md:px-16">
+      <ScrollReveal client:visible>
+        <a href="/projects" class="group grid md:grid-cols-2 gap-0 border border-[#D4AF37]/10 hover:border-[#D4AF37]/40 bg-[#0d0d0d] overflow-hidden transition-colors duration-500">
+          <div class="aspect-[4/3] md:aspect-auto overflow-hidden bg-[#080808] relative">
+            <img
+              src="/projects/jackson-condos/jackson-pump-room.jpg"
+              alt="The Jackson Condos — fire pump installation"
+              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.05]"
+              loading="lazy"
+            />
+            <div class="absolute top-0 left-0 h-[2px] w-0 bg-[#D4AF37] group-hover:w-full transition-all duration-500 ease-out" />
+          </div>
+          <div class="p-8 md:p-12 flex flex-col justify-between">
+            <div>
+              <p class="text-[#A08928] text-[10px] font-semibold tracking-[0.3em] uppercase mb-5">Latest Case Study · Residential</p>
+              <h3 class="font-display font-black text-3xl md:text-4xl xl:text-5xl uppercase leading-none text-[#F5F0E8] group-hover:text-[#D4AF37] transition-colors duration-300 mb-6">
+                The Jackson Condominiums
+              </h3>
+              <p class="body-copy text-sm md:text-base mb-8">
+                Complete fire protection package for a multi-storey residential development — wet-pipe sprinkler system, electric fire pump, and full parking-level coverage. Engineered and installed to NFPA 13.
+              </p>
+              <div class="grid grid-cols-2 gap-x-6 gap-y-4 pt-6 border-t border-[#D4AF37]/10 mb-8">
+                <div>
+                  <p class="eyebrow text-[#909090] mb-1">Sector</p>
+                  <p class="text-[#F5F0E8] text-sm font-bold">Residential</p>
+                </div>
+                <div>
+                  <p class="eyebrow text-[#909090] mb-1">System</p>
+                  <p class="text-[#F5F0E8] text-sm font-bold">Wet Pipe · Fire Pump</p>
+                </div>
+              </div>
+            </div>
+            <span class="inline-flex items-center gap-3 font-display font-bold text-base uppercase text-[#D4AF37] group-hover:gap-5 transition-all duration-300">
+              View Case Study <span>→</span>
+            </span>
+          </div>
+        </a>
+      </ScrollReveal>
+    </div>
 
     <div class="max-w-7xl mx-auto px-8 md:px-16 mt-8 md:hidden">
       <a href="/projects" class="eyebrow text-[#A08928] hover:text-[#D4AF37] transition-colors">All Projects →</a>

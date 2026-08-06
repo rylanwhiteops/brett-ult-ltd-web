@@ -1,83 +1,34 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import KineticGallery from '../components/KineticGallery.tsx';
 import ScrollReveal from '../components/ScrollReveal.tsx';
 import Marquee from '../components/Marquee.tsx';
 import PageHeader from '../components/PageHeader.astro';
 import Footer from '../components/Footer.astro';
 
-const projects = [
+const jacksonGallery = [
   {
-    id: 'p1',
-    name: 'ArcelorMittal Steel Plant',
-    city: 'Hamilton, ON',
-    type: 'Industrial Suppression',
-    year: '2023',
-    image: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80&fit=crop',
+    src: '/projects/jackson-condos/jackson-valve-assembly.jpg',
+    alt: 'Fire pump and valve room — The Jackson Condos',
+    caption: 'Valve Room',
+    detail: 'Riser, backflow preventer, and control valves.',
   },
   {
-    id: 'p2',
-    name: 'First Ontario Centre',
-    city: 'Hamilton, ON',
-    type: 'Commercial Fire Alarm',
-    year: '2022',
-    image: 'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=800&q=80&fit=crop',
+    src: '/projects/jackson-condos/jackson-sprinkler-mains.jpg',
+    alt: 'Overhead sprinkler mains — The Jackson Condos',
+    caption: 'Sprinkler Mains',
+    detail: 'Overhead grooved-steel mains with seismic bracing.',
   },
   {
-    id: 'p3',
-    name: 'Hamilton General Hospital',
-    city: 'Hamilton, ON',
-    type: 'Suppression + Alarm',
-    year: '2023',
-    image: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&q=80&fit=crop',
+    src: '/projects/jackson-condos/jackson-parking-piping.jpg',
+    alt: 'Underground parking level fire protection — The Jackson Condos',
+    caption: 'Parking Level',
+    detail: 'Full underground parking protection.',
   },
   {
-    id: 'p4',
-    name: 'Stelco Lake Erie Works',
-    city: 'Nanticoke, ON',
-    type: 'High-Hazard Foam System',
-    year: '2022',
-    image: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=800&q=80&fit=crop',
-  },
-  {
-    id: 'p5',
-    name: 'Meridian Credit Union HQ',
-    city: 'St. Catharines, ON',
-    type: 'Clean Agent + Alarm',
-    year: '2021',
-    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80&fit=crop',
-  },
-  {
-    id: 'p6',
-    name: 'Burlington Mall',
-    city: 'Burlington, ON',
-    type: 'Wet Pipe Suppression',
-    year: '2023',
-    image: 'https://images.unsplash.com/photo-1555636222-cae831e670b3?w=800&q=80&fit=crop',
-  },
-  {
-    id: 'p7',
-    name: 'CN Rail Logistics Hub',
-    city: 'Hamilton, ON',
-    type: 'Pre-Action System',
-    year: '2021',
-    image: 'https://images.unsplash.com/photo-1473445730015-841f29a9490b?w=800&q=80&fit=crop',
-  },
-  {
-    id: 'p8',
-    name: 'Dofasco Distribution Centre',
-    city: 'Hamilton, ON',
-    type: 'ESFR Rack Storage',
-    year: '2020',
-    image: 'https://images.unsplash.com/photo-1553413077-190dd305871c?w=800&q=80&fit=crop',
-  },
-  {
-    id: 'p9',
-    name: 'McMaster University Research',
-    city: 'Hamilton, ON',
-    type: 'Lab Suppression + Alarm',
-    year: '2022',
-    image: 'https://images.unsplash.com/photo-1562774053-701939374585?w=800&q=80&fit=crop',
+    src: '/projects/jackson-condos/jackson-exterior.jpg',
+    alt: 'Building exterior — The Jackson Condos',
+    caption: 'Building Exterior',
+    detail: 'Multi-storey residential development.',
   },
 ];
 ---
@@ -88,7 +39,7 @@ const projects = [
 >
 
   <PageHeader
-    eyebrow="Portfolio  Ontario-Wide"
+    eyebrow="Portfolio · Ontario-Wide"
     heading="The Work"
     headingGold="Speaks for Itself."
     sub="500+ installations across Ontario's residential, commercial, and industrial sectors. Each job engineered to code, built to last, still running. We earn repeat work through quality of workmanship. References available upon request."
@@ -118,21 +69,99 @@ const projects = [
     </div>
   </section>
 
-  <!-- ── Filter Bar ── -->
-  <section class="relative z-10 border-b border-[#D4AF37]/08 py-5">
-    <div class="max-w-7xl mx-auto px-8 md:px-16 flex items-center gap-8 overflow-x-auto">
-      <span class="eyebrow text-[#909090] whitespace-nowrap flex-shrink-0">Filter:</span>
-      {['All', 'Residential', 'Industrial', 'Commercial', 'Suppression', 'Fire Alarm', 'High-Hazard'].map((label, i) => (
-        <button class={`eyebrow whitespace-nowrap flex-shrink-0 transition-colors duration-200 hover:text-[#F5F0E8] ${i === 0 ? 'text-[#D4AF37]' : 'text-[#909090]'}`}>
-          {label}
-        </button>
-      ))}
-    </div>
-  </section>
+  <!-- ── Featured Case Study: The Jackson Condos ── -->
+  <section class="relative z-10 section-gap">
+    <div class="max-w-7xl mx-auto px-8 md:px-16">
 
-  <!-- ── Gallery ── -->
-  <section class="relative z-10">
-    <KineticGallery projects={projects} client:visible />
+      <!-- Case study header -->
+      <ScrollReveal client:visible>
+        <div class="mb-12">
+          <div class="flex items-center gap-4 mb-5">
+            <span class="block w-8 h-px bg-[#D4AF37]/40"></span>
+            <p class="eyebrow text-[#A08928]">Featured Case Study · Residential</p>
+          </div>
+          <h2 class="font-display font-black text-5xl md:text-6xl xl:text-7xl uppercase leading-none">
+            <span class="text-[#F5F0E8]">The Jackson</span><br />
+            <span class="text-[#D4AF37]">Condominiums</span>
+          </h2>
+          <p class="body-copy text-base mt-6 max-w-2xl">
+            Complete fire protection package for a multi-storey residential development. Wet-pipe sprinkler system, electric fire pump, and full parking-level coverage — engineered, installed, and commissioned to NFPA 13.
+          </p>
+
+          <!-- Spec strip -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-10 pt-8 border-t border-[#D4AF37]/08">
+            <div>
+              <p class="eyebrow text-[#909090] mb-2">Location</p>
+              <p class="text-[#F5F0E8] font-bold">Ontario</p>
+            </div>
+            <div>
+              <p class="eyebrow text-[#909090] mb-2">Sector</p>
+              <p class="text-[#F5F0E8] font-bold">Residential</p>
+            </div>
+            <div>
+              <p class="eyebrow text-[#909090] mb-2">System</p>
+              <p class="text-[#F5F0E8] font-bold">Wet Pipe · Fire Pump</p>
+            </div>
+            <div>
+              <p class="eyebrow text-[#909090] mb-2">Standard</p>
+              <p class="text-[#F5F0E8] font-bold">NFPA 13</p>
+            </div>
+          </div>
+        </div>
+      </ScrollReveal>
+
+      <!-- Hero image -->
+      <ScrollReveal client:visible>
+        <div class="relative overflow-hidden border border-[#D4AF37]/10 bg-[#080808] mb-4">
+          <img
+            src="/projects/jackson-condos/jackson-pump-room.jpg"
+            alt="Fire pump close-up — The Jackson Condos"
+            class="w-full h-auto"
+            loading="eager"
+          />
+          <div class="absolute bottom-0 left-0 right-0 p-6 md:p-10 bg-gradient-to-t from-black/85 via-black/40 to-transparent">
+            <p class="text-[#A08928] text-[10px] font-semibold tracking-[0.3em] uppercase mb-2">Pump Room · Electric Fire Pump</p>
+            <p class="text-[#F5F0E8] text-lg md:text-2xl font-bold max-w-xl leading-snug">
+              Complete pump assembly with control panel, jockey pump, and pressure monitoring.
+            </p>
+          </div>
+        </div>
+      </ScrollReveal>
+
+      <!-- Gallery grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {jacksonGallery.map((photo, i) => (
+          <ScrollReveal client:visible delay={i * 0.06}>
+            <div class="relative overflow-hidden border border-[#D4AF37]/10 bg-[#0d0d0d] group">
+              <div class="aspect-[4/3] overflow-hidden">
+                <img
+                  src={photo.src}
+                  alt={photo.alt}
+                  class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                  loading="lazy"
+                />
+              </div>
+              <div class="absolute bottom-0 left-0 right-0 p-5 md:p-6 bg-gradient-to-t from-black/85 via-black/40 to-transparent">
+                <p class="text-[#A08928] text-[10px] font-semibold tracking-[0.3em] uppercase mb-1">{photo.caption}</p>
+                <p class="text-[#F5F0E8] text-sm md:text-base font-bold leading-snug">{photo.detail}</p>
+              </div>
+            </div>
+          </ScrollReveal>
+        ))}
+      </div>
+
+      <!-- More coming note -->
+      <ScrollReveal client:visible>
+        <div class="mt-16 border border-[#D4AF37]/10 bg-[#0f0f0f] p-8 md:p-12 text-center">
+          <p class="text-[#A08928] text-[10px] font-semibold tracking-[0.3em] uppercase mb-4">Additional Projects</p>
+          <p class="text-[#F5F0E8] text-lg font-bold mb-3">500+ installations. More case studies coming.</p>
+          <p class="body-copy text-sm max-w-lg mx-auto">
+            Full project references available on request. Contact Brett directly for a walk-through of relevant jobs for your building type.
+          </p>
+        </div>
+      </ScrollReveal>
+
+    </div>
   </section>
 
   <!-- ── CTA Strip ── -->

@@ -24,3 +24,6 @@ pnpm-debug.log*
 .idea/
 mobile-audit/
 mobile screenshots/
+
+# raw client photo drops (compressed web versions live in public/projects/)
+The Jackson Condos/
