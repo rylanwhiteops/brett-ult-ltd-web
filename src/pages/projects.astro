@@ -31,6 +31,60 @@ const jacksonGallery = [
     detail: 'Multi-storey residential development.',
   },
 ];
+
+const exchangeGallery = [
+  {
+    src: '/projects/exchange-district-condos/exchange-valve-room.jpg',
+    alt: 'Riser and valve assembly bank — Exchange District Condominiums',
+    caption: 'Valve Room',
+    detail: 'Bank of floor-control risers with backflow assemblies.',
+  },
+  {
+    src: '/projects/exchange-district-condos/exchange-parking-level.jpg',
+    alt: 'Standpipe and sprinkler mains in parking garage — Exchange District Condominiums',
+    caption: 'Parking Level',
+    detail: 'Standpipe and sprinkler mains through the parkade.',
+  },
+  {
+    src: '/projects/exchange-district-condos/exchange-riser-assembly.jpg',
+    alt: 'Fire pump room riser assembly — Exchange District Condominiums',
+    caption: 'Riser Assembly',
+    detail: 'Pump room piping, gauges, and control valves.',
+  },
+  {
+    src: '/projects/exchange-district-condos/exchange-exterior.jpg',
+    alt: 'Building exterior — Exchange District Condominiums',
+    caption: 'Building Exterior',
+    detail: 'Multi-tower high-rise residential development.',
+  },
+];
+
+const albrightGallery = [
+  {
+    src: '/projects/albright-rentals/albright-parking-level.jpg',
+    alt: 'Overhead sprinkler mains in parking garage — The Albright Rentals',
+    caption: 'Parking Level',
+    detail: 'Exposed overhead mains through the parking garage.',
+  },
+  {
+    src: '/projects/albright-rentals/albright-fdc-connection.jpg',
+    alt: 'Fire department connection — The Albright Rentals',
+    caption: 'F.D.C. Connection',
+    detail: 'Sprinkler/standpipe FDC, tagged and commissioned.',
+  },
+  {
+    src: '/projects/albright-rentals/albright-lobby.jpg',
+    alt: 'Finished lobby with sprinkler coverage — The Albright Rentals',
+    caption: 'Building Interior',
+    detail: 'Sprinkler and alarm coverage through finished common areas.',
+  },
+  {
+    src: '/projects/albright-rentals/albright-exterior.jpg',
+    alt: 'Building exterior — The Albright Rentals',
+    caption: 'Building Exterior',
+    detail: 'Multi-storey residential rental development.',
+  },
+];
 ---
 
 <Layout
@@ -131,6 +185,174 @@ const jacksonGallery = [
       <!-- Gallery grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         {jacksonGallery.map((photo, i) => (
+          <ScrollReveal client:visible delay={i * 0.06}>
+            <div class="relative overflow-hidden border border-[#D4AF37]/10 bg-[#0d0d0d] group">
+              <div class="aspect-[4/3] overflow-hidden">
+                <img
+                  src={photo.src}
+                  alt={photo.alt}
+                  class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                  loading="lazy"
+                />
+              </div>
+              <div class="absolute bottom-0 left-0 right-0 p-5 md:p-6 bg-gradient-to-t from-black/85 via-black/40 to-transparent">
+                <p class="text-[#A08928] text-[10px] font-semibold tracking-[0.3em] uppercase mb-1">{photo.caption}</p>
+                <p class="text-[#F5F0E8] text-sm md:text-base font-bold leading-snug">{photo.detail}</p>
+              </div>
+            </div>
+          </ScrollReveal>
+        ))}
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Case Study: Exchange District Condominiums ── -->
+  <section class="relative z-10 section-gap border-t border-[#D4AF37]/08">
+    <div class="max-w-7xl mx-auto px-8 md:px-16">
+
+      <!-- Case study header -->
+      <ScrollReveal client:visible>
+        <div class="mb-12">
+          <div class="flex items-center gap-4 mb-5">
+            <span class="block w-8 h-px bg-[#D4AF37]/40"></span>
+            <p class="eyebrow text-[#A08928]">Case Study · Residential</p>
+          </div>
+          <h2 class="font-display font-black text-5xl md:text-6xl xl:text-7xl uppercase leading-none">
+            <span class="text-[#F5F0E8]">Exchange District</span><br />
+            <span class="text-[#D4AF37]">Condominiums</span>
+          </h2>
+          <p class="body-copy text-base mt-6 max-w-2xl">
+            Fire protection package for a multi-tower high-rise residential development. Wet-pipe sprinkler system, standpipe risers, and a full-capacity electric fire pump — installed and commissioned to NFPA code across multiple connected towers.
+          </p>
+
+          <!-- Spec strip -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-10 pt-8 border-t border-[#D4AF37]/08">
+            <div>
+              <p class="eyebrow text-[#909090] mb-2">Location</p>
+              <p class="text-[#F5F0E8] font-bold">Ontario</p>
+            </div>
+            <div>
+              <p class="eyebrow text-[#909090] mb-2">Sector</p>
+              <p class="text-[#F5F0E8] font-bold">Residential</p>
+            </div>
+            <div>
+              <p class="eyebrow text-[#909090] mb-2">System</p>
+              <p class="text-[#F5F0E8] font-bold">Wet Pipe · Standpipe · Fire Pump</p>
+            </div>
+            <div>
+              <p class="eyebrow text-[#909090] mb-2">Standard</p>
+              <p class="text-[#F5F0E8] font-bold">NFPA 13 · NFPA 14</p>
+            </div>
+          </div>
+        </div>
+      </ScrollReveal>
+
+      <!-- Hero image -->
+      <ScrollReveal client:visible>
+        <div class="relative overflow-hidden border border-[#D4AF37]/10 bg-[#080808] mb-4">
+          <img
+            src="/projects/exchange-district-condos/exchange-fire-pump.jpg"
+            alt="Fire pump assembly — Exchange District Condominiums"
+            class="w-full h-auto"
+            loading="lazy"
+          />
+          <div class="absolute bottom-0 left-0 right-0 p-6 md:p-10 bg-gradient-to-t from-black/85 via-black/40 to-transparent">
+            <p class="text-[#A08928] text-[10px] font-semibold tracking-[0.3em] uppercase mb-2">Pump Room · Electric Fire Pump</p>
+            <p class="text-[#F5F0E8] text-lg md:text-2xl font-bold max-w-xl leading-snug">
+              High-capacity fire pump assembly serving standpipe and sprinkler systems across the tower.
+            </p>
+          </div>
+        </div>
+      </ScrollReveal>
+
+      <!-- Gallery grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {exchangeGallery.map((photo, i) => (
+          <ScrollReveal client:visible delay={i * 0.06}>
+            <div class="relative overflow-hidden border border-[#D4AF37]/10 bg-[#0d0d0d] group">
+              <div class="aspect-[4/3] overflow-hidden">
+                <img
+                  src={photo.src}
+                  alt={photo.alt}
+                  class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                  loading="lazy"
+                />
+              </div>
+              <div class="absolute bottom-0 left-0 right-0 p-5 md:p-6 bg-gradient-to-t from-black/85 via-black/40 to-transparent">
+                <p class="text-[#A08928] text-[10px] font-semibold tracking-[0.3em] uppercase mb-1">{photo.caption}</p>
+                <p class="text-[#F5F0E8] text-sm md:text-base font-bold leading-snug">{photo.detail}</p>
+              </div>
+            </div>
+          </ScrollReveal>
+        ))}
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Case Study: The Albright Rentals ── -->
+  <section class="relative z-10 section-gap border-t border-[#D4AF37]/08">
+    <div class="max-w-7xl mx-auto px-8 md:px-16">
+
+      <!-- Case study header -->
+      <ScrollReveal client:visible>
+        <div class="mb-12">
+          <div class="flex items-center gap-4 mb-5">
+            <span class="block w-8 h-px bg-[#D4AF37]/40"></span>
+            <p class="eyebrow text-[#A08928]">Case Study · Residential</p>
+          </div>
+          <h2 class="font-display font-black text-5xl md:text-6xl xl:text-7xl uppercase leading-none">
+            <span class="text-[#F5F0E8]">The Albright</span><br />
+            <span class="text-[#D4AF37]">Rentals</span>
+          </h2>
+          <p class="body-copy text-base mt-6 max-w-2xl">
+            Complete fire protection package for a multi-storey residential rental development. Wet-pipe sprinkler system, standpipe/F.D.C. connection, and full parking-level coverage — installed and commissioned to NFPA 13.
+          </p>
+
+          <!-- Spec strip -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-10 pt-8 border-t border-[#D4AF37]/08">
+            <div>
+              <p class="eyebrow text-[#909090] mb-2">Location</p>
+              <p class="text-[#F5F0E8] font-bold">Ontario</p>
+            </div>
+            <div>
+              <p class="eyebrow text-[#909090] mb-2">Sector</p>
+              <p class="text-[#F5F0E8] font-bold">Residential</p>
+            </div>
+            <div>
+              <p class="eyebrow text-[#909090] mb-2">System</p>
+              <p class="text-[#F5F0E8] font-bold">Wet Pipe · Standpipe</p>
+            </div>
+            <div>
+              <p class="eyebrow text-[#909090] mb-2">Standard</p>
+              <p class="text-[#F5F0E8] font-bold">NFPA 13</p>
+            </div>
+          </div>
+        </div>
+      </ScrollReveal>
+
+      <!-- Hero image -->
+      <ScrollReveal client:visible>
+        <div class="relative overflow-hidden border border-[#D4AF37]/10 bg-[#080808] mb-4">
+          <img
+            src="/projects/albright-rentals/albright-valve-room.jpg"
+            alt="Backflow and valve assembly — The Albright Rentals"
+            class="w-full h-auto"
+            loading="lazy"
+          />
+          <div class="absolute bottom-0 left-0 right-0 p-6 md:p-10 bg-gradient-to-t from-black/85 via-black/40 to-transparent">
+            <p class="text-[#A08928] text-[10px] font-semibold tracking-[0.3em] uppercase mb-2">Riser Room · Backflow Assembly</p>
+            <p class="text-[#F5F0E8] text-lg md:text-2xl font-bold max-w-xl leading-snug">
+              Backflow preventer and control valve assembly, tagged and ready for inspection.
+            </p>
+          </div>
+        </div>
+      </ScrollReveal>
+
+      <!-- Gallery grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {albrightGallery.map((photo, i) => (
           <ScrollReveal client:visible delay={i * 0.06}>
             <div class="relative overflow-hidden border border-[#D4AF37]/10 bg-[#0d0d0d] group">
               <div class="aspect-[4/3] overflow-hidden">
