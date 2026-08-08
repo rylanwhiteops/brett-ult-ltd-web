@@ -119,6 +119,34 @@ h1, h2, h3 {
   transform: scaleY(1);
 }
 
+/* ── Accordion — service list expand/collapse ──────────────── */
+.accordion-trigger {
+  cursor: pointer;
+  background: none;
+  border: none;
+  font: inherit;
+  color: inherit;
+}
+
+.accordion-chevron {
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.is-open .accordion-chevron {
+  transform: rotate(180deg);
+}
+
+.accordion-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  overflow: hidden;
+  transition: grid-template-rows 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.is-open .accordion-panel {
+  grid-template-rows: 1fr;
+}
+
 /* ── Expertise card ────────────────────────────────────────── */
 .expertise-card {
   position: relative;

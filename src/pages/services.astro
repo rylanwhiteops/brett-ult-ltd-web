@@ -1,11 +1,43 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import StackingServiceCards from '../components/StackingServiceCards.tsx';
-import MobileServiceCarousel from '../components/MobileServiceCarousel.tsx';
 import ScrollReveal from '../components/ScrollReveal.tsx';
 import Marquee from '../components/Marquee.tsx';
 import PageHeader from '../components/PageHeader.astro';
 import Footer from '../components/Footer.astro';
+
+const icons = {
+  s1: `<svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M14 3C10.5 8 9 11 9 14a5 5 0 0 0 10 0c0-3-1.5-6-5-11z"/>
+    <path d="M14 10c-1.5 2.5-2 4-2 5a2 2 0 0 0 4 0c0-1-.5-2.5-2-5z" fill="#D4AF37" fill-opacity="0.2"/>
+    <path d="M6 20h16M9 24h10"/>
+  </svg>`,
+  s2: `<svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="14" cy="14" r="2"/>
+    <line x1="14" y1="4" x2="14" y2="8"/>
+    <line x1="14" y1="20" x2="14" y2="24"/>
+    <line x1="4" y1="14" x2="8" y2="14"/>
+    <line x1="20" y1="14" x2="24" y2="14"/>
+    <line x1="7" y1="7" x2="10" y2="10"/>
+    <line x1="18" y1="18" x2="21" y2="21"/>
+    <line x1="21" y1="7" x2="18" y2="10"/>
+    <line x1="10" y1="18" x2="7" y2="21"/>
+  </svg>`,
+  s3: `<svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M14 3L4 7v8c0 6 4.5 11 10 13 5.5-2 10-7 10-13V7L14 3z"/>
+    <path d="M14 9c-2 3-3 5-3 7a3 3 0 0 0 6 0c0-2-1-4-3-7z" fill="#D4AF37" fill-opacity="0.2"/>
+  </svg>`,
+  s4: `<svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="5" y="6" width="18" height="19" rx="1"/>
+    <line x1="9" y1="3" x2="9" y2="9"/>
+    <line x1="19" y1="3" x2="19" y2="9"/>
+    <line x1="5" y1="13" x2="23" y2="13"/>
+    <polyline points="10,18 13,21 18,16"/>
+  </svg>`,
+  s5: `<svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="14" cy="14" r="10"/>
+    <polyline points="14,8 14,14 18,17"/>
+  </svg>`,
+};
 
 const services = [
   {
@@ -99,54 +131,58 @@ const services = [
 
   <Marquee client:load />
 
-  <!-- ── Service List Index ── -->
-  <section class="relative z-10 border-b border-[#D4AF37]/08">
+  <!-- ── Service List / Accordion ── -->
+  <section class="relative z-10 py-12 md:py-16 border-b border-[#D4AF37]/08">
     <div class="max-w-7xl mx-auto px-8 md:px-16">
-      {services.map((s, i) => (
-        <ScrollReveal client:visible delay={i * 0.05}>
-          <div class="service-card group flex items-start md:items-center gap-3 md:gap-6 py-7 pl-2 pr-2 md:pl-6 md:pr-8 border-t border-[#D4AF37]/08">
-            <span class="font-mono text-[#D4AF37]/30 text-sm font-bold flex-shrink-0 w-8">{s.number}</span>
-            <div class="flex items-center gap-3 flex-1 flex-wrap">
-              <h3 class="font-display font-black text-xl md:text-2xl uppercase text-[#F5F0E8] group-hover:text-[#D4AF37] transition-colors duration-300 leading-tight">
-                {s.title}
-              </h3>
-              {s.acquired && (
-                <span class="text-[9px] font-bold tracking-[0.28em] text-[#D4AF37] border border-[#D4AF37]/40 px-2 py-0.5 uppercase">Acquired Co.</span>
-              )}
-            </div>
-            {s.standard && !s.acquired && (
-              <span class="hidden md:block eyebrow text-[#909090] flex-shrink-0">{s.standard}</span>
-            )}
-          </div>
-        </ScrollReveal>
-      ))}
-    </div>
-  </section>
-
-  <!-- ── Service Detail: Desktop stacking cards / Mobile flat list ── -->
-  <section class="relative z-10 py-12 md:py-20">
-    <div class="max-w-7xl mx-auto px-8 md:px-16 mb-10 md:mb-16">
       <ScrollReveal client:visible>
-        <div class="flex items-end gap-6">
-          <span class="block w-8 h-px bg-[#D4AF37]/40 mb-1"></span>
-          <p class="eyebrow text-[#A08928]">Full Breakdown</p>
-        </div>
-        <h2 class="font-display font-black text-5xl md:text-6xl uppercase leading-none mt-4">
-          <span class="text-[#F5F0E8]">Every Detail.</span><br />
-          <span class="text-[#D4AF37]">Every Standard.</span>
-        </h2>
+        <p class="eyebrow text-[#A08928] mb-8 md:mb-10">Select a Service for the Full Breakdown</p>
       </ScrollReveal>
+      <div data-accordion-group>
+        {services.map((s, i) => (
+          <ScrollReveal client:visible delay={i * 0.05}>
+            <div class="service-card group border-t border-[#D4AF37]/08 last:border-b" data-accordion-item>
+              <button type="button" class="accordion-trigger w-full flex items-start md:items-center gap-3 md:gap-6 py-7 pl-2 pr-2 md:pl-6 md:pr-8 text-left" data-accordion-trigger aria-expanded="false">
+                <div class="flex-shrink-0 w-10 h-10 flex items-center justify-center opacity-80 group-hover:opacity-100 transition-opacity">
+                  <Fragment set:html={icons[s.id]} />
+                </div>
+                <span class="font-mono text-[#D4AF37]/30 text-sm font-bold flex-shrink-0 w-8">{s.number}</span>
+                <div class="flex items-center gap-3 flex-1 flex-wrap">
+                  <h3 class="font-display font-black text-xl md:text-2xl uppercase text-[#F5F0E8] group-hover:text-[#D4AF37] transition-colors duration-300 leading-tight">
+                    {s.title}
+                  </h3>
+                  {s.acquired && (
+                    <span class="text-[9px] font-bold tracking-[0.28em] text-[#D4AF37] border border-[#D4AF37]/40 px-2 py-0.5 uppercase">Acquired Co.</span>
+                  )}
+                </div>
+                {s.standard && !s.acquired && (
+                  <span class="hidden md:block eyebrow text-[#909090] flex-shrink-0">{s.standard}</span>
+                )}
+                <svg class="accordion-chevron flex-shrink-0 text-[#D4AF37]/40 group-hover:text-[#D4AF37] transition-colors duration-300" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="4,6 8,10 12,6"/>
+                </svg>
+              </button>
+              <div class="accordion-panel" data-accordion-panel>
+                <div class="pb-8 pl-2 pr-2 md:pl-[6.5rem] md:pr-8">
+                  <p class="body-copy text-sm md:text-base mb-5 max-w-2xl">{s.description}</p>
+                  <ul class="space-y-2.5">
+                    {s.bullets.map((b) => (
+                      <li class="body-copy text-sm flex gap-3">
+                        <span class="text-[#D4AF37]/50 flex-shrink-0">&bull;</span>
+                        <span>{b}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </ScrollReveal>
+        ))}
+      </div>
     </div>
 
-    <!-- Desktop: stacking scroll cards -->
-    <div class="hidden md:block">
-      <StackingServiceCards services={services} client:visible />
-    </div>
-
-    <!-- Mobile: swipe carousel -->
-    <div class="md:hidden">
-      <MobileServiceCarousel services={services} client:visible />
-    </div>
+    <script>
+      import '../scripts/accordion.ts';
+    </script>
   </section>
 
   <!-- ── M&A Callout ── -->

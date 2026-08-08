@@ -118,33 +118,43 @@ const services = [
         </div>
       </ScrollReveal>
 
-      <!-- Services list — horizontal rows -->
-      <div class="border-t border-[#D4AF37]/08">
+      <!-- Services list — click to expand -->
+      <div class="border-t border-[#D4AF37]/08" data-accordion-group>
         {services.map((s, i) => (
           <ScrollReveal client:visible delay={i * 0.06}>
-            <div class="service-card group flex items-center gap-4 md:gap-8 py-5 md:py-7 px-2 md:px-6 border-b border-[#D4AF37]/08">
-              <!-- Icon -->
-              <div class="flex-shrink-0 w-10 h-10 flex items-center justify-center opacity-80 group-hover:opacity-100 transition-opacity">
-                <Fragment set:html={s.icon} />
-              </div>
-              <!-- Text -->
-              <div class="flex-1 min-w-0">
-                <div class="flex items-center gap-3 flex-wrap">
-                  <h3 class="font-display font-bold text-xl md:text-2xl uppercase text-[#F5F0E8] group-hover:text-[#D4AF37] transition-colors duration-300 leading-tight">{s.title}</h3>
-                  {s.acquired && (
-                    <span class="text-[9px] font-bold tracking-[0.28em] text-[#D4AF37] border border-[#D4AF37]/40 px-2 py-0.5 uppercase flex-shrink-0">Acquired Co.</span>
-                  )}
+            <div class="service-card group border-b border-[#D4AF37]/08" data-accordion-item>
+              <button type="button" class="accordion-trigger w-full flex items-center gap-4 md:gap-8 py-5 md:py-7 px-2 md:px-6 text-left" data-accordion-trigger aria-expanded="false">
+                <!-- Icon -->
+                <div class="flex-shrink-0 w-10 h-10 flex items-center justify-center opacity-80 group-hover:opacity-100 transition-opacity">
+                  <Fragment set:html={s.icon} />
                 </div>
-                <p class="body-copy text-sm mt-1 hidden md:block">{s.desc}</p>
+                <!-- Text -->
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center gap-3 flex-wrap">
+                    <h3 class="font-display font-bold text-xl md:text-2xl uppercase text-[#F5F0E8] group-hover:text-[#D4AF37] transition-colors duration-300 leading-tight">{s.title}</h3>
+                    {s.acquired && (
+                      <span class="text-[9px] font-bold tracking-[0.28em] text-[#D4AF37] border border-[#D4AF37]/40 px-2 py-0.5 uppercase flex-shrink-0">Acquired Co.</span>
+                    )}
+                  </div>
+                </div>
+                <!-- Standard -->
+                <span class="hidden lg:block eyebrow text-[#909090] flex-shrink-0">{s.standard}</span>
+                <!-- Chevron -->
+                <svg class="accordion-chevron flex-shrink-0 text-[#D4AF37]/40 group-hover:text-[#D4AF37] transition-colors duration-300" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="4,6 8,10 12,6"/>
+                </svg>
+              </button>
+              <div class="accordion-panel" data-accordion-panel>
+                <p class="body-copy text-sm pb-6 md:pb-7 px-2 md:px-6 md:pl-[4.5rem]">{s.desc}</p>
               </div>
-              <!-- Standard -->
-              <span class="hidden lg:block eyebrow text-[#909090] flex-shrink-0">{s.standard}</span>
-              <!-- Arrow -->
-              <span class="text-[#D4AF37]/20 group-hover:text-[#D4AF37] transition-colors duration-300 text-lg flex-shrink-0">→</span>
             </div>
           </ScrollReveal>
         ))}
       </div>
+
+      <script>
+        import '../scripts/accordion.ts';
+      </script>
 
       <div class="mt-8 md:hidden">
         <a href="/services" class="eyebrow text-[#A08928] hover:text-[#D4AF37] transition-colors">
