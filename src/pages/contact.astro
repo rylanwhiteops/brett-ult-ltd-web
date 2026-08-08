@@ -4,7 +4,7 @@ import ScrollReveal from '../components/ScrollReveal.tsx';
 import Marquee from '../components/Marquee.tsx';
 import PageHeader from '../components/PageHeader.astro';
 import Footer from '../components/Footer.astro';
-import GHLForm from '../components/GHLForm.tsx';
+import ContactForm from '../components/ContactForm.tsx';
 ---
 
 <Layout
@@ -43,7 +43,7 @@ import GHLForm from '../components/GHLForm.tsx';
   <section class="relative z-10 py-12 md:py-20">
     <div class="max-w-7xl mx-auto px-8 md:px-16 grid lg:grid-cols-[1fr_380px] gap-12 lg:gap-16 xl:gap-24 items-start">
 
-      <!-- Left: GHL Form -->
+      <!-- Left: Contact Form -->
       <div>
         <ScrollReveal client:visible>
           <div class="border-l-[4px] border-[#D4AF37] pl-6 mb-12">
@@ -54,7 +54,7 @@ import GHLForm from '../components/GHLForm.tsx';
           </div>
         </ScrollReveal>
 
-        <GHLForm client:load />
+        <ContactForm client:load />
       </div>
 
       <!-- Right Sidebar -->
