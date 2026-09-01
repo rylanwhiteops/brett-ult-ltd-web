@@ -85,6 +85,39 @@ const albrightGallery = [
     detail: 'Multi-storey residential rental development.',
   },
 ];
+
+const aptGallery = [
+  {
+    src: '/projects/apt-auto-parts/apt-overhead-mains.jpg',
+    alt: 'Overhead sprinkler mains and control valves, APT Auto Parts',
+    caption: 'Overhead Mains',
+    detail: 'Mains, control valves, and gauges at the roof line.',
+  },
+  {
+    src: '/projects/apt-auto-parts/apt-rack-aisle.jpg',
+    alt: 'In-rack sprinkler branch lines through high-bay storage, APT Auto Parts',
+    caption: 'In-Rack Branch Lines',
+    detail: 'Branch lines running through the high-bay racking.',
+  },
+  {
+    src: '/projects/apt-auto-parts/apt-storage-coverage.jpg',
+    alt: 'ESFR sprinkler coverage through loaded storage racking, APT Auto Parts',
+    caption: 'Storage Coverage',
+    detail: 'Full-height coverage through loaded high-piled storage.',
+  },
+  {
+    src: '/projects/apt-auto-parts/apt-ceiling-coverage.jpg',
+    alt: 'Overhead sprinkler drops through open ceiling, APT Auto Parts',
+    caption: 'Ceiling Coverage',
+    detail: 'Overhead drops coordinated with ductwork and structure.',
+  },
+  {
+    src: '/projects/apt-auto-parts/apt-exterior.jpg',
+    alt: 'Building exterior, APT Auto Parts',
+    caption: 'Building Exterior',
+    detail: 'Commercial distribution warehouse.',
+  },
+];
 ---
 
 <Layout
@@ -353,6 +386,90 @@ const albrightGallery = [
       <!-- Gallery grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         {albrightGallery.map((photo, i) => (
+          <ScrollReveal client:visible delay={i * 0.06}>
+            <div class="relative overflow-hidden border border-[#D4AF37]/10 bg-[#0d0d0d] group">
+              <div class="aspect-[4/3] overflow-hidden">
+                <img
+                  src={photo.src}
+                  alt={photo.alt}
+                  class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                  loading="lazy"
+                />
+              </div>
+              <div class="absolute bottom-0 left-0 right-0 p-5 md:p-6 bg-gradient-to-t from-black/85 via-black/40 to-transparent">
+                <p class="text-[#A08928] text-[10px] font-semibold tracking-[0.3em] uppercase mb-1">{photo.caption}</p>
+                <p class="text-[#F5F0E8] text-sm md:text-base font-bold leading-snug">{photo.detail}</p>
+              </div>
+            </div>
+          </ScrollReveal>
+        ))}
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Case Study: APT Auto Parts ── -->
+  <section class="relative z-10 section-gap border-t border-[#D4AF37]/08">
+    <div class="max-w-7xl mx-auto px-8 md:px-16">
+
+      <!-- Case study header -->
+      <ScrollReveal client:visible>
+        <div class="mb-12">
+          <div class="flex items-center gap-4 mb-5">
+            <span class="block w-8 h-px bg-[#D4AF37]/40"></span>
+            <p class="eyebrow text-[#A08928]">Case Study · Commercial</p>
+          </div>
+          <h2 class="font-display font-black text-5xl md:text-6xl xl:text-7xl uppercase leading-none">
+            <span class="text-[#F5F0E8]">APT</span><br />
+            <span class="text-[#D4AF37]">Auto Parts</span>
+          </h2>
+          <p class="body-copy text-base mt-6 max-w-2xl">
+            Fire protection for a commercial distribution warehouse. ESFR sprinkler system with in-rack protection through high-piled storage, plus overhead mains and control valves. Installed and commissioned to NFPA 13.
+          </p>
+
+          <!-- Spec strip -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-10 pt-8 border-t border-[#D4AF37]/08">
+            <div>
+              <p class="eyebrow text-[#909090] mb-2">Location</p>
+              <p class="text-[#F5F0E8] font-bold">Ontario</p>
+            </div>
+            <div>
+              <p class="eyebrow text-[#909090] mb-2">Sector</p>
+              <p class="text-[#F5F0E8] font-bold">Commercial</p>
+            </div>
+            <div>
+              <p class="eyebrow text-[#909090] mb-2">System</p>
+              <p class="text-[#F5F0E8] font-bold">ESFR · In-Rack</p>
+            </div>
+            <div>
+              <p class="eyebrow text-[#909090] mb-2">Standard</p>
+              <p class="text-[#F5F0E8] font-bold">NFPA 13</p>
+            </div>
+          </div>
+        </div>
+      </ScrollReveal>
+
+      <!-- Hero image -->
+      <ScrollReveal client:visible>
+        <div class="relative overflow-hidden border border-[#D4AF37]/10 bg-[#080808] mb-4">
+          <img
+            src="/projects/apt-auto-parts/apt-rack-sprinklers.jpg"
+            alt="In-rack ESFR sprinkler heads through high-bay storage racking, APT Auto Parts"
+            class="w-full h-auto"
+            loading="lazy"
+          />
+          <div class="absolute bottom-0 left-0 right-0 p-6 md:p-10 bg-gradient-to-t from-black/85 via-black/40 to-transparent">
+            <p class="text-[#A08928] text-[10px] font-semibold tracking-[0.3em] uppercase mb-2">High-Bay Racking · ESFR Protection</p>
+            <p class="text-[#F5F0E8] text-lg md:text-2xl font-bold max-w-xl leading-snug">
+              In-rack sprinkler heads through multi-level high-piled storage.
+            </p>
+          </div>
+        </div>
+      </ScrollReveal>
+
+      <!-- Gallery grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {aptGallery.map((photo, i) => (
           <ScrollReveal client:visible delay={i * 0.06}>
             <div class="relative overflow-hidden border border-[#D4AF37]/10 bg-[#0d0d0d] group">
               <div class="aspect-[4/3] overflow-hidden">
